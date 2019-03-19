@@ -1,0 +1,55 @@
+@import '../variables.less';
+
+@color: @white;
+
+.navigation-items {
+    margin: 0;
+    padding: 0;
+
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    list-style: none;
+    color: @color;
+
+    .navigation-item-container {
+        display: flex;
+        align-items: center;
+
+        cursor: pointer;
+        font-size: 14px;
+        text-transform: uppercase;
+
+        @hover: {
+            color: @success;
+            transition: all 200ms linear;
+        };
+
+        .navigation-item {
+            display: flex;
+            align-items: center;
+            color: @color;
+
+            padding: 0 12px 0 12px;
+            height: 100%;
+            font-size: inherit;
+            text-decoration: none;
+            background: none;
+            border: none;
+            text-transform: uppercase;
+
+            &:hover {
+                @hover();
+            }
+        }
+
+        &:hover {
+            @hover();
+        }
+    }
+
+    .selected {
+        color: @success;
+    }
+}

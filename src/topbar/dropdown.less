@@ -1,0 +1,114 @@
+@import '../variables.less';
+
+.dropdown {
+    height: 100%;
+
+    position: relative;
+    cursor: pointer;
+    font-size: @font-size-mid;
+    font-family: @font-family;
+
+    * {
+        box-sizing: border-box;
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    .dropdown-toggle {
+        display: block;
+
+        height: 100%;
+        width: 100%;
+        border: none;
+        padding: 5px 22px 5px 10px;
+
+        background-color: transparent;
+        font-weight: lighter;
+        color: @white;
+        user-select: none;
+        cursor: pointer;
+        font-size: 100%;
+
+        &:hover {
+            text-decoration: none;
+        }
+
+        .text {
+            line-height: 2em;
+            padding-right: 4px;
+            vertical-align: middle;
+        }
+
+        .arrow {
+            @topbar-dropdown-icon();
+
+            padding-top: 1px;
+            padding-left: 2px;
+        }
+    }
+
+    .dropdown-items {
+        position: absolute;
+        top: 38px;
+        right: 15px;
+        z-index: 1;
+
+        max-height: 281px;
+        width: 100%;
+        min-width: 215px;
+        margin: 0;
+        padding: 0 10px 9px 10px;
+
+        border: none;
+        background-color: @white;
+        box-shadow: 0 1px 5px 0 rgba(0,0,0,0.5);
+
+        color: @gray-darker;
+        font-weight: normal;
+        overflow: hidden;
+        list-style: none;
+
+        .dropdown-item-container {
+            height: 35px;
+            width: 100%;
+
+            .dropdown-item {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+
+                height: 100%;
+                width: 100%;
+                padding-right: 15px;
+
+                color: @gray-darker;
+                font-size: @font-size-mid;
+                text-decoration: none;
+                background: none;
+                border: none;
+                text-transform: uppercase;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                cursor: pointer;
+
+                &:hover {
+                    color: @gray-darkest;
+                }
+            }
+
+            &:hover {
+                color: @gray-darkest;
+            }
+        }
+
+        .header:not(:last-child) {
+            border-bottom: 1px solid @gray-mid;
+        }
+
+        .selected > .dropdown-item {
+            font-weight: bold;
+        }
+    }
+}

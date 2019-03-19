@@ -1,0 +1,75 @@
+.tree {
+    .level-1 {
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        &.highlighted > .node-content > .node-label {
+            color: @gray-darkest;
+        }
+    }
+
+    .nodes {
+        padding: 0;
+        margin-top: 5px;
+        margin-bottom: 0;
+    }
+
+    .node {
+        color: @gray-darker;
+        list-style: none;
+        font-weight: normal;
+        cursor: pointer;
+
+        &:hover {
+            color: @gray-darkest;
+        }
+
+        &.highlighted {
+            color: @success;
+            font-weight: bold;
+        }
+    }
+
+    .node-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding: 7px 1px 7px 14px;
+    }
+
+    .node-label {
+        padding-left: 12px;
+        text-align: left;
+        user-select: none;
+        font-size: 12px;
+        list-style: none;
+
+        overflow-wrap: normal;
+        word-wrap: normal;
+        word-break: keep-all;
+    }
+
+    .collapse-expand {
+        font-size: 9px;
+        padding: 0;
+        background-color: transparent;
+        transition: all 200ms ease-out;
+    }
+
+    .expanded {
+        @dropdown-icon();
+        .collapse-expand();
+    }
+
+    .collapsed {
+        @dropdown-icon();
+        .collapse-expand();
+        transform: rotate(-90deg);
+    }
+
+    .no-child {
+        @dropdown-icon();
+        .collapse-expand();
+        visibility: hidden;
+    }
+}

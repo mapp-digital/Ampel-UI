@@ -1,0 +1,103 @@
+@toggle-height: 24px;
+@toggle-height-small: 12px;
+
+.toggle {
+    cursor: pointer;
+    display: inline-block;
+    text-align: left;
+    overflow: hidden;
+    min-width: 75px;
+    height: @toggle-height;
+    border-radius: 12px;
+    border: solid 1px @gray-light;
+    position: relative;
+    padding: 0;
+    user-select: none;
+    outline: 0;
+
+    .toggle-container {
+        position: relative;
+        width: 200%;
+        height: 100%;
+        margin-left: (-(@toggle-height/2));
+
+        span {
+            cursor: pointer;
+            display: inline-block;
+            height: 100%;
+            padding: 4px;
+            text-align: center;
+            vertical-align: middle;
+            width: 50%;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .toggle-knob {
+            position: absolute;
+            background-color: @gray-stone;
+            border: 1px solid @gray-light;
+            width: @toggle-height;
+            height: @toggle-height;
+            border-radius: 50%;
+            margin-left: (-(@toggle-height / 2) + 1px);
+            margin-top: -1px;
+            left: 50%;
+        }
+
+        &.toggle-animate {
+            transition: left 0.5s;
+        }
+
+        &.toggle-on {
+            left: 0;
+        }
+
+        &.toggle-off {
+            left: calc(~'-100% + @{toggle-height} - 2px');
+        }
+
+        .toggle-left {
+            color: @gray-stone;
+            background-color: @primary-color-dark;
+        }
+
+        .toggle-right {
+            color: @gray-dark;
+            background-color: @white;
+        }
+    }
+
+    &.toggle-small {
+        height: @toggle-height-small;
+        min-width: 20px;
+        .toggle-container {
+            margin-left: (-(@toggle-height-small / 2));
+
+            .toggle-knob {
+                width: @toggle-height-small;
+                height: @toggle-height-small;
+                margin-left: (-(@toggle-height-small / 2) + 1px);
+            }
+
+            &.toggle-off {
+                left: calc(~'-100% + @{toggle-height-small} - 2px');
+            }
+        }
+    }
+
+    &-description {
+        padding-left: 10px;
+    }
+
+    &:disabled {
+        .toggle-left {
+            background-color: @gray-dark;
+        }
+        .toggle-knob {
+            background-color: @gray-light;
+        }
+    }
+}
+
+

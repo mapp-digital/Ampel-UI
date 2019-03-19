@@ -1,0 +1,11 @@
+{
+  "transform": {
+    "^.+\\.(t|j)sx?$": "ts-jest"
+  },
+  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node", "css"],
+  "moduleNameMapper": {
+    "@config/(.*)": "<rootDir>/config/$1",
+    "@ampel-ui/(.*)": "<rootDir>/src/$1"
+  }
+}

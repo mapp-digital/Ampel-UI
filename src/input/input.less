@@ -1,0 +1,30 @@
+.input-component {
+    display: flex;
+
+    .prepend-append {
+        background-color: @gray-mid;
+        line-height: 32px;
+        font-size: 12px;
+        border: 1px solid @gray-dark;
+        border-right: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+        color: @gray-darkest;
+        cursor: default;
+        white-space: nowrap;
+    }
+
+    .input-prepend {
+        .prepend-append();
+    }
+
+    .input-append {
+        .prepend-append();
+    }
+
+    input:focus {
+        box-shadow: none;
+        outline: none;
+        border-color: @success;
+    }
+}

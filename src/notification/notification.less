@@ -1,0 +1,47 @@
+.with-type(@type) {
+    border-color: @type;
+    .wt-icon {
+        color: @type;
+    }
+}
+
+.notification-wrapper {
+    position: fixed;
+    z-index: 20;
+    width: 230px;
+    top: 60px;
+    right: 25px;
+
+    .notification {
+        width: 100%;
+        padding: 8px;
+        cursor: pointer;
+        min-height: 65px;
+        display: flex;
+        align-items: center;
+        background: @gray-stone;
+        border: 1px solid transparent;
+        &-success {
+            .with-type(@success);
+        }
+        &-error {
+            .with-type(@error);
+        }
+        &-info {
+            .with-type(@info);
+        }
+        &-icon {
+            margin-right: 10px;
+        }
+        &-action {
+            margin-left: auto;
+            margin-bottom: auto;
+            .wt-icon {
+                color: @gray-dark;
+            };
+        }
+        & + .notification {
+            margin-top: 10px;
+        }
+    }
+}

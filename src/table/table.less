@@ -1,0 +1,232 @@
+@import "~react-table/react-table.css";
+
+.table {
+    font-size: 12px;
+
+    @icon-button-defaults: {
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        color: @gray-darker;
+
+        &:focus {
+            outline: none;
+        }
+
+        &[disabled] {
+            color: @gray-light;
+            cursor: not-allowed;
+        }
+
+        &:hover:not([disabled]) {
+            color: @info;
+        }
+    };
+
+    .ReactTable {
+        border: none;
+
+        .rt-table {
+            border-top: @default-border;
+            border-bottom: @default-border;
+        }
+
+        .rt-thead.-header {
+            box-shadow: none;
+            font-weight: bold;
+
+            .rt-th {
+                padding: 8px;
+                text-align: left;
+
+                &:not(:last-child) {
+                    border-right: @default-border;
+                    border-right-style: dashed;
+                }
+
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+
+        .rt-tr-group {
+            border: none;
+        }
+
+        .rt-tbody {
+            .rt-tr:hover {
+                background-color: @info-light;
+            }
+        }
+
+        .rt-td {
+            display: flex;
+            align-items: center;
+
+            padding: 8px;
+            border-top: @default-border;
+            white-space: normal;
+
+            &:not(:last-child) {
+                border-right: @default-border;
+                border-right-style: dashed;
+            }
+        }
+    }
+
+    .table-top {
+        display: flex;
+        justify-content: space-between;
+
+        width: 100%;
+        height: 100%;
+
+        .table-pagination {
+            @pagination-part-padding: 3px 8px;
+
+            display: flex;
+            align-items: center;
+            min-height: 32px;
+
+            .table-pagination-button {
+                @icon-button-defaults();
+
+                height: 16px;
+                width: 16px;
+                margin: 0 3px;
+                padding-left: 3px;
+            }
+
+            .table-pagination-first {
+                @table-pagination-first();
+            }
+
+            .table-pagination-previous {
+                @table-pagination-previous();
+            }
+
+            .table-pagination-next {
+                @table-pagination-next();
+            }
+
+            .table-pagination-last {
+                @table-pagination-last();
+            }
+
+            .table-pagination-buttons {
+                height: 20px;
+                padding: @pagination-part-padding;
+            }
+
+            .pagination-current-page {
+                display: flex;
+                align-items: baseline;
+                padding: @pagination-part-padding;
+
+                .pagination-current-page-spin {
+                    width: 40px;
+                    margin: 0 4px;
+                    border: none;
+                    border-bottom: @default-border;
+                    background-color: transparent;
+                    text-align: right;
+
+
+                    &::-webkit-inner-spin-button {
+                        opacity: 1;
+                    }
+                }
+            }
+
+            .pagination-rows {
+                padding: 0 8px 2px 0;
+                min-width: 90px;
+            }
+
+            .select-option-toggle {
+                height: 32px;
+                border: none;
+                background-color: transparent;
+                text-align: right;
+            }
+
+            .select-option-items {
+                border: @default-border;
+                text-align: right;
+            }
+        }
+    }
+
+    .action-button {
+        @icon-button-defaults();
+        padding: 0;
+        width: 15px;
+        height: 15px;
+
+        &:before {
+            display: block;
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    .table-header {
+        text-align: left;
+    }
+
+    .invisible {
+        visibility: hidden;
+    }
+
+    .table-actions-cell {
+        display: flex;
+        justify-content: space-around;
+        padding: 0 3px;
+        width: 100%;
+    }
+
+    .-sort-asc {
+        box-shadow: none !important;
+
+        .header-icon {
+            @table-header-sort-asc-icon();
+        }
+    }
+    .-sort-desc {
+        box-shadow: none !important;
+
+        .header-icon {
+            @table-header-sort-desc-icon();
+        }
+    }
+
+    .search-bar {
+        display: flex;
+        justify-content: space-between;
+
+        height: 30px;
+        width: 250px;
+        margin-bottom: 5px;
+        border: @default-border;
+        background-color: @white;
+
+        .search-bar-icon {
+            @table-search-bar-icon();
+            font-size: 14px;
+            line-height: 30px;
+        }
+
+        .search-bar-filter {
+            flex: 1;
+            padding-left: 6px;
+            border: none;
+            box-shadow: none;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+

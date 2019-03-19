@@ -2,14 +2,63 @@
   "name": "ampel-ui",
   "version": "0.1.0",
   "description": "Ampel UI is a UI component framework written for TypeScript + React",
-  "main": "index.js",
+  "main": "./dist/bundle.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack -p --optimize-minimize",
+    "test": "jest --config jestconfig.json",
+    "prepublish": "rm -rf ./dist && npm run build",
+    "lint": "tslint-config-prettier-check ./tslint.json"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Webtrekk/Ampel-UI"
   },
   "author": "Webtrekk GmbH",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^24.0.11",
+    "@types/react": "^16.8.8",
+    "@types/react-dom": "^16.8.2",
+    "autoprefixer": "^9.5.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "css-loader": "^2.1.1",
+    "dom-testing-library": "^3.17.1",
+    "jest": "^24.5.0",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-loader": "^3.0.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "react-testing-library": "^6.0.0",
+    "style-loader": "^0.23.1",
+    "ts-jest": "^24.0.0",
+    "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^3.6.0",
+    "tslint-react-a11y": "^1.0.0",
+    "typescript": "^3.3.3333",
+    "uglifyjs-webpack-plugin": "^2.1.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
+  },
+  "peerDependencies": {
+    "react": "^15.3.0 || 16",
+    "react-dom": "^15.3.0 || 16"
+  },
+  "dependencies": {
+    "@types/lodash": "^4.14.123",
+    "@types/rc-slider": "^8.6.3",
+    "@types/rc-tooltip": "^3.7.1",
+    "@types/react-table": "^6.7.23",
+    "@types/yup": "^0.26.12",
+    "immutability-helper": "^3.0.0",
+    "lodash": "^4.17.11",
+    "rc-slider": "^8.6.7",
+    "rc-tooltip": "^3.7.3",
+    "react-table": "^6.9.2",
+    "yup": "^0.27.0"
+  }
 }

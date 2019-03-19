@@ -1,0 +1,60 @@
+.dialog {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 10;
+    &-content {
+        line-height: 1.4;
+        font-size: 12px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+        background: @white;
+        &-header {
+            background-color: @white;
+            padding: 15px 30px;
+            color: @gray-coal;
+            font-size: 14px;
+        }
+        &-body {
+            background-color: @white;
+            font-size: 12px;
+            padding: 5px 30px;
+        }
+        &-footer {
+            background-color: @white;
+            border: none;
+            padding: 20px 30px 25px;
+            text-align: right;
+        }
+    }
+}
+
+@media (min-width: @screen-sm-min) {
+    .dialog-content {
+        width: 70vw;
+    }
+}
+@media (min-width: @screen-md-min) {
+    .dialog-content {
+        width: 50vw;
+    }
+}
+@media (min-width: @screen-lg-min) {
+    .dialog-content {
+        width: 35vw;
+    }
+}
+
+@media (min-width: @screen-xl-min) {
+    .dialog-content {
+        width: 29.2vw;
+    }
+}

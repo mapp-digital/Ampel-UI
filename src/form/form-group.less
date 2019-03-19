@@ -1,0 +1,45 @@
+.form-group-accordion {
+    position: relative;
+    margin-left: 15px;
+    margin-bottom: 15px;
+
+    .form-group-icon {
+        position: absolute;
+        top: 10px;
+        left: -22px;
+    }
+
+    .form-group-header {
+        display: flex;
+        align-items: center;
+
+        .form-group-toggle {
+            width: 100%;
+            padding: 10px;
+
+            background-color: @gray-mid;
+            text-align: start;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            color: @gray-darkest;
+
+            &:focus {
+                outline: none;
+            }
+        }
+    }
+}
+
+.expanded {
+    .form-group-header {
+        .form-group-toggle {
+            color: @gray-coal;
+            background-color: @gray-darker;
+        }
+    }
+}
+
+.form-group-content {
+    padding: 15px;
+}
