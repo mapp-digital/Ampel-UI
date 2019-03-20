@@ -1,6 +1,6 @@
 {
   "name": "ampel-ui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Ampel UI is a UI component framework written for TypeScript + React",
   "main": "./dist/bundle.js",
   "types": "./dist/src/index.d.ts",
@@ -60,5 +60,8 @@
     "rc-tooltip": "^3.7.3",
     "react-table": "^6.9.2",
     "yup": "^0.27.0"
+  },
+  "resolutions": {
+    "@types/react": "^16.8.8"
   }
 }

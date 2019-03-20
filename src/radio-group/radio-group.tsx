@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Option } from '@ampel-ui/select';
+import { Option } from '../select';
 
 interface Props {
     id: string;

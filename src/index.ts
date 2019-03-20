@@ -4,6 +4,7 @@ export * from './api';
 export * from './button';
 export * from './checkbox';
 export * from './checkbox-table';
+export * from './common/search';
 export * from './dialog';
 export * from './form';
 export * from './input';

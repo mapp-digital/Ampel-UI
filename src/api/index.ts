@@ -35,3 +35,5 @@ export {
     modelWithViolations,
     ViolationSeverity,
 };
+
+export { assignTo, walkTree } from './tree';

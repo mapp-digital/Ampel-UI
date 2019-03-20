@@ -1,3 +1,5 @@
 coverage/
 webpack.config.js
 .npmrc
+.idea
+.DS_Store

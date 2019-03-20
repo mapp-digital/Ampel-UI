@@ -1,6 +1,12 @@
 import * as React from 'react';
 
-import { INode } from './inode';
+// import { INode } from './inode';
+
+import { BaseNode } from '../api/tree';
+
+interface INode extends BaseNode<INode, never> {
+    isExpanded?: boolean;
+}
 
 interface Props {
     node: INode;
