@@ -7,10 +7,3 @@ node_js:
 script:
   - npm run lint
   - npm run test
-  - npm run prepublish
-
-deploy:
-  provider: npm
-  email: $NPM_EMAIL
-  api_key: $NPM_TOKEN
-
