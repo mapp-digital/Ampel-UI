@@ -9,3 +9,9 @@ script:
   - npm run test
   - npm run prepublish
   - npm publish
+
+deploy:
+  provider: npm
+  email: $AUTH_EMAIL
+  api_key: $AUTH_KEY
+
