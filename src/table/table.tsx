@@ -32,6 +32,7 @@ interface Column<ROW> {
     hidden?: boolean;
     minWidth?: number;
     Header?: string;
+    renderHeader?: () => React.ReactNode;
     sortable?: boolean;
     accessor?: (row: ROW) => any;
     renderCell?: (cellContext: CellContext<ROW>) => React.ReactNode;
@@ -65,6 +66,7 @@ interface Props<ROW> {
     columnActions?: ColumnActions<ROW>;
     initiallySortBy?: Array<Sorting>;
     minRows?: number;
+    getTrProps?: (state: any, row?: ROW) => object | undefined;
 }
 
 interface State {
@@ -107,6 +109,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                     showPaginationBottom={false}
                     defaultSorted={this.getSortingRules()}
                     minRows={this.props.minRows}
+                    getTrProps={this.props.getTrProps}
                 />
             </div>
         );
@@ -145,6 +148,12 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private mapColumns(column: Column<ROW>) {
+        const defaultHeader = () => (
+            <div>
+                {column.Header} <span className="header-icon" />
+            </div>
+        );
+        const renderHeader = column.renderHeader;
         return {
             ...column,
             id: column.id,
@@ -152,11 +161,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
             accessor: column.accessor || ((row: ROW) => row[column.id]),
             show: !column.hidden,
             Cell: column.renderCell || this.createDefaultCellRenderer(column),
-            Header: () => (
-                <div>
-                    {column.Header} <span className="header-icon" />
-                </div>
-            ),
+            Header: renderHeader || defaultHeader,
         };
     }
 
