@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import ReactTable from 'react-table';
+import RowInfo from 'react-table';
 
 import { matches } from '../common/search';
 import { Tooltip } from '../tooltip';
@@ -66,7 +68,7 @@ interface Props<ROW> {
     columnActions?: ColumnActions<ROW>;
     initiallySortBy?: Array<Sorting>;
     minRows?: number;
-    getTrProps?: (state: any, row?: ROW) => object | undefined;
+    getRowProps?: (state: any, row?: RowInfo<ROW>) => object | undefined;
 }
 
 interface State {
@@ -109,7 +111,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                     showPaginationBottom={false}
                     defaultSorted={this.getSortingRules()}
                     minRows={this.props.minRows}
-                    getTrProps={this.props.getTrProps}
+                    getTrProps={this.props.getRowProps}
                 />
             </div>
         );
@@ -153,7 +155,6 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                 {column.Header} <span className="header-icon" />
             </div>
         );
-        const renderHeader = column.renderHeader;
         return {
             ...column,
             id: column.id,
@@ -161,7 +162,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
             accessor: column.accessor || ((row: ROW) => row[column.id]),
             show: !column.hidden,
             Cell: column.renderCell || this.createDefaultCellRenderer(column),
-            Header: renderHeader || defaultHeader,
+            Header: column.renderHeader || defaultHeader,
         };
     }
 
