@@ -1,5 +1,7 @@
 import * as React from 'react';
+
 import ReactTable from 'react-table';
+import { RowInfo } from 'react-table';
 
 import { matches } from '../common/search';
 import { Tooltip } from '../tooltip';
@@ -32,6 +34,7 @@ interface Column<ROW> {
     hidden?: boolean;
     minWidth?: number;
     Header?: string;
+    renderHeader?: () => React.ReactNode;
     sortable?: boolean;
     accessor?: (row: ROW) => any;
     renderCell?: (cellContext: CellContext<ROW>) => React.ReactNode;
@@ -65,6 +68,7 @@ interface Props<ROW> {
     columnActions?: ColumnActions<ROW>;
     initiallySortBy?: Array<Sorting>;
     minRows?: number;
+    getRowProps?: (row?: ROW) => object;
 }
 
 interface State {
@@ -85,6 +89,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
         this.mapColumns = this.mapColumns.bind(this);
         this.onFilterChange = this.onFilterChange.bind(this);
         this.paginationPropsEnhancer = this.paginationPropsEnhancer.bind(this);
+        this.getTrProps = this.getTrProps.bind(this);
     }
 
     public render() {
@@ -107,6 +112,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                     showPaginationBottom={false}
                     defaultSorted={this.getSortingRules()}
                     minRows={this.props.minRows}
+                    getTrProps={this.getTrProps}
                 />
             </div>
         );
@@ -145,6 +151,11 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private mapColumns(column: Column<ROW>) {
+        const defaultHeader = () => (
+            <div>
+                {column.Header} <span className="header-icon" />
+            </div>
+        );
         return {
             ...column,
             id: column.id,
@@ -152,11 +163,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
             accessor: column.accessor || ((row: ROW) => row[column.id]),
             show: !column.hidden,
             Cell: column.renderCell || this.createDefaultCellRenderer(column),
-            Header: () => (
-                <div>
-                    {column.Header} <span className="header-icon" />
-                </div>
-            ),
+            Header: column.renderHeader || defaultHeader,
         };
     }
 
@@ -224,6 +231,13 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
 
     private stringValue(value: any): string {
         return Array.isArray(value) ? value.map(this.stringValue).join(', ') : String(value);
+    }
+
+    private getTrProps(state: any, rowInfo: RowInfo) {
+        if(!this.props.getRowProps) {
+            return {};
+        }
+        return this.props.getRowProps(rowInfo.row);
     }
 }
 

@@ -4,8 +4,8 @@ const onOuterClick = (node: Node, callback: () => void): (() => void) => {
             callback();
         }
     };
-    document.addEventListener('mousedown', listener, false);
-    return () => document.removeEventListener('mousedown', listener, false);
+    document.addEventListener('click', listener, false);
+    return () => document.removeEventListener('click', listener, false);
 };
 
 export { onOuterClick };
