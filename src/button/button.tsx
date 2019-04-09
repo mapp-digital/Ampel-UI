@@ -1,9 +1,11 @@
 import * as React from 'react';
 
+type ButtonType = 'reset' | 'submit' | 'button';
+
 interface Props {
     id: string;
     text: string;
-    type?: string;
+    type?: ButtonType;
     onClick?: (event: React.MouseEvent) => void;
     disabled?: boolean;
     className?: string;
