@@ -465,4 +465,34 @@ describe('Table', () => {
         const customCell = getByDataQa(`${dataQa}-1`);
         expect(customCell.textContent).toEqual(name2);
     });
+
+    it('should have a column API for rendering header', () => {
+        const header = 'Header';
+        const data = [
+            {
+                name: 'Name 1',
+            },
+            {
+                name: 'Name 2',
+            },
+            {
+                name: 'Name 3',
+            }
+        ];
+        const columns = [
+            {
+                id: 'name',
+                Header: 'Name',
+                renderHeader: () => (
+                    <div data-qa="header">{header}</div>
+                ),
+            },
+        ];
+        const { getByDataQa } = render(<Table id={'someId'} data={data} columns={columns} ofText="" pageText="" />);
+
+        const customHeader = getByDataQa('header');
+
+        expect(customHeader).toBeTruthy();
+        expect(customHeader.textContent).toEqual(header);
+    });
 });
