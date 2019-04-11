@@ -148,4 +148,27 @@
             }
         }
     }
+
+    &.disabled {
+        .two-box-multiselect-center {
+            .two-box-multiselect-control-panel {
+                .action-button {
+                    cursor: not-allowed;
+                    span {
+                        color: @gray-light;
+                    }
+                }
+            }
+        }
+        .two-box-multiselect-select-box {
+            .two-box-option-items {
+                * {
+                    cursor: not-allowed !important;
+                }
+                .highlighted {
+                    background: transparent;
+                }
+            }
+        }
+    }
 }

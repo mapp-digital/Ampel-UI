@@ -304,6 +304,26 @@ describe('Table', () => {
         expect(changeHandler).not.toHaveBeenCalled();
     });
 
+    it('should NOT toggle any value when `isCellDisabled` is set to `true`', () => {
+        const changeHandler = jest.fn();
+        const isCellDisabled = () => true;
+        const data = getAllTrueData();
+        const columns = getTwoColumns();
+        const rows = getTwoRows();
+
+        const { getByDataQa } = render(
+            getCheckboxTable({...defaultProps, data, columns, rows, onChange: changeHandler, isCellDisabled})
+        );
+
+        const firstCell = getByDataQa(`checkbox-someId-table--row-someEntry-col-someFlag`) as HTMLInputElement;
+        firstCell.click();
+
+        const secondCell = getByDataQa(`checkbox-someId-table--row-someOtherEntry-col-someOtherFlag`) as HTMLInputElement;
+        secondCell.click();
+
+        expect(changeHandler).not.toHaveBeenCalled();
+    });
+
     it(`should NOT change a DISABLED value when it's column checkbox is clicked`, () => {
         const changeHandler = jest.fn();
         const data = getAllTrueData();

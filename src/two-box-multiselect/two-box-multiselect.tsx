@@ -12,6 +12,7 @@ interface Props<T> {
     labelRight: string;
     filterPlaceholderLeft?: string;
     filterPlaceholderRight?: string;
+    disabled?: boolean;
 }
 
 interface State<T> {
@@ -48,7 +49,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
 
     public render() {
         return (
-            <div data-qa={`two-box-multiselect-${this.props.id}`} className="two-box-multiselect">
+            <div data-qa={`two-box-multiselect-${this.props.id}`} className={`two-box-multiselect ${this.props.disabled ? `disabled`: ``}`}>
                 <div data-qa={`two-box-multiselect--left-${this.props.id}`} className="two-box-multiselect-box">
                     <div
                         className="two-box-multiselect-label"
