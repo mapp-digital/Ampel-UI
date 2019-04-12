@@ -72,7 +72,9 @@ class OptionsSlider<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private onLabelClick(option: Option<T>) {
-        this.props.onChange(option.value);
+        if (!this.props.disabled) {
+            this.props.onChange(option.value);
+        }
     }
 
     private onChange(selectedItemIndex: number) {
