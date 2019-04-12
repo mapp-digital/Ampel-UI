@@ -75,6 +75,12 @@
                     cursor: pointer;
                     user-select: none;
                 }
+
+                &.disabled {
+                    .item {
+                        cursor: not-allowed;
+                    }
+                }
             }
         }
     }
@@ -113,6 +119,10 @@
                 &:focus {
                     outline: none;
                 }
+
+                &.disabled {
+                    cursor: not-allowed;
+                }
             }
 
             .add-buttons {
@@ -145,29 +155,6 @@
                 line-height: 26px;
                 font-size: 17px;
                 @two-box-remove-all();
-            }
-        }
-    }
-
-    &.disabled {
-        .two-box-multiselect-center {
-            .two-box-multiselect-control-panel {
-                .action-button {
-                    cursor: not-allowed;
-                    span {
-                        color: @gray-light;
-                    }
-                }
-            }
-        }
-        .two-box-multiselect-select-box {
-            .two-box-option-items {
-                * {
-                    cursor: not-allowed !important;
-                }
-                .highlighted {
-                    background: transparent;
-                }
             }
         }
     }
