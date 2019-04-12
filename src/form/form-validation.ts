@@ -4,6 +4,8 @@ import { ConstraintViolation, ConstraintViolations, ViolationSeverity } from '..
 import { ValidityState } from './form-group';
 import { Field, FieldType } from './types';
 
+const FORM_VIOLATION_PREFIX = 'form.violation';
+
 /**
  * Should be dropped as soon there is new release of Yup
  * https://github.com/jquense/yup/issues/177
@@ -48,7 +50,11 @@ const getGroupValidityState = <FIELD, MODEL>(
     return ValidityState.VALID;
 };
 
-const createFieldValidators = <FIELD, MODEL>(field: Field<FIELD, MODEL>) => {
+type ViolationFactory = (severity: ViolationSeverity, key: string, context: object | null) => ConstraintViolation;
+
+type ViolationFactoryBound = (key: string, context: object | null) => ConstraintViolation;
+
+const createFieldValidators = <FIELD, MODEL>(violationFactory: ViolationFactory, field: Field<FIELD, MODEL>) => {
     const constraintValidators: Array<ConstraintValidator<any, MODEL>> = [];
     const constraints = field.constraints;
     if (constraints) {
@@ -58,25 +64,25 @@ const createFieldValidators = <FIELD, MODEL>(field: Field<FIELD, MODEL>) => {
                 return;
             }
             if (field.type === FieldType.NUMBER) {
-                constraintValidators.push(createNumberValidator(field.type, severity));
+                constraintValidators.push(createNumberValidator(violationFactory.bind(null, severity), field.type));
             }
             if (field.type === FieldType.INTEGER) {
-                constraintValidators.push(createIntegerValidator(field.type, severity));
+                constraintValidators.push(createIntegerValidator(violationFactory.bind(null, severity)));
             }
             if (constraintForSeverity.required) {
-                constraintValidators.push(createRequiredValidator(field.type, severity));
+                constraintValidators.push(createRequiredValidator(violationFactory.bind(null, severity), field.type));
             }
             if (constraintForSeverity.min) {
-                constraintValidators.push(createMinValidator(field.type, severity, constraintForSeverity.min));
+                constraintValidators.push(createMinValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.min));
             }
             if (constraintForSeverity.max) {
-                constraintValidators.push(createMaxValidator(field.type, severity, constraintForSeverity.max));
+                constraintValidators.push(createMaxValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.max));
             }
             if (constraintForSeverity.email) {
-                constraintValidators.push(createEmailValidator(field.type, severity));
+                constraintValidators.push(createEmailValidator(violationFactory.bind(null, severity), field.type));
             }
             if (constraintForSeverity.pattern) {
-                constraintValidators.push(createPatternValidator(field.type, severity, constraintForSeverity.pattern));
+                constraintValidators.push(createPatternValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.pattern));
             }
             if (constraintForSeverity.custom) {
                 constraintValidators.push.apply(constraintValidators, constraintForSeverity.custom);
@@ -112,7 +118,7 @@ const hasViolations = (violations: ConstraintViolations | undefined, fieldId: st
     );
 };
 
-const createRequiredValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity) => {
+const createRequiredValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
     const requiredValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
@@ -120,87 +126,81 @@ const createRequiredValidator = <FIELD, MODEL>(fieldType: FieldType, severity: V
             .required()
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation('is required', severity);
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.required`, null);
             });
     };
     return requiredValidator;
 };
 
-const createMinValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity, minValue: number) => {
+const createMinValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, minValue: number) => {
     const minValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .min(minValue)
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation(`should be greater than or equal ${minValue}`, severity);
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.min`, {minValue});
             });
     };
     return minValidator;
 };
 
-const createMaxValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity, maxValue: number) => {
+const createMaxValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, maxValue: number) => {
     const maxValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .max(maxValue)
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation(`should be smaller than or equal ${maxValue}`, severity);
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.max`, {maxValue});
             });
     };
     return maxValidator;
 };
 
-const createEmailValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity) => {
+const createEmailValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
     const emailValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .email()
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation(`is not valid email`, severity);
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.email`, null);
             });
     };
     return emailValidator;
 };
 
-const createNumberValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity) => {
+const createNumberValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
     const numberValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .actualNumber()
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation(`is not number`, severity);
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.number`, null);
             });
     };
     return numberValidator;
 };
 
-const createIntegerValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity) => {
+const createIntegerValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound) => {
     const integerValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const stringValue = String(value);
         const isValid = stringValue.match(/^[0-9]*$/) && (!stringValue.startsWith('0') || stringValue === '0');
-        return Promise.resolve(isValid ? null : getViolation(`is not number`, severity));
+        return Promise.resolve(isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.integer`, null));
     };
     return integerValidator;
 };
 
-const createPatternValidator = <FIELD, MODEL>(fieldType: FieldType, severity: ViolationSeverity, pattern: RegExp) => {
+const createPatternValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, pattern: RegExp) => {
     const patternValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .matches(pattern, { excludeEmptyString: true })
             .isValid(value)
             .then((isValid: boolean) => {
-                // TODO message provider/i18n
-                return isValid ? null : getViolation(`contains illegal characters`, severity);
+                return Promise.resolve(isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.pattern`, null));
             });
     };
     return patternValidator;
@@ -209,8 +209,6 @@ const createPatternValidator = <FIELD, MODEL>(fieldType: FieldType, severity: Vi
 const getYupTypeConstraintKey = (fieldType: FieldType) => {
     return FieldType[fieldType].toString().toLowerCase();
 };
-
-const getViolation = (message: string, severity: ViolationSeverity) => ({ message, severity });
 
 const removeNullEntries = (collection: Array<ConstraintViolation>) => collection.filter(Boolean);
 
