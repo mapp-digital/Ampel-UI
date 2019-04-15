@@ -306,13 +306,13 @@ describe('Table', () => {
 
     it('should NOT toggle any value when `isCellDisabled` is set to `true`', () => {
         const changeHandler = jest.fn();
-        const isEveryCellDisabled = () => true;
+        const isDisabledCell = () => true;
         const data = getAllTrueData();
         const columns = getTwoColumns();
         const rows = getTwoRows();
 
         const { getByDataQa } = render(
-            getCheckboxTable({...defaultProps, data, columns, rows, onChange: changeHandler, isEveryCellDisabled})
+            getCheckboxTable({...defaultProps, data, columns, rows, onChange: changeHandler, isDisabledCell})
         );
 
         const firstCell = getByDataQa(`checkbox-someId-table--row-someEntry-col-someFlag`) as HTMLInputElement;
