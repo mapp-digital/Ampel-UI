@@ -22,7 +22,6 @@
         margin-left: (-(@toggle-height/2));
 
         span {
-            cursor: pointer;
             display: inline-block;
             height: 100%;
             padding: 4px;
@@ -90,12 +89,13 @@
         padding-left: 10px;
     }
 
-    &:disabled {
+    &[disabled] {
+        cursor: not-allowed;
         .toggle-left {
-            background-color: @gray-dark;
+            background-color: @gray-light;
         }
         .toggle-knob {
-            background-color: @gray-light;
+            background-color: @gray-dark;
         }
     }
 }

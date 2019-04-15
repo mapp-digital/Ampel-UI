@@ -10,6 +10,7 @@ interface Props<T> {
     value: T;
     options: Array<Option<T>>;
     onChange: (value: T) => void;
+    disabled?: boolean;
 }
 
 interface State<T> {
@@ -49,6 +50,7 @@ class OptionsSlider<T> extends React.Component<Props<T>, State<T>> {
                     value={this.state.currentValue}
                     onChange={this.onChange}
                     onAfterChange={this.onAfterChange}
+                    disabled={this.props.disabled}
                 />
             </div>
         );
@@ -70,7 +72,9 @@ class OptionsSlider<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private onLabelClick(option: Option<T>) {
-        this.props.onChange(option.value);
+        if (!this.props.disabled) {
+            this.props.onChange(option.value);
+        }
     }
 
     private onChange(selectedItemIndex: number) {

@@ -33,6 +33,7 @@ interface Props {
     columns: Array<Column>;
     onChange: (data: CheckboxTableData) => void;
     selectAllLabel: string;
+    isDisabledCell?: (columnKey: string, rowKey: string) => boolean;
     selectAllColumnLabel: string;
 }
 
@@ -253,6 +254,9 @@ class CheckboxTable extends React.Component<Props, {}> {
     }
 
     private isDisabledCell(columnKey: string, rowKey: string) {
+        if (this.props.isDisabledCell) {
+            return this.props.isDisabledCell(columnKey, rowKey);
+        }
         return Boolean(this.props.meta && this.props.meta.disabled[`${rowKey}.${columnKey}`]);
     }
 }
