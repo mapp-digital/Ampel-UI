@@ -180,6 +180,74 @@ describe('TwoBoxMultiselect', () => {
             expect(someBoxItem.classList.contains('highlighted')).toBeFalsy();
             expect(someOtherBoxItem.classList.contains('highlighted')).toBeFalsy();
         });
+
+        it(`should NOT highlight ${side.toLocaleUpperCase()} item on click if 'disabled' prop is provided`, () => {
+            const id = 'someId';
+            const value = 'someValue';
+            const someOtherValue = 'someOtherValue';
+            const onChange = jest.fn();
+
+            const leftItems = [
+                {
+                    value,
+                    label: '',
+                },
+                {
+                    value: someOtherValue,
+                    label: '',
+                },
+            ];
+            const { getByDataQa } = render(
+                <TwoBoxMultiselect
+                    id={id}
+                    labelLeft={''}
+                    labelRight={''}
+                    options={leftItems}
+                    disabled={true}
+                    values={side === 'right' ? [value, someOtherValue] : []}
+                    onChange={onChange}
+                />
+            );
+
+            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${value}`);
+            someBoxItem.click();
+
+            expect(someBoxItem.classList.contains('highlighted')).toBeFalsy();
+        });
+
+        it(`should NOT invoke onChange callback when doubleClicking an ${side.toLocaleUpperCase()} if 'disabled' prop is provided`, () => {
+            const id = 'someId';
+            const value = 'someValue';
+            const someOtherValue = 'someOtherValue';
+            const onChange = jest.fn();
+
+            const leftItems = [
+                {
+                    value,
+                    label: '',
+                },
+                {
+                    value: someOtherValue,
+                    label: '',
+                },
+            ];
+            const { getByDataQa } = render(
+                <TwoBoxMultiselect
+                    id={id}
+                    labelLeft={''}
+                    labelRight={''}
+                    options={leftItems}
+                    disabled={true}
+                    values={side === 'right' ? [value, someOtherValue] : []}
+                    onChange={onChange}
+                />
+            );
+
+            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${value}`);
+            fireEvent.doubleClick(someBoxItem);
+
+            expect(onChange).not.toHaveBeenCalled();
+        });
     });
 
     it(`should not show any options if their values are selected`, () => {
@@ -291,6 +359,37 @@ describe('TwoBoxMultiselect', () => {
         expect(onChange).toHaveBeenCalledWith([value]);
     });
 
+    it(`should NOT invoke onChange callback when clicking the 'add' button if 'disabled' prop is provided`, () => {
+        const id = 'someId';
+        const value = 'someValue';
+        const onChange = jest.fn();
+        const leftItems = [
+            {
+                value,
+                label: '',
+            },
+        ];
+        const { getByDataQa } = render(
+            <TwoBoxMultiselect
+                id={id}
+                labelLeft={''}
+                labelRight={''}
+                options={leftItems}
+                values={[]}
+                disabled={true}
+                onChange={onChange}
+            />
+        );
+
+        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+        someLeftBoxItem.click();
+
+        const addSingleButton = getByDataQa(`two-box-multiselect--add-highlighted-${id}`);
+        addSingleButton.click();
+
+        expect(onChange).not.toHaveBeenCalled();
+    });
+
     it(`should invoke onChange callback with all values when clicking the 'addAll' button`, () => {
         const id = 'someId';
         const value = 'someValue';
@@ -345,6 +444,37 @@ describe('TwoBoxMultiselect', () => {
         expect(onChange).toHaveBeenCalledWith([]);
     });
 
+    it(`should NOT invoke onChange callback when clicking 'addAll/removeAll' button, if 'disabled' prop is provided`, () => {
+        const id = 'someId';
+        const value = 'someValue';
+        const onChange = jest.fn();
+        const leftItems = [
+            {
+                value,
+                label: '',
+            },
+        ];
+        const { getByDataQa } = render(
+            <TwoBoxMultiselect
+                id={id}
+                labelLeft={''}
+                labelRight={''}
+                options={leftItems}
+                values={[value]}
+                onChange={onChange}
+                disabled={true}
+            />
+        );
+
+        const addAllButton = getByDataQa(`two-box-multiselect--add-all-${id}`);
+        addAllButton.click();
+
+        const removeAllButton = getByDataQa(`two-box-multiselect--remove-all-${id}`);
+        removeAllButton.click();
+
+        expect(onChange).not.toHaveBeenCalled();
+    });
+
     it(`should invoke onChange callback with selected highlighted values excluding when clicking 'remove' button`, () => {
         const id = 'someId';
         const value = 'someValue';
@@ -386,6 +516,50 @@ describe('TwoBoxMultiselect', () => {
         removeSingleButton.click();
 
         expect(onChange).toHaveBeenCalledWith([someOtherValue]);
+    });
+
+    it(`should NOT invoke onChange callback when clicking 'remove' button, if 'disabled' prop is provided`, () => {
+        const id = 'someId';
+        const value = 'someValue';
+        const onChange = jest.fn();
+        const someOtherValue = 'someOtherValue';
+        const someThirdValue = 'someThirdValue';
+        const leftItems = [
+            {
+                value,
+                label: '',
+            },
+            {
+                value: someOtherValue,
+                label: '',
+            },
+            {
+                value: someThirdValue,
+                label: '',
+            },
+        ];
+        const { getByDataQa } = render(
+            <TwoBoxMultiselect
+                id={id}
+                labelLeft={''}
+                labelRight={''}
+                options={leftItems}
+                values={[value, someOtherValue, someThirdValue]}
+                onChange={onChange}
+                disabled={true}
+            />
+        );
+
+        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+        someRightBoxItem.click();
+
+        const someThirdRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${someThirdValue}`);
+        someThirdRightBoxItem.click();
+
+        const removeSingleButton = getByDataQa(`two-box-multiselect--remove-highlighted-${id}`);
+        removeSingleButton.click();
+
+        expect(onChange).not.toHaveBeenCalled();
     });
 
     it(`should remove selection after clicking 'remove' or 'removeAll' button`, () => {

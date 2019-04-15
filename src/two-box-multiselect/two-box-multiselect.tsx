@@ -12,6 +12,7 @@ interface Props<T> {
     labelRight: string;
     filterPlaceholderLeft?: string;
     filterPlaceholderRight?: string;
+    disabled?: boolean;
 }
 
 interface State<T> {
@@ -48,7 +49,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
 
     public render() {
         return (
-            <div data-qa={`two-box-multiselect-${this.props.id}`} className="two-box-multiselect">
+            <div data-qa={`two-box-multiselect-${this.props.id}`} className={`two-box-multiselect`}>
                 <div data-qa={`two-box-multiselect--left-${this.props.id}`} className="two-box-multiselect-box">
                     <div
                         className="two-box-multiselect-label"
@@ -102,7 +103,8 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
                 onClick={onClick}
                 data-qa={`two-box-multiselect--${key}-${this.props.id}`}
                 tabIndex={-1}
-                className={`action-button ${key}-button`}
+                className={`action-button ${key}-button ${this.props.disabled && 'disabled'}`}
+                disabled={this.props.disabled}
             >
                 <span className={key} />
             </button>
@@ -123,7 +125,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
                     />
                     <span className="two-box-multiselect-filter-icon" />
                 </div>
-                <ul className={`two-box-option-items option-items-${side}`}>
+                <ul className={`two-box-option-items option-items-${side} ${this.props.disabled && 'disabled'}`}>
                     {options.map(
                         this.renderOptionForSide(
                             side,
@@ -147,8 +149,8 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     ) {
         return (option: Option<T>) => {
             const highlighted = isHighlighted(option);
-            const onClick = () => toggle(option);
-            const onDoubleClick = () => this.handleDoubleClick(side, option);
+            const onClick = () => !this.props.disabled && toggle(option);
+            const onDoubleClick = () => !this.props.disabled && this.handleDoubleClick(side, option);
             return (
                 <li
                     key={`${option.value}`}

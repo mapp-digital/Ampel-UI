@@ -8,6 +8,7 @@ interface Props {
     onChange: (value: any) => void;
     className?: string;
     placeholder?: string;
+    disabled?: boolean;
 }
 
 const Textarea: React.FunctionComponent<Props> = (props) => {
@@ -23,6 +24,7 @@ const Textarea: React.FunctionComponent<Props> = (props) => {
                 placeholder={props.placeholder}
                 data-qa={`textarea--element-${props.id}`}
                 value={props.value}
+                disabled={props.disabled}
             />
         </div>
     );

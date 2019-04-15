@@ -12,7 +12,7 @@ interface Props {
 
 const Toggle: React.FunctionComponent<Props> = (props) => {
     const toggleStateClass = props.value ? 'toggle-on' : 'toggle-off';
-    const toggleHandler = () => props.onChange(!props.value);
+    const toggleHandler = () => !props.disabled && props.onChange(!props.value);
     return (
         <div>
             <button

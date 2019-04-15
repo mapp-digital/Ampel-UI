@@ -9,32 +9,39 @@
         display: block;
     }
 
-    .rc-slider-handle {
-        border: solid 2px @slider-color;
+    .rc-slider {
 
-        &:focus {
-            box-shadow: 0 0 0 3px lighten(@slider-color, 30%);
-        }
-    }
+        &-handle {
+            border: solid 2px @slider-color;
 
-    .rc-slider-dot-active {
-        border-color: @slider-color;
-    }
-
-    .rc-slider-track {
-        background-color: @slider-color;
-    }
-
-    .rc-slider-mark {
-        top: auto;
-        bottom: 40px;
-
-        .rc-slider-mark-text {
-            font-weight: bold;
+            &:focus {
+                box-shadow: 0 0 0 3px lighten(@slider-color, 30%);
+            }
         }
 
-        .rc-slider-mark-text-active {
-            color: @slider-color;
+        &-dot-active {
+            border-color: @slider-color;
+        }
+
+        &-track {
+            background-color: @slider-color;
+        }
+
+        &-mark {
+            top: auto;
+            bottom: 40px;
+
+            &-text {
+                font-weight: bold;
+            }
+
+            &-text-active {
+                color: @slider-color;
+            }
+        }
+
+        &-disabled {
+            background-color: transparent;
         }
     }
 }
