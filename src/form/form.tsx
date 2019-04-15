@@ -451,4 +451,4 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 }
 
-export { Form, SectionType, FieldType, FieldContext };
+export { Form, SectionType, FieldType, FieldContext, ViolationMessageResolver };
