@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cleanup, fireEvent, render, waitForElement } from '@config/testing';
 
 import { ViolationSeverity } from '../api';
-import { FieldType, Form, SectionType } from './form';
+import {FieldType, Form, SectionType, ViolationMessageResolver} from './form';
 import { ConstraintLevels } from './types';
 
 afterEach(cleanup);
@@ -133,14 +133,34 @@ describe('Form Validation', () => {
 
         return runTest(constraints, newInvalidValue, assert);
     });
+
+    it('should invoke violation message resolution', () => {
+        const constraints = {
+            ERROR: {
+                pattern: new RegExp(/[a-zA-Z]+/),
+            },
+        };
+        const newInvalidValue = '1234';
+
+        const someMessage = 'some message';
+        const messageResolver = jest.fn().mockReturnValue(someMessage);
+
+        const assert = (violationTextNode: HTMLElement) => {
+            expect(violationTextNode.textContent).toEqual(someMessage);
+            expect(messageResolver).toHaveBeenCalledWith('form.violation.pattern', null)
+        };
+
+        return runTest(constraints, newInvalidValue, assert, messageResolver);
+    });
 });
 
 const runTest = (
     constraints: ConstraintLevels<any, any>,
     newInvalidValue: string,
-    assert: (textNode: HTMLElement) => void
+    assert: (textNode: HTMLElement) => void,
+    messageResolver?: ViolationMessageResolver,
 ) => {
-    const { getByDataQa, queryByDataQa } = createForm(constraints);
+    const { getByDataQa, queryByDataQa } = createForm(constraints, messageResolver);
 
     triggerValidationOnName(getByDataQa, newInvalidValue);
     return waitForElement(() => queryByDataQa('violation--text-name')!).then((violationTextNode) => {
@@ -231,13 +251,14 @@ const triggerValidationOnDays = (getByDataQa: (key: string) => HTMLElement, valu
     fireEvent.change(nameInput, { target: { value } });
 };
 
-const createForm = (constraints: ConstraintLevels<any, any>) => {
+const createForm = (constraints: ConstraintLevels<any, any>, messageResolver?: ViolationMessageResolver) => {
     return render(
         <Form
             model={{ name: 'name', age: 20, days: 10 }}
             onSubmit={jest.fn()}
             submitButtonText="Submit"
             cancelButtonText="Cancel"
+            resolveViolationMessage={messageResolver}
         >
             {createFieldWithConstraint(constraints)}
         </Form>

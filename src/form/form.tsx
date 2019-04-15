@@ -1,7 +1,7 @@
-import { debounce, flatMapDeep, get, has, isEqual, set } from 'lodash';
+import { debounce, flatMapDeep, get, has, isEqual, set, template } from 'lodash';
 import * as React from 'react';
 
-import { ConstraintViolations, ModelWithMeta, modelWithViolations } from '../api';
+import { ConstraintViolations, ModelWithMeta, modelWithViolations, ViolationSeverity } from '../api';
 import { Button } from '../button';
 import { FormGroup } from './form-group';
 import { ConstraintValidator, createFieldValidators, getGroupValidityState, validateField } from './form-validation';
@@ -41,6 +41,24 @@ const nop = () => {
     /* nop */
 };
 
+const defaultViolationMessageMap = {
+    'form.violation.number': 'is not number',
+    'form.violation.integer': 'is not number',
+    'form.violation.required': 'is required',
+    'form.violation.min': 'should be greater than or equal ${minValue}',
+    'form.violation.max': 'should be smaller than or equal ${maxValue}',
+    'form.violation.email': 'is not valid email',
+    'form.violation.pattern': 'contains illegal characters',
+};
+
+const defaultViolationMessageResolver: ViolationMessageResolver = (key, context) => {
+    const message = defaultViolationMessageMap[key];
+    if (typeof message === 'undefined') {
+        return key;
+    }
+    return template(message)(context || {});
+};
+
 const getValidationOptionsDefaults = (): ValidationOptions => {
     return {
         onBlur: true,
@@ -57,6 +75,8 @@ interface ValidationOptions {
     delayMillis?: number;
 }
 
+type ViolationMessageResolver = (key: string, context: object | null) => string
+
 interface Props<MODEL> {
     model: MODEL;
     onCancel?: () => void;
@@ -67,6 +87,7 @@ interface Props<MODEL> {
     violations?: ConstraintViolations;
     validationSchema?: any;
     validationOptions?: ValidationOptions;
+    resolveViolationMessage?: ViolationMessageResolver;
 }
 
 interface State<MODEL> {
@@ -402,8 +423,16 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private createValidationSchema(groups: Array<Group>) {
         const fields = getDeclaredFields(groups);
-        const schema = this.createFieldMap(fields, createFieldValidators);
+        const schema = this.createFieldMap(fields, createFieldValidators.bind(null, this.createViolationFactory()));
         this.schema = schema;
+    }
+
+    private createViolationFactory() {
+        const violationMessageResolver = this.props.resolveViolationMessage || defaultViolationMessageResolver;
+        return (severity: ViolationSeverity, keyOrMessage: string, context: object | null) => {
+            const message = violationMessageResolver(keyOrMessage, context);
+            return { message, severity };
+        };
     }
 
     private createFieldMap(fields: Array<Field<any, MODEL>>, factory: (field: Field<any, MODEL>) => any) {
@@ -422,4 +451,4 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 }
 
-export { Form, SectionType, FieldType, FieldContext };
+export { Form, SectionType, FieldType, FieldContext, ViolationMessageResolver };
