@@ -58,6 +58,27 @@
         }
     }
 
+    .select-filter-bar {
+        display: flex;
+        background-color: @white;
+        border: @default-border;
+        border-top: none;
+        padding: 0 5px 0 0;
+
+        input {
+            padding-left: 10px;
+            border: none;
+            box-shadow: none;
+        }
+        
+        .select-filter-icon {
+            @two-box-filter-icon();
+            font-size: 14px;
+            padding-top: 3px;
+            line-height: 30px;
+        }
+    }
+
     .select-option-items {
         position: absolute;
         top: 100%;

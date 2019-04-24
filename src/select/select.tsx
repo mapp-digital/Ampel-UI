@@ -3,6 +3,7 @@ import { isEqual } from 'lodash';
 import * as React from 'react';
 
 import { Option } from '../api/index';
+import { matches } from '../common/search';
 
 interface Props<T> {
     id: string;
@@ -11,21 +12,25 @@ interface Props<T> {
     onChange: (value: T) => void;
     className?: string;
     placeholder?: string;
+    searchable?: boolean;
 }
 
-interface State {
+interface State<T> {
     expanded: boolean;
+    options: Array<Option<T>>;
 }
 
 const KEY_ESCAPE = 27;
 
-class Select<T> extends React.Component<Props<T>, State> {
+class Select<T> extends React.Component<Props<T>, State<T>> {
     private node: any;
+    private searchInputRef: React.RefObject<HTMLInputElement>;
     constructor(props: Props<T>) {
         super(props);
 
         this.state = {
             expanded: false,
+            options: []
         };
 
         this.setNode = this.setNode.bind(this);
@@ -34,6 +39,14 @@ class Select<T> extends React.Component<Props<T>, State> {
         this.handleOptionClick = this.handleOptionClick.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
+        this.filterOptions = this.filterOptions.bind(this);
+        this.searchInputRef = React.createRef();
+    }
+
+    public componentDidMount() {
+        this.setState({
+            options: this.props.options
+        });
     }
 
     public componentWillMount() {
@@ -73,23 +86,36 @@ class Select<T> extends React.Component<Props<T>, State> {
 
     private getOptionsList() {
         return (
-            <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
-                {this.props.options.map((option, index) => {
-                    const selectedClass = this.isSelected(option) ? 'selected ' : '';
-                    return (
-                        <li
-                            key={index}
-                            role="option"
-                            onClick={this.handleOptionClick.bind(this, option.value)}
-                            data-qa={`select--option-${option.label}`}
-                            className={`item ${selectedClass}`}
-                            aria-selected={this.isSelected(option)}
-                        >
-                            {option.label}
-                        </li>
-                    );
-                })}
-            </ul>
+            <>
+                {this.props.searchable && <div className="select-filter-bar">
+                    <input
+                        type="text"
+                        data-qa={`select--filter-${this.props.id}`}
+                        className="form-control"
+                        placeholder="search"
+                        onChange={this.filterOptions}
+                        ref={this.searchInputRef}
+                    />
+                    <span className="select-filter-icon" />
+                </div>}
+                <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
+                    {this.state.options.map((option, index) => {
+                        const selectedClass = this.isSelected(option) ? 'selected ' : '';
+                        return (
+                            <li
+                                key={index}
+                                role="option"
+                                onClick={this.handleOptionClick.bind(this, option.value)}
+                                data-qa={`select--option-${option.label}`}
+                                className={`item ${selectedClass}`}
+                                aria-selected={this.isSelected(option)}
+                            >
+                                {option.label}
+                            </li>
+                        );
+                    })}
+                </ul>
+            </>
         );
     }
 
@@ -129,12 +155,30 @@ class Select<T> extends React.Component<Props<T>, State> {
 
     private toggleOptionsList() {
         this.setState((prevState) => {
-            return { expanded: !prevState.expanded };
+            return {
+                expanded: !prevState.expanded,
+                options: this.props.options
+            };
+        }, () => {
+            this.focusSearchInput();
         });
+    }
+
+    private focusSearchInput() {
+        if (this.props.searchable && this.searchInputRef.current) {
+            this.searchInputRef.current.focus();
+        }
     }
 
     private isSelected(option: Option<T>) {
         return isEqual(this.props.value, option.value);
+    }
+
+    private filterOptions(event: React.ChangeEvent<HTMLInputElement>) {
+        const filteredOptions = this.props.options.filter(option => matches(event.target.value, option.label));
+        this.setState({
+            options: filteredOptions
+        });
     }
 }
 

@@ -4,6 +4,10 @@ import { cleanup, fireEvent, render } from '../../config/testing';
 
 import { Option, StringSelect } from './index';
 
+const changeValue = (node: HTMLElement, value: string) => {
+    fireEvent.change(node, { target: { value } });
+};
+
 describe('Select', () => {
     afterEach(cleanup);
 
@@ -137,6 +141,37 @@ describe('Select', () => {
         const optionItems = queryByDataQa('select--option-items-' + id);
         expect(optionItems).toBeFalsy();
         listeners._reset();
+    });
+
+    it('should render filter correctly', () => {
+        const id = 'someId';
+        const options: Array<Option<string>> = [];
+        const { getByDataQa } = render(<StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        toggle.click();
+
+        const searchInput = getByDataQa('select--filter-' + id);
+        expect(searchInput).toBeTruthy();
+    });
+
+    it('should filter items correctly', () => {
+        const id = 'someId';
+        const options: Array<Option<string>> = [{ label: 'John', value: 'john' }, { label: 'Arya', value: 'arya' }];
+        const { getByDataQa } = render(<StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        toggle.click();
+
+        const searchInput = getByDataQa('select--filter-' + id) as HTMLInputElement;
+        changeValue(searchInput, 'bc');
+
+        let optionItems = getByDataQa('select--option-items-' + id);
+        expect(optionItems.children.length).toBe(0);
+
+        changeValue(searchInput, 'jo');
+        expect(optionItems.children.length).toBe(1);
+
+        changeValue(searchInput, 'jos');
+        expect(optionItems.children.length).toBe(0);
     });
 });
 
