@@ -164,7 +164,7 @@ describe('Select', () => {
         const searchInput = getByDataQa('select--filter-' + id) as HTMLInputElement;
         changeValue(searchInput, 'bc');
 
-        let optionItems = getByDataQa('select--option-items-' + id);
+        const optionItems = getByDataQa('select--option-items-' + id);
         expect(optionItems.children.length).toBe(0);
 
         changeValue(searchInput, 'jo');
