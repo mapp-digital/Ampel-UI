@@ -177,7 +177,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private filterOptions(event: React.ChangeEvent<HTMLInputElement>) {
-        const filteredOptions = this.props.options.filter(option => matches(event.target.value, option.label));
+        const filteredOptions = this.props.options.filter((option) => matches(event.target.value, option.label));
         this.setState({
             options: filteredOptions
         });
