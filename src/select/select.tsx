@@ -13,6 +13,7 @@ interface Props<T> {
     className?: string;
     placeholder?: string;
     searchable?: boolean;
+    searchPlaceholder?: string;
 }
 
 interface State<T> {
@@ -30,23 +31,18 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
         this.state = {
             expanded: false,
-            options: []
+            options: this.props.options
         };
+
+        this.searchInputRef = React.createRef();
 
         this.setNode = this.setNode.bind(this);
         this.onKeyPressed = this.onKeyPressed.bind(this);
+        this.filterOptions = this.filterOptions.bind(this);
         this.handleGlobalClick = this.handleGlobalClick.bind(this);
         this.handleOptionClick = this.handleOptionClick.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
-        this.filterOptions = this.filterOptions.bind(this);
-        this.searchInputRef = React.createRef();
-    }
-
-    public componentDidMount() {
-        this.setState({
-            options: this.props.options
-        });
     }
 
     public componentWillMount() {
@@ -87,17 +83,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
     private getOptionsList() {
         return (
             <>
-                {this.props.searchable && <div className="select-filter-bar">
-                    <input
-                        type="text"
-                        data-qa={`select--filter-${this.props.id}`}
-                        className="form-control"
-                        placeholder="search"
-                        onChange={this.filterOptions}
-                        ref={this.searchInputRef}
-                    />
-                    <span className="select-filter-icon" />
-                </div>}
+                {this.getFilter()}
                 <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
                     {this.state.options.map((option, index) => {
                         const selectedClass = this.isSelected(option) ? 'selected ' : '';
@@ -117,6 +103,22 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
                 </ul>
             </>
         );
+    }
+
+    private getFilter = () => {
+        return (
+            this.props.searchable && <div className="select-filter-bar">
+                <input
+                    type="text"
+                    data-qa={`select--filter-${this.props.id}`}
+                    className="form-control"
+                    placeholder={this.props.searchPlaceholder || 'search'}
+                    onChange={this.filterOptions}
+                    ref={this.searchInputRef}
+                />
+                <span className="select-filter-icon" />
+            </div>
+        )
     }
 
     private getLabel() {
