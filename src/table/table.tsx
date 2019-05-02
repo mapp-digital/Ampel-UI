@@ -33,6 +33,7 @@ interface Column<ROW> {
     id: string;
     hidden?: boolean;
     minWidth?: number;
+    maxWidth?: number;
     Header?: string;
     renderHeader?: () => React.ReactNode;
     sortable?: boolean;
