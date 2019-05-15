@@ -114,7 +114,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             model: this.props.model,
             isDirty: false,
             isValid: true,
-            violations: props.violations || {},
+            violations: this.props.violations || {},
             initialModel: this.props.model,
             isSubmitting: false,
             expandedGroupId: this.props.children[0].id,
