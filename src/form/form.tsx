@@ -114,7 +114,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             model: this.props.model,
             isDirty: false,
             isValid: true,
-            violations: this.props.violations || {},
+            violations: props.violations || {},
             initialModel: this.props.model,
             isSubmitting: false,
             expandedGroupId: this.props.children[0].id,
@@ -130,6 +130,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         this.getBlurHandler = this.getBlurHandler.bind(this);
         this.computeValidState = this.computeValidState.bind(this);
         this.getFieldViolations = this.getFieldViolations.bind(this);
+        this.setViolationsFromProps = this.setViolationsFromProps.bind(this);
 
         this.debouncedSetViolations = debounce(this.setViolations, this.validationOptions.delayMillis);
     }
@@ -173,6 +174,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             this.computeValidState();
         }
         if (!isEqual(this.props.violations, prevProps.violations)) {
+            this.setViolationsFromProps();
             this.computeValidState();
         }
         if (!isEqual(this.state.initialModel, prevState.initialModel)) {
@@ -418,6 +420,12 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                     return { violations: formViolations };
                 }, resolve);
             });
+        });
+    }
+
+    private setViolationsFromProps() {
+        this.setState({
+            violations: this.props.violations
         });
     }
 
