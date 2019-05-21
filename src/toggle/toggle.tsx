@@ -32,7 +32,7 @@ const Toggle: React.FunctionComponent<Props> = (props) => {
                     <span className="toggle-right">{props.offLabel}</span>
                 </div>
             </button>
-            <span className="toggle-description">{props.description || ''}</span>
+            {props.description ? (<span className="toggle-description" data-qa={`toggle-${props.id}--description`}>{props.description}</span>) : null}
         </div>
     );
 };

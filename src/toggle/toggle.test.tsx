@@ -78,4 +78,16 @@ describe('Toggle', () => {
 
         expect(onChange).not.toHaveBeenCalled();
     });
+
+    it('should render toggle with description', () => {
+        const id = 'my-toggle';
+        const value = true;
+        const onChange = jest.fn();
+        const description = 'description';
+        const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} description={description}/>);
+
+        const descriptionNode = getByDataQa(`toggle-${id}--description`);
+
+        expect(descriptionNode).toBeTruthy();
+    });
 });
