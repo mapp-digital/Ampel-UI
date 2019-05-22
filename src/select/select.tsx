@@ -10,6 +10,7 @@ interface Props<T> {
     value?: T;
     options: Array<Option<T>>;
     onChange: (value: T) => void;
+    disabled?: boolean;
     className?: string;
     placeholder?: string;
     searchable?: boolean;
@@ -39,6 +40,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         this.setNode = this.setNode.bind(this);
         this.onKeyPressed = this.onKeyPressed.bind(this);
         this.filterOptions = this.filterOptions.bind(this);
+        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
         this.handleGlobalClick = this.handleGlobalClick.bind(this);
         this.handleOptionClick = this.handleOptionClick.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
@@ -65,9 +67,9 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
             >
                 <a
                     role="button"
-                    onClick={this.toggleOptionsList}
+                    onClick={this.toggleOptionsIfNotDisabled}
                     data-qa={`select--toggle-${this.props.id}`}
-                    className="select-option-toggle"
+                    className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
                     aria-haspopup="listbox"
                 >
                     <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
@@ -105,7 +107,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         );
     }
 
-    private getFilter = () => {
+    private getFilter() {
         return (
             this.props.searchable && <div className="select-filter-bar">
                 <input
@@ -152,6 +154,12 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         this.toggleOptionsList();
         if (value !== this.props.value) {
             this.props.onChange(value);
+        }
+    }
+
+    private toggleOptionsIfNotDisabled() {
+        if (!this.props.disabled) {
+            this.toggleOptionsList();
         }
     }
 

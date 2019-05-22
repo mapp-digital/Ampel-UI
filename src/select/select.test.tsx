@@ -8,9 +8,8 @@ const changeValue = (node: HTMLElement, value: string) => {
     fireEvent.change(node, { target: { value } });
 };
 
+afterEach(cleanup);
 describe('Select', () => {
-    afterEach(cleanup);
-
     it('should show the configured placeholder if no value given', () => {
         const id = 'someId';
         const options: Array<Option<string>> = [];
@@ -172,6 +171,34 @@ describe('Select', () => {
 
         changeValue(searchInput, 'jos');
         expect(optionItems.children.length).toBe(0);
+    });
+
+    it('should have disabled class when disabled', () => {
+        const id = 'someId';
+        const disabled = true;
+        const { getByDataQa } = render(<StringSelect id={id} disabled={disabled} options={[]} onChange={jest.fn()} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        expect(toggle.classList.contains('disabled')).toBeTruthy();
+    });
+
+    it('should NOT have disabled class when NOT disabled', () => {
+        const id = 'someId';
+        const disabled = false;
+        const { getByDataQa } = render(<StringSelect id={id} disabled={disabled} options={[]} onChange={jest.fn()} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        expect(toggle.classList.contains('disabled')).toBeFalsy();
+    });
+
+    it('should not expand options when disabled', () => {
+        const id = 'someId';
+        const disabled = true;
+        const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
+        const { getByDataQa, queryByDataQa } = render(<StringSelect id={id} disabled={disabled} options={options} onChange={jest.fn()} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        toggle.click();
+
+        const optionItems = queryByDataQa('select--option-items-' + id);
+        expect(optionItems).toBeFalsy();
     });
 });
 
