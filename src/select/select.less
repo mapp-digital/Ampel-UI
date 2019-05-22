@@ -2,9 +2,9 @@
 @font-family: 'Open Sans',Arial,sans-serif;
 
 .select-component {
-    position: relative;
     color: @gray-darkest;
     cursor: pointer;
+    position: relative;
     font-size: @font-size-mid;
     font-family: @font-family;
 
@@ -17,7 +17,9 @@
     }
 
     .disabled {
+        color: @gray-dark;
         cursor: not-allowed;
+        background-color: @gray-stone;
     }
 
     .select-option-toggle {
