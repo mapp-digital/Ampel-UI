@@ -2,9 +2,9 @@
 @font-family: 'Open Sans',Arial,sans-serif;
 
 .select-component {
-    position: relative;
     color: @gray-darkest;
     cursor: pointer;
+    position: relative;
     font-size: @font-size-mid;
     font-family: @font-family;
 
@@ -14,6 +14,12 @@
 
     &:focus {
         outline: none;
+    }
+
+    .disabled {
+        color: @gray-dark;
+        cursor: not-allowed;
+        background-color: @gray-stone;
     }
 
     .select-option-toggle {
@@ -70,7 +76,6 @@
             border: none;
             box-shadow: none;
         }
-        
         .select-filter-icon {
             @two-box-filter-icon();
             font-size: 14px;
