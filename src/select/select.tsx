@@ -84,7 +84,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
     private getOptionsList() {
         return (
-            <>
+            <div className="select-options-wrapper">
                 {this.getFilter()}
                 <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
                     {this.state.options.map((option, index) => {
@@ -103,7 +103,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
                         );
                     })}
                 </ul>
-            </>
+            </div>
         );
     }
 

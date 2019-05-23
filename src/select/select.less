@@ -64,61 +64,65 @@
         }
     }
 
-    .select-filter-bar {
-        display: flex;
-        background-color: @white;
-        border: @default-border;
-        border-top: none;
-        padding: 0 5px 0 0;
-
-        input {
-            padding-left: 10px;
-            border: none;
-            box-shadow: none;
-        }
-        .select-filter-icon {
-            @two-box-filter-icon();
-            font-size: 14px;
-            padding-top: 3px;
-            line-height: 30px;
-        }
-    }
-
-    .select-option-items {
+    .select-options-wrapper {
         position: absolute;
         top: 100%;
         left: 0;
         z-index: 1;
-
         width: 100%;
-        max-height: 281px;
-        margin: 0;
-        padding: 0;
 
-        border: @default-border;
-        border-top: none;
-        background: @white;
-        list-style-type: none;
-        box-shadow: none;
-        overflow: auto;
-
-        .active {
-            background-color: @info-light;
-        }
-
-        .item {
-            padding: 7px 10px 7px 10px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            &:hover {
-                background-color: @info-light;
+        .select-filter-bar {
+            display: flex;
+            background-color: @white;
+            border: @default-border;
+            border-top: none;
+            padding: 0 5px 0 0;
+    
+            input {
+                padding-left: 10px;
+                border: none;
+                box-shadow: none;
+                outline: none;
+            }
+            .select-filter-icon {
+                @two-box-filter-icon();
+                font-size: 14px;
+                padding-top: 3px;
+                line-height: 30px;
             }
         }
-
-        .selected {
-            font-weight: bold;
+    
+        .select-option-items {
+            width: 100%;
+            max-height: 281px;
+            margin: 0;
+            padding: 0;
+    
+            border: @default-border;
+            border-top: none;
+            background: @white;
+            list-style-type: none;
+            box-shadow: none;
+            overflow: auto;
+    
+            .active {
+                background-color: @info-light;
+            }
+    
+            .item {
+                padding: 7px 10px 7px 10px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+    
+                &:hover {
+                    background-color: @info-light;
+                }
+            }
+    
+            .selected {
+                font-weight: bold;
+            }
         }
     }
 }
