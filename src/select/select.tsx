@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Option } from '../api/index';
 import { matches } from '../common/search';
+import { onOuterClick } from '../subscriptions';
 
 interface Props<T> {
     id: string;
@@ -27,7 +28,9 @@ const KEY_ESCAPE = 27;
 
 class Select<T> extends React.Component<Props<T>, State<T>> {
     private node: any;
-    private searchInputRef: React.RefObject<HTMLInputElement>;
+    private dispose: () => void;
+    private readonly searchInputRef: React.RefObject<HTMLInputElement>;
+
     constructor(props: Props<T>) {
         super(props);
 
@@ -42,19 +45,18 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         this.onKeyPressed = this.onKeyPressed.bind(this);
         this.filterOptions = this.filterOptions.bind(this);
         this.isOptionDisabled = this.isOptionDisabled.bind(this);
-        this.handleGlobalClick = this.handleGlobalClick.bind(this);
         this.handleOptionClick = this.handleOptionClick.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
         this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
     }
 
-    public componentWillMount() {
-        document.addEventListener('mousedown', this.handleGlobalClick, false);
+    public componentDidMount() {
+        this.dispose = onOuterClick(this.node, this.collapseOptionsList);
     }
 
     public componentWillUnmount() {
-        document.removeEventListener('mousedown', this.handleGlobalClick, false);
+        this.dispose();
     }
 
     public render() {
@@ -137,12 +139,6 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
     private onKeyPressed(event: React.KeyboardEvent) {
         if (event.keyCode === KEY_ESCAPE) {
-            this.collapseOptionsList();
-        }
-    }
-
-    private handleGlobalClick(event: MouseEvent) {
-        if (!this.node.contains(event.target)) {
             this.collapseOptionsList();
         }
     }
