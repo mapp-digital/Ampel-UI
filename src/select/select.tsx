@@ -12,8 +12,9 @@ interface Props<T> {
     onChange: (value: T) => void;
     disabled?: boolean;
     className?: string;
-    placeholder?: string;
     searchable?: boolean;
+    placeholder?: string;
+    disableOptionWhen?: (value: T) => boolean
     searchPlaceholder?: string;
 }
 
@@ -40,11 +41,12 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         this.setNode = this.setNode.bind(this);
         this.onKeyPressed = this.onKeyPressed.bind(this);
         this.filterOptions = this.filterOptions.bind(this);
-        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
+        this.isOptionDisabled = this.isOptionDisabled.bind(this);
         this.handleGlobalClick = this.handleGlobalClick.bind(this);
         this.handleOptionClick = this.handleOptionClick.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
+        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
     }
 
     public componentWillMount() {
@@ -88,14 +90,15 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
                 {this.getFilter()}
                 <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
                     {this.state.options.map((option, index) => {
-                        const selectedClass = this.isSelected(option) ? 'selected ' : '';
+                        const selectedClass = this.isSelected(option) ? ' selected' : '';
+                        const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
                         return (
                             <li
                                 key={index}
                                 role="option"
                                 onClick={this.handleOptionClick.bind(this, option.value)}
                                 data-qa={`select--option-${option.label}`}
-                                className={`item ${selectedClass}`}
+                                className={`item${selectedClass}${disabledClass}`}
                                 aria-selected={this.isSelected(option)}
                             >
                                 {option.label}
@@ -152,9 +155,15 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
     private handleOptionClick(value: T) {
         this.toggleOptionsList();
-        if (value !== this.props.value) {
+        const isOptionEnabled = !this.isOptionDisabled(value);
+        const valueChanged = value !== this.props.value;
+        if (isOptionEnabled && valueChanged) {
             this.props.onChange(value);
         }
+    }
+
+    private isOptionDisabled(value: T) {
+        return this.props.disableOptionWhen && this.props.disableOptionWhen(value);
     }
 
     private toggleOptionsIfNotDisabled() {

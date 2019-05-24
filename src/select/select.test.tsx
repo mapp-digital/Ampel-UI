@@ -200,6 +200,37 @@ describe('Select', () => {
         const optionItems = queryByDataQa('select--option-items-' + id);
         expect(optionItems).toBeFalsy();
     });
+
+    it('should have disabled class on item when disabled', () => {
+        const id = 'someId';
+        const itemLabel = 'Egon';
+        const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
+        const disableOptionWhen = jest.fn().mockReturnValue(true);
+        const onChange = jest.fn();
+        const { getByDataQa } = render(<StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        toggle.click();
+
+        const itemElement = getByDataQa('select--option-' + itemLabel);
+
+        expect(itemElement.classList.contains('disabled')).toBeTruthy();
+    });
+
+    it('should not invoke onChange when disabled item is clicked', () => {
+        const id = 'someId';
+        const itemLabel = 'Egon';
+        const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
+        const disableOptionWhen = jest.fn().mockReturnValue(true);
+        const onChange = jest.fn();
+        const { getByDataQa } = render(<StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />);
+        const toggle = getByDataQa('select--toggle-' + id);
+        toggle.click();
+
+        const itemElement = getByDataQa('select--option-' + itemLabel);
+        itemElement.click();
+
+        expect(onChange).not.toHaveBeenCalled();
+    });
 });
 
 const hijackEventListeners = () => {
