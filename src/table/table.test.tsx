@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cleanup, fireEvent, render } from '@config/testing';
 
-import { Table } from './';
+import { PageEvent, Table } from './';
 
 describe('Table', () => {
     afterEach(cleanup);
@@ -371,6 +371,51 @@ describe('Table', () => {
 
         clickPaginationButton('next');
         expectSingleCellToEqual(name2, 0);
+    });
+
+    it('should invoke `onPaginate` handler', () => {
+        const name1 = 'Name 1';
+        const name2 = 'Name 2';
+        const name3 = 'Name 3';
+        const data = [
+            {
+                name: name1,
+            },
+            {
+                name: name2,
+            },
+            {
+                name: name3,
+            },
+        ];
+        const columns = [
+            {
+                id: 'name',
+                Header: 'Name',
+            },
+        ];
+        const onPaginate = jest.fn();
+
+        const { getByDataQa } = render(
+            <Table id={'someId'} data={data} columns={columns} pageSize={1} ofText="" pageText="" onPaginate={onPaginate} />
+        );
+
+        const clickPaginationButton = (id: string) => {
+            const paginationButton = getByDataQa(`table-pagination--${id}`);
+            paginationButton.click();
+        };
+
+        clickPaginationButton('last');
+        expect(onPaginate).toHaveBeenCalledWith( PageEvent.LAST, undefined);
+
+        clickPaginationButton('previous');
+        expect(onPaginate).toHaveBeenCalledWith( PageEvent.PREVIOUS, undefined);
+
+        clickPaginationButton('first');
+        expect(onPaginate).toHaveBeenCalledWith( PageEvent.FIRST, undefined);
+
+        clickPaginationButton('next');
+        expect(onPaginate).toHaveBeenCalledWith( PageEvent.NEXT, undefined);
     });
 
     it('should have pagination with input', () => {
