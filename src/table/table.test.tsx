@@ -406,16 +406,16 @@ describe('Table', () => {
         };
 
         clickPaginationButton('last');
-        expect(onPaginate).toHaveBeenCalledWith( PageEvent.LAST, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PageEvent.LAST, undefined);
 
         clickPaginationButton('previous');
-        expect(onPaginate).toHaveBeenCalledWith( PageEvent.PREVIOUS, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PageEvent.PREVIOUS, undefined);
 
         clickPaginationButton('first');
-        expect(onPaginate).toHaveBeenCalledWith( PageEvent.FIRST, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PageEvent.FIRST, undefined);
 
         clickPaginationButton('next');
-        expect(onPaginate).toHaveBeenCalledWith( PageEvent.NEXT, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PageEvent.NEXT, undefined);
     });
 
     it('should have pagination with input', () => {
