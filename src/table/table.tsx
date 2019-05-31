@@ -5,7 +5,7 @@ import { RowInfo } from 'react-table';
 
 import { matches } from '../common/search';
 import { Tooltip } from '../tooltip';
-import { TableTop } from './table-top';
+import { PaginateEvent, TableTop } from './table-top';
 
 interface TableAction<T> {
     id: string;
@@ -68,6 +68,7 @@ interface Props<ROW> {
     searchPlaceholder?: string;
     columnActions?: ColumnActions<ROW>;
     initiallySortBy?: Array<Sorting>;
+    onPaginate?: (eventType: PaginateEvent, itemsPerPage?: number) => void;
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
 }
@@ -121,6 +122,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
 
     private paginationPropsEnhancer(paginationProps: any) {
         paginationProps.onFilterChange = this.onFilterChange;
+        paginationProps.onPaginate = this.props.onPaginate;
         paginationProps.searchPlaceholder = this.props.searchPlaceholder;
         paginationProps.hidePagination = this.props.elastic;
         return paginationProps;

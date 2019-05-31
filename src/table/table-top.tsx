@@ -9,6 +9,14 @@ interface PaginationButtonProps {
     className: string;
 }
 
+enum PaginateEvent {
+    FIRST = 'FIRST',
+    LAST = 'LAST',
+    NEXT = 'NEXT',
+    PREVIOUS = 'PREVIOUS',
+    SIZE = 'SIZE'
+}
+
 const getPaginationButton = (props: PaginationButtonProps) => {
     const { id, ...rest } = props;
     return <button key={id} type="button" data-qa={`table-pagination--${id}`} {...rest} />;
@@ -20,6 +28,7 @@ const Pagination: React.FunctionComponent<any> = (props) => {
         pages,
         pageSizeOptions,
         pageSize,
+        onPaginate,
         canPrevious,
         canNext,
         ofText,
@@ -28,12 +37,28 @@ const Pagination: React.FunctionComponent<any> = (props) => {
         onPageSizeChange: changePageSize,
         onPageChange: changePage,
     } = props;
-    const onSizeChange = (value: any) => changePageSize(Number(value));
+    const onPaginateHandler = (eventType: PaginateEvent, itemsPerPage?: number) => onPaginate && onPaginate(eventType, itemsPerPage);
+    const onSizeChange = (value: any) => {
+        onPaginateHandler(PaginateEvent.SIZE, Number(value));
+        changePageSize(Number(value));
+    };
     const onPageChange = (e: React.ChangeEvent<HTMLInputElement>) => changePage(Number(e.target.value) - 1);
-    const firstPage = () => changePage(0);
-    const incrementPage = () => changePage(page + 1);
-    const decreasePage = () => changePage(page - 1);
-    const lastPage = () => changePage(pages);
+    const firstPage = () => {
+        onPaginateHandler(PaginateEvent.FIRST);
+        changePage(0);
+    };
+    const incrementPage = () => {
+        onPaginateHandler(PaginateEvent.NEXT);
+        changePage(page + 1);
+    };
+    const decreasePage = () => {
+        onPaginateHandler(PaginateEvent.PREVIOUS);
+        changePage(page - 1);
+    };
+    const lastPage = () => {
+        onPaginateHandler(PaginateEvent.LAST);
+        changePage(pages);
+    };
     return (
         <div className="table-pagination">
             <div className="table-pagination-buttons">
@@ -125,4 +150,4 @@ const TableTop: React.FunctionComponent<TableTopProps> = (props) => {
     );
 };
 
-export { TableTop };
+export { TableTop, PaginateEvent };
