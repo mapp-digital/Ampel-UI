@@ -9,7 +9,7 @@ interface PaginationButtonProps {
     className: string;
 }
 
-enum PageEvent {
+enum PaginateEvent {
     FIRST = 'FIRST',
     LAST = 'LAST',
     NEXT = 'NEXT',
@@ -37,26 +37,26 @@ const Pagination: React.FunctionComponent<any> = (props) => {
         onPageSizeChange: changePageSize,
         onPageChange: changePage,
     } = props;
-    const onPaginateHandler = (eventType: PageEvent, itemsPerPage?: number) => onPaginate && onPaginate(eventType, itemsPerPage);
+    const onPaginateHandler = (eventType: PaginateEvent, itemsPerPage?: number) => onPaginate && onPaginate(eventType, itemsPerPage);
     const onSizeChange = (value: any) => {
-        onPaginateHandler(PageEvent.SIZE, Number(value));
+        onPaginateHandler(PaginateEvent.SIZE, Number(value));
         changePageSize(Number(value));
     };
     const onPageChange = (e: React.ChangeEvent<HTMLInputElement>) => changePage(Number(e.target.value) - 1);
     const firstPage = () => {
-        onPaginateHandler(PageEvent.FIRST);
+        onPaginateHandler(PaginateEvent.FIRST);
         changePage(0);
     };
     const incrementPage = () => {
-        onPaginateHandler(PageEvent.NEXT);
+        onPaginateHandler(PaginateEvent.NEXT);
         changePage(page + 1);
     };
     const decreasePage = () => {
-        onPaginateHandler(PageEvent.PREVIOUS);
+        onPaginateHandler(PaginateEvent.PREVIOUS);
         changePage(page - 1);
     };
     const lastPage = () => {
-        onPaginateHandler(PageEvent.LAST);
+        onPaginateHandler(PaginateEvent.LAST);
         changePage(pages);
     };
     return (
@@ -150,4 +150,4 @@ const TableTop: React.FunctionComponent<TableTopProps> = (props) => {
     );
 };
 
-export { TableTop, PageEvent };
+export { TableTop, PaginateEvent };

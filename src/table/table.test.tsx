@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cleanup, fireEvent, render } from '@config/testing';
 
-import { PageEvent, Table } from './';
+import { PaginateEvent, Table } from './';
 
 describe('Table', () => {
     afterEach(cleanup);
@@ -406,16 +406,16 @@ describe('Table', () => {
         };
 
         clickPaginationButton('last');
-        expect(onPaginate).toHaveBeenCalledWith(PageEvent.LAST, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PaginateEvent.LAST, undefined);
 
         clickPaginationButton('previous');
-        expect(onPaginate).toHaveBeenCalledWith(PageEvent.PREVIOUS, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PaginateEvent.PREVIOUS, undefined);
 
         clickPaginationButton('first');
-        expect(onPaginate).toHaveBeenCalledWith(PageEvent.FIRST, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PaginateEvent.FIRST, undefined);
 
         clickPaginationButton('next');
-        expect(onPaginate).toHaveBeenCalledWith(PageEvent.NEXT, undefined);
+        expect(onPaginate).toHaveBeenCalledWith(PaginateEvent.NEXT, undefined);
     });
 
     it('should have pagination with input', () => {

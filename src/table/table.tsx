@@ -5,7 +5,7 @@ import { RowInfo } from 'react-table';
 
 import { matches } from '../common/search';
 import { Tooltip } from '../tooltip';
-import { PageEvent, TableTop } from './table-top';
+import { PaginateEvent, TableTop } from './table-top';
 
 interface TableAction<T> {
     id: string;
@@ -68,7 +68,7 @@ interface Props<ROW> {
     searchPlaceholder?: string;
     columnActions?: ColumnActions<ROW>;
     initiallySortBy?: Array<Sorting>;
-    onPaginate?: (eventType: PageEvent, itemsPerPage?: number) => void;
+    onPaginate?: (eventType: PaginateEvent, itemsPerPage?: number) => void;
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
 }
