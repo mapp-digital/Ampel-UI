@@ -7,6 +7,8 @@ interface Props<T extends Item> {
     mainItems: Array<T>;
     subItems: Array<T>;
     dropdownLabel: string;
+    secondSubItems?: Array<T>;
+    secondDropdownLabel?: string;
     // Seems to be a bug in TS `(item: T)` does not work.
     selectedItemWhen: <P extends T>(item: P) => boolean;
 }
@@ -20,19 +22,27 @@ class Topbar<T extends Item> extends React.Component<Props<T>> {
                     <NavigationItems items={this.props.mainItems} selectedItemWhen={this.props.selectedItemWhen} />
                 </div>
                 <div className="right">
+                    {this.props.secondDropdownLabel && (
+                        <Dropdown
+                            id="topbar-second-dropdown"
+                            selectedItemWhen={this.props.selectedItemWhen}
+                            label={this.props.secondDropdownLabel}
+                            items={this.getSubItems(this.props.secondSubItems)}
+                        />
+                    )}
                     <Dropdown
                         id="topbar-misc-dropdown"
                         selectedItemWhen={this.props.selectedItemWhen}
                         label={this.props.dropdownLabel}
-                        items={this.getSubItems()}
+                        items={this.getSubItems(this.props.subItems)}
                     />
                 </div>
             </div>
         );
     }
 
-    private getSubItems() {
-        return this.props.subItems.map((item) => ({ ...item, isHeader: true }));
+    private getSubItems(items?: Array<T>) {
+        return items ? items.map((item) => ({ ...item, isHeader: true })) : [];
     }
 }
 

@@ -105,10 +105,16 @@ class Dropdown<T extends Item> extends React.Component<Props<T>, State> {
     }
 
     private renderButton(item: T) {
+        const onClick = () => {
+            this.toggleDropdown();
+            if (item.onClick) {
+                item.onClick();
+            }
+        };
         return (
             <button
                 type="button"
-                onClick={item.onClick}
+                onClick={onClick}
                 data-qa={`dropdown--item-${item.id}`}
                 className="dropdown-item"
             >
