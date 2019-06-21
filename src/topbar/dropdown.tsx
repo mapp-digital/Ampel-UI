@@ -11,6 +11,7 @@ interface Item {
     link?: Link;
     onClick?: () => void;
     isHeader?: boolean;
+    classes?: string;
 }
 
 interface Props<T extends Item> {
