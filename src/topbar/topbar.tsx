@@ -3,12 +3,6 @@ import * as React from 'react';
 import { Dropdown, Item } from './dropdown';
 import { NavigationItems } from './navigation-items';
 
-interface Icon {
-    id: string;
-    classes: string;
-    onClick: () => void;
-}
-
 interface Props<T extends Item> {
     mainItems: Array<T>;
     subItems: Array<T>;
@@ -17,7 +11,7 @@ interface Props<T extends Item> {
     secondDropdownLabel?: string;
     // Seems to be a bug in TS `(item: T)` does not work.
     selectedItemWhen: <P extends T>(item: P) => boolean;
-    icons?: Array<Icon>;
+    icons?: Array<T>;
 }
 
 class Topbar<T extends Item> extends React.Component<Props<T>> {
@@ -30,8 +24,8 @@ class Topbar<T extends Item> extends React.Component<Props<T>> {
                 </div>
                 <div className="right">
                     {this.props.icons &&
-                        this.props.icons.map((icon: Icon) =>
-                            <div className="topbar-icon" role="link" key={icon.id} onClick={icon.onClick}>
+                        this.props.icons.map((icon, index) =>
+                            <div className="topbar-icon" role="link" key={index} onClick={icon.onClick}>
                                 <span className={icon.classes} />
                             </div>
                         )
