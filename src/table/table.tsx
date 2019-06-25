@@ -72,7 +72,7 @@ interface Props<ROW> {
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
     onSortedChange?: (newSorted: Array<SortingRule>, column: any, shiftKey: any) => void;
-    onPageSizeChange?: (pageSize: number, pageIndex: number) => void;
+    onFilterChange?: (data: string) => void
 }
 
 interface State {
@@ -118,7 +118,6 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                     minRows={this.props.minRows}
                     getTrProps={this.getTrProps}
                     onSortedChange={this.props.onSortedChange}
-                    onPageSizeChange={this.props.onPageSizeChange}
                 />
             </div>
         );
@@ -146,7 +145,11 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private onFilterChange(filter: string) {
-        this.setState({ searchValue: filter });
+        this.setState({ searchValue: filter }, () => {
+            if (this.props.onFilterChange) {
+                this.props.onFilterChange(this.state.searchValue)
+            }
+        });
     }
 
     private getColumns() {
