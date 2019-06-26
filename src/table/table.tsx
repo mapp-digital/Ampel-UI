@@ -219,7 +219,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
             button
         ) : (
                 <Tooltip key={action.id} text={action.tooltip} placement="top">
-                    {button}
+                    <span>{button}</span>
                 </Tooltip>
             );
     }
