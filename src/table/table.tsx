@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import ReactTable from 'react-table';
+import ReactTable, { SortingRule } from 'react-table';
 import { RowInfo } from 'react-table';
 
 import { matches } from '../common/search';
@@ -71,6 +71,8 @@ interface Props<ROW> {
     onPaginate?: (eventType: PaginateEvent, itemsPerPage?: number) => void;
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
+    onSortedChange?: (newSorted: Array<SortingRule>, column: any, shiftKey: boolean) => void;
+    onFilterChange?: (data: string) => void
 }
 
 interface State {
@@ -115,6 +117,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                     defaultSorted={this.getSortingRules()}
                     minRows={this.props.minRows}
                     getTrProps={this.getTrProps}
+                    onSortedChange={this.props.onSortedChange}
                 />
             </div>
         );
@@ -142,7 +145,11 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private onFilterChange(filter: string) {
-        this.setState({ searchValue: filter });
+        this.setState({ searchValue: filter }, () => {
+            if (this.props.onFilterChange) {
+                this.props.onFilterChange(this.state.searchValue)
+            }
+        });
     }
 
     private getColumns() {
@@ -211,10 +218,10 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
         return !action.tooltip ? (
             button
         ) : (
-            <Tooltip key={action.id} text={action.tooltip} placement="top">
-                {button}
-            </Tooltip>
-        );
+                <Tooltip key={action.id} text={action.tooltip} placement="top">
+                    {button}
+                </Tooltip>
+            );
     }
 
     private getVisibleClass(action: TableAction<ROW>, row: any): string {
@@ -237,7 +244,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private getTrProps(state: any, rowInfo: RowInfo) {
-        if(!this.props.getRowProps) {
+        if (!this.props.getRowProps) {
             return {};
         }
         return this.props.getRowProps(rowInfo.row);
