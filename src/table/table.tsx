@@ -71,7 +71,7 @@ interface Props<ROW> {
     onPaginate?: (eventType: PaginateEvent, itemsPerPage?: number) => void;
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
-    onSortedChange?: (newSorted: Array<SortingRule>, column: any, shiftKey: any) => void;
+    onSortedChange?: (newSorted: Array<SortingRule>, column: any, shiftKey: boolean) => void;
     onFilterChange?: (data: string) => void
 }
 
