@@ -8,11 +8,23 @@
     "build": "webpack -p --optimize-minimize",
     "test": "jest --config jestconfig.json",
     "prepublish": "rm -rf ./dist && npm run build",
-    "lint": "tslint-config-prettier-check ./tslint.json"
+    "lint": "tslint-config-prettier-check ./tslint.json",
+    "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Webtrekk/Ampel-UI"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "npm run prettier",
+      "git add"
+    ]
   },
   "author": "Webtrekk GmbH",
   "license": "MIT",
@@ -24,12 +36,15 @@
     "awesome-typescript-loader": "^5.2.1",
     "css-loader": "^2.1.1",
     "dom-testing-library": "^3.17.1",
+    "husky": "^2.5.0",
     "jest": "^24.5.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "lint-staged": "^8.2.1",
     "mini-css-extract-plugin": "^0.5.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-testing-library": "^6.0.0",
