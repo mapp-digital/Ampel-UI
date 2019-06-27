@@ -21,11 +21,15 @@ class Dialog extends React.Component<Props, {}> {
         super(props);
 
         this.onKeyupHandler = this.onKeyupHandler.bind(this);
+
+        this.onClickOutsideHandler = this.onClickOutsideHandler.bind(this);
+
         this.focus = this.focus.bind(this);
     }
 
     public componentDidMount() {
         this.focus();
+        document.addEventListener('click', this.onClickOutsideHandler, false);
     }
 
     public render() {
@@ -61,6 +65,15 @@ class Dialog extends React.Component<Props, {}> {
                 </div>
             </div>
         );
+    }
+
+    private onClickOutsideHandler(e: MouseEvent) {
+        const target: HTMLElement = (e.target as HTMLElement)
+        if (this.dialog.current!.contains(target) && !this.dialog.current!.isEqualNode(target)) {
+            return;
+        }
+        document.removeEventListener('click', this.onClickOutsideHandler, false);
+        this.props.onCancel();
     }
 
     private onKeyupHandler(event: React.KeyboardEvent) {
