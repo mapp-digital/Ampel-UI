@@ -4,7 +4,6 @@ import { cleanup, fireEvent, render } from '@config/testing';
 
 import { Dialog } from './dialog';
 
-const id = 'my-dialog';
 const title = 'My dialog';
 const content = 'Message';
 const btnCancelText = 'Cancel';
@@ -12,7 +11,7 @@ const btnConfirmText = 'Confirm';
 let onCancel = jest.fn();
 let onConfirm = jest.fn();
 
-describe('Dialouge', () => {
+describe('Dialog', () => {
     afterEach(() => {
         cleanup();
         onCancel = jest.fn();
@@ -20,6 +19,7 @@ describe('Dialouge', () => {
     });
 
     it('should render dialog with id', () => {
+        const id = 'my-dialog';
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -38,6 +38,7 @@ describe('Dialouge', () => {
     });
 
     it('should invoke onCancel handler', () => {
+        const id = 'my-dialog';
         const { getByText } = render(
             <Dialog
                 id={id}
@@ -57,6 +58,7 @@ describe('Dialouge', () => {
     });
 
     it('should invoke onConfirm handler', () => {
+        const id = 'my-dialog';
         const { getByText } = render(
             <Dialog
                 id={id}
@@ -76,6 +78,7 @@ describe('Dialouge', () => {
     });
 
     it('should focus dialog on open', () => {
+        const id = 'my-dialog';
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -93,6 +96,7 @@ describe('Dialouge', () => {
     });
 
     it('should invoke `onCancel` handler upon pressing `ESC` key', () => {
+        const id = 'my-dialog';
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -111,7 +115,8 @@ describe('Dialouge', () => {
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
-    it('should close the Modal when click outside the dialog', () => {
+    it('should close the dialog on click outside', () => {
+        const id = 'my-dialog';
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -128,7 +133,8 @@ describe('Dialouge', () => {
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
-    it('should not close the Modal when click inside the dialog', () => {
+    it('should not close the dialog on click inside', () => {
+        const id = 'my-dialog';
         const { getByDataQa } = render(
             <Dialog
                 id={id}
