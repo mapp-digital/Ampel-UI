@@ -4,22 +4,18 @@ import { cleanup, fireEvent, render } from '@config/testing';
 
 import { Dialog } from './dialog';
 
-const title = 'My dialog';
-const content = 'Message';
-const btnCancelText = 'Cancel';
-const btnConfirmText = 'Confirm';
-let onCancel = jest.fn();
-let onConfirm = jest.fn();
-
 describe('Dialog', () => {
-    afterEach(() => {
-        cleanup();
-        onCancel = jest.fn();
-        onConfirm = jest.fn();
-    });
+    afterEach(cleanup);
 
     it('should render dialog with id', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -39,6 +35,13 @@ describe('Dialog', () => {
 
     it('should invoke onCancel handler', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByText } = render(
             <Dialog
                 id={id}
@@ -59,6 +62,13 @@ describe('Dialog', () => {
 
     it('should invoke onConfirm handler', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByText } = render(
             <Dialog
                 id={id}
@@ -79,6 +89,13 @@ describe('Dialog', () => {
 
     it('should focus dialog on open', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -97,6 +114,13 @@ describe('Dialog', () => {
 
     it('should invoke `onCancel` handler upon pressing `ESC` key', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -117,6 +141,13 @@ describe('Dialog', () => {
 
     it('should close the dialog on click outside', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByDataQa } = render(
             <Dialog
                 id={id}
@@ -135,6 +166,13 @@ describe('Dialog', () => {
 
     it('should not close the dialog on click inside', () => {
         const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
         const { getByDataQa } = render(
             <Dialog
                 id={id}
