@@ -43,7 +43,6 @@ const Pagination: React.FunctionComponent<any> = (props) => {
         onPaginateHandler(PaginateEvent.SIZE, Number(value));
         changePageSize(Number(value));
     };
-    // const onPageChange = (e: React.ChangeEvent<HTMLInputElement>) => changePage(Number(e.target.value) - 1);
     const firstPage = () => {
         onPaginateHandler(PaginateEvent.FIRST);
         changePage(0);
