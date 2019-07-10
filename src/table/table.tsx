@@ -64,6 +64,7 @@ interface Props<ROW> {
     columns: Array<Column<ROW>>;
     elastic?: boolean;
     pageText: string;
+    rowsText: string;
     pageSize?: number;
     searchPlaceholder?: string;
     columnActions?: ColumnActions<ROW>;
@@ -72,7 +73,7 @@ interface Props<ROW> {
     minRows?: number;
     getRowProps?: (row?: ROW) => object;
     onSortedChange?: (newSorted: Array<SortingRule>, column: any, shiftKey: boolean) => void;
-    onFilterChange?: (data: string) => void
+    onFilterChange?: (data: string) => void;
 }
 
 interface State {
@@ -128,6 +129,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
         paginationProps.onPaginate = this.props.onPaginate;
         paginationProps.searchPlaceholder = this.props.searchPlaceholder;
         paginationProps.hidePagination = this.props.elastic;
+        paginationProps.rowsText = this.props.rowsText;
         return paginationProps;
     }
 
@@ -147,7 +149,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     private onFilterChange(filter: string) {
         this.setState({ searchValue: filter }, () => {
             if (this.props.onFilterChange) {
-                this.props.onFilterChange(this.state.searchValue)
+                this.props.onFilterChange(this.state.searchValue);
             }
         });
     }
@@ -218,10 +220,10 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
         return !action.tooltip ? (
             button
         ) : (
-                <Tooltip key={action.id} text={action.tooltip} placement="top">
-                    {button}
-                </Tooltip>
-            );
+            <Tooltip key={action.id} text={action.tooltip} placement="top">
+                {button}
+            </Tooltip>
+        );
     }
 
     private getVisibleClass(action: TableAction<ROW>, row: any): string {

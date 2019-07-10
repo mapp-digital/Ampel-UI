@@ -9,7 +9,7 @@ describe('Table', () => {
 
     it('should exist', () => {
         const id = 'someId';
-        const { queryByDataQa } = render(<Table id={id} data={[]} columns={[]} ofText="" pageText="" />);
+        const { queryByDataQa } = render(<Table id={id} data={[]} columns={[]} ofText="" pageText="" rowsText="" />);
         const table = queryByDataQa(`table-${id}`);
         expect(table).toBeTruthy();
     });
@@ -34,7 +34,9 @@ describe('Table', () => {
                 Header: 'Name',
             },
         ];
-        const { getByDataQa } = render(<Table id={id} data={data} columns={columns} ofText="" pageText="" />);
+        const { getByDataQa } = render(
+            <Table id={id} data={data} columns={columns} ofText="" pageText="" rowsText="" />
+        );
         const cell = getByDataQa(`table--row-2-col-name`);
         expect(cell.textContent).toEqual(name);
     });
@@ -67,7 +69,15 @@ describe('Table', () => {
         ];
 
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} ofText="" pageText="" initiallySortBy={initiallySortBy} />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                ofText=""
+                pageText=""
+                initiallySortBy={initiallySortBy}
+                rowsText=""
+            />
         );
 
         const cell = getByDataQa(`table--row-0-col-name`);
@@ -114,7 +124,15 @@ describe('Table', () => {
         ];
 
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} ofText="" pageText="" initiallySortBy={initiallySortBy} />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                ofText=""
+                pageText=""
+                initiallySortBy={initiallySortBy}
+                rowsText=""
+            />
         );
 
         const nameCell = getByDataQa(`table--row-0-col-name`);
@@ -144,13 +162,17 @@ describe('Table', () => {
                 Header: 'Name',
             },
         ];
-        const { getByDataQa } = render(<Table id={id} data={data} columns={columns} ofText="" pageText="" />);
+        const { getByDataQa } = render(
+            <Table id={id} data={data} columns={columns} ofText="" pageText="" rowsText="" />
+        );
         const cell = getByDataQa(`table--row-2-col-name`);
         expect(cell.textContent).toEqual('Name 3, Name 4, Name 5');
     });
 
     it('should have a search bar', () => {
-        const { queryByDataQa } = render(<Table id={'someId'} data={[]} columns={[]} ofText="" pageText="" />);
+        const { queryByDataQa } = render(
+            <Table id={'someId'} data={[]} columns={[]} ofText="" pageText="" rowsText="" />
+        );
         const searchBar = queryByDataQa(`table--search-bar`);
         expect(searchBar).toBeTruthy();
     });
@@ -175,7 +197,9 @@ describe('Table', () => {
                 Header: 'Name',
             },
         ];
-        const { getByDataQa } = render(<Table id={id} data={data} columns={columns} ofText="" pageText="" />);
+        const { getByDataQa } = render(
+            <Table id={id} data={data} columns={columns} ofText="" pageText="" rowsText="" />
+        );
         const searchBar = getByDataQa(`table--search-bar`);
         fireEvent.change(searchBar, { target: { value: '2' } });
 
@@ -215,7 +239,15 @@ describe('Table', () => {
             ],
         };
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} columnActions={columnActions} ofText="" pageText="" />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                columnActions={columnActions}
+                ofText=""
+                pageText=""
+                rowsText=""
+            />
         );
 
         const addButton = getByDataQa(`table--row-1-col-_actions--add`);
@@ -249,7 +281,15 @@ describe('Table', () => {
             ],
         };
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} columnActions={columnActions} ofText="" pageText="" />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                columnActions={columnActions}
+                ofText=""
+                pageText=""
+                rowsText=""
+            />
         );
 
         const addButton = getByDataQa(`table--row-0-col-_actions--add`);
@@ -282,7 +322,15 @@ describe('Table', () => {
             ],
         };
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} columnActions={columnActions} ofText="" pageText="" />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                columnActions={columnActions}
+                ofText=""
+                pageText=""
+                rowsText=""
+            />
         );
 
         const addButton = getByDataQa(`table--row-0-col-_actions--add`);
@@ -316,7 +364,15 @@ describe('Table', () => {
             ],
         };
         const { getByDataQa } = render(
-            <Table id={id} data={data} columns={columns} columnActions={columnActions} ofText="" pageText="" />
+            <Table
+                id={id}
+                data={data}
+                columns={columns}
+                columnActions={columnActions}
+                ofText=""
+                pageText=""
+                rowsText=""
+            />
         );
 
         const addButton = getByDataQa(`table--row-0-col-_actions--add`) as HTMLButtonElement;
@@ -347,7 +403,7 @@ describe('Table', () => {
             },
         ];
         const { getByDataQa } = render(
-            <Table id={'someId'} data={data} columns={columns} pageSize={1} ofText="" pageText="" />
+            <Table id={'someId'} data={data} columns={columns} pageSize={1} ofText="" pageText="" rowsText="" />
         );
 
         const clickPaginationButton = (id: string) => {
@@ -397,7 +453,16 @@ describe('Table', () => {
         const onPaginate = jest.fn();
 
         const { getByDataQa } = render(
-            <Table id={'someId'} data={data} columns={columns} pageSize={1} ofText="" pageText="" onPaginate={onPaginate} />
+            <Table
+                id={'someId'}
+                data={data}
+                columns={columns}
+                pageSize={1}
+                ofText=""
+                pageText=""
+                onPaginate={onPaginate}
+                rowsText=""
+            />
         );
 
         const clickPaginationButton = (id: string) => {
@@ -416,35 +481,6 @@ describe('Table', () => {
 
         clickPaginationButton('next');
         expect(onPaginate).toHaveBeenCalledWith(PaginateEvent.NEXT, undefined);
-    });
-
-    it('should have pagination with input', () => {
-        const name2 = 'Name 2';
-        const data = [
-            {
-                name: 'Name 1',
-            },
-            {
-                name: name2,
-            },
-            {
-                name: 'Name 3',
-            },
-        ];
-        const columns = [
-            {
-                id: 'name',
-                Header: 'Name',
-            },
-        ];
-        const { getByDataQa } = render(
-            <Table id={'someId'} data={data} columns={columns} pageSize={1} ofText="" pageText="" />
-        );
-
-        const paginationInput = getByDataQa(`table-pagination--page-spin`);
-        fireEvent.change(paginationInput, { target: { value: 2 } });
-        const cell = getByDataQa(`table--row-${0}-col-name`);
-        expect(cell.textContent).toEqual(name2);
     });
 
     it('should have no paging if elastic - pageSize equals number data count', () => {
@@ -467,7 +503,16 @@ describe('Table', () => {
             },
         ];
         const { queryByDataQa } = render(
-            <Table id={'someId'} data={data} elastic={true} columns={columns} pageSize={1} ofText="" pageText="" />
+            <Table
+                id={'someId'}
+                data={data}
+                elastic={true}
+                columns={columns}
+                pageSize={1}
+                ofText=""
+                pageText=""
+                rowsText=""
+            />
         );
 
         const rows = queryByDataQa(`table-pagination--rows`);
@@ -505,7 +550,9 @@ describe('Table', () => {
                 ),
             },
         ];
-        const { getByDataQa } = render(<Table id={'someId'} data={data} columns={columns} ofText="" pageText="" />);
+        const { getByDataQa } = render(
+            <Table id={'someId'} data={data} columns={columns} ofText="" pageText="" rowsText="" />
+        );
 
         const customCell = getByDataQa(`${dataQa}-1`);
         expect(customCell.textContent).toEqual(name2);
@@ -522,18 +569,18 @@ describe('Table', () => {
             },
             {
                 name: 'Name 3',
-            }
+            },
         ];
         const columns = [
             {
                 id: 'name',
                 Header: 'Name',
-                renderHeader: () => (
-                    <div data-qa="header">{header}</div>
-                ),
+                renderHeader: () => <div data-qa="header">{header}</div>,
             },
         ];
-        const { getByDataQa } = render(<Table id={'someId'} data={data} columns={columns} ofText="" pageText="" />);
+        const { getByDataQa } = render(
+            <Table id={'someId'} data={data} columns={columns} ofText="" pageText="" rowsText="" />
+        );
 
         const customHeader = getByDataQa('header');
 
