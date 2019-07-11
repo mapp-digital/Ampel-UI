@@ -66,13 +66,17 @@ class Notification extends React.Component<Props, {}> {
     }
 
     private setTimer() {
-        this.timer = setTimeout(() => {
-            this.props.onClose();
-        }, 5000);
+        if (this.props.type !== NotificationTypes.ERROR) {
+            this.timer = setTimeout(() => {
+                this.props.onClose();
+            }, 5000);
+        }
     }
 
     private clearTimer() {
-        clearTimeout(this.timer);
+        if (this.props.type !== NotificationTypes.ERROR) {
+            clearTimeout(this.timer);
+        }
     }
 }
 

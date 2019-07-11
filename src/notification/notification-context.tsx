@@ -4,6 +4,8 @@ import { Notification, NotificationItem } from './';
 
 interface Notifications {
     show: (notification: NotificationItem) => void;
+    hide: (notification: NotificationItem) => void;
+    getAll: () => Array<NotificationItem>;
 }
 
 interface NotificationsContext {
@@ -25,21 +27,7 @@ class NotificationsProvider extends React.Component<{}, State> {
 
         this.show = this.show.bind(this);
         this.hide = this.hide.bind(this);
-    }
-
-    public show(notification: NotificationItem) {
-        const notificationWithId = { ...notification, id: Date.now().toString() };
-        this.setState((prevState) => ({
-            notifications: [...prevState.notifications, notificationWithId],
-        }));
-    }
-
-    public hide(notification: NotificationItem) {
-        this.setState((prevState) => ({
-            notifications: prevState.notifications.filter(
-                (currentNotification) => notification.id !== currentNotification.id
-            ),
-        }));
+        this.getAll = this.getAll.bind(this);
     }
 
     public render() {
@@ -47,6 +35,8 @@ class NotificationsProvider extends React.Component<{}, State> {
             <NotificationContext.Provider
                 value={{
                     show: this.show,
+                    hide: this.hide,
+                    getAll: this.getAll,
                 }}
             >
                 <div className="notification-wrapper" data-qa="notification-wrapper">
@@ -66,6 +56,25 @@ class NotificationsProvider extends React.Component<{}, State> {
                 {this.props.children}
             </NotificationContext.Provider>
         );
+    }
+
+    private show(notification: NotificationItem) {
+        const notificationWithId = { ...notification, id: Date.now().toString() };
+        this.setState((prevState) => ({
+            notifications: [...prevState.notifications, notificationWithId],
+        }));
+    }
+
+    private hide(notification: NotificationItem) {
+        this.setState((prevState) => ({
+            notifications: prevState.notifications.filter(
+                (currentNotification) => notification.id !== currentNotification.id
+            ),
+        }));
+    }
+
+    private getAll() {
+        return this.state.notifications;
     }
 }
 

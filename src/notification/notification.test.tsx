@@ -56,4 +56,17 @@ describe('Notification', () => {
             expect(onClose).toHaveBeenCalledTimes(1);
         });
     }, 5500);
+
+    it('should NOT invoke onClose handler after 5 seconds if NotificationType is ERROR', () => {
+        const id = 'notification';
+        const type = NotificationTypes.ERROR;
+        const message = 'Message area';
+        const onClose = jest.fn();
+
+        const { wait } = render(<Notification id={id} type={type} message={message} onClose={onClose} />);
+
+        return wait(5000).then(() => {
+            expect(onClose).not.toHaveBeenCalled();
+        });
+    }, 5500);
 });
