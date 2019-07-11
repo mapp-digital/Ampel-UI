@@ -14,7 +14,7 @@ enum PaginateEvent {
     LAST = 'LAST',
     NEXT = 'NEXT',
     PREVIOUS = 'PREVIOUS',
-    SIZE = 'SIZE'
+    SIZE = 'SIZE',
 }
 
 const getPaginationButton = (props: PaginationButtonProps) => {
@@ -37,12 +37,12 @@ const Pagination: React.FunctionComponent<any> = (props) => {
         onPageSizeChange: changePageSize,
         onPageChange: changePage,
     } = props;
-    const onPaginateHandler = (eventType: PaginateEvent, itemsPerPage?: number) => onPaginate && onPaginate(eventType, itemsPerPage);
+    const onPaginateHandler = (eventType: PaginateEvent, itemsPerPage?: number) =>
+        onPaginate && onPaginate(eventType, itemsPerPage);
     const onSizeChange = (value: any) => {
         onPaginateHandler(PaginateEvent.SIZE, Number(value));
         changePageSize(Number(value));
     };
-    const onPageChange = (e: React.ChangeEvent<HTMLInputElement>) => changePage(Number(e.target.value) - 1);
     const firstPage = () => {
         onPaginateHandler(PaginateEvent.FIRST);
         changePage(0);
@@ -75,6 +75,13 @@ const Pagination: React.FunctionComponent<any> = (props) => {
                         disabled: !canPrevious,
                         className: 'table-pagination-button table-pagination-previous',
                     },
+                ].map(getPaginationButton)}
+            </div>
+            <div className="pagination-current-page">
+                {pageText} {page + 1} {ofText} {pages}
+            </div>
+            <div className="table-pagination-buttons">
+                {[
                     {
                         id: 'next',
                         onClick: incrementPage,
@@ -89,25 +96,12 @@ const Pagination: React.FunctionComponent<any> = (props) => {
                     },
                 ].map(getPaginationButton)}
             </div>
-            <div className="pagination-current-page">
-                {pageText}
-                <input
-                    type="number"
-                    value={page + 1}
-                    data-qa={`table-pagination--page-spin`}
-                    onChange={onPageChange}
-                    className="pagination-current-page-spin"
-                    aria-valuemax={pages}
-                    aria-valuemin={1}
-                    aria-valuenow={page}
-                />
-                {ofText} {pages}
-            </div>
             <div className="pagination-rows">
+                <span>{rowsText}</span>
                 <Select
                     id={'table-pagination-rows'}
                     value={pageSize}
-                    options={pageSizeOptions.map((option: any) => ({ value: option, label: `${option} ${rowsText}` }))}
+                    options={pageSizeOptions.map((option: any) => ({ value: option, label: option }))}
                     onChange={onSizeChange}
                 />
             </div>
