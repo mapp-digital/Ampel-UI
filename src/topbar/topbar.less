@@ -30,8 +30,21 @@
             cursor: pointer;
             display: flex;
             align-items: center;
-            margin: 0 10px;
+            margin: 0 15px;
             font-size: 18px;
+            position: relative;
+
+            .badge {
+                position: absolute;
+                font-size: 12px;
+                top: 10px;
+                left: 10px;
+                z-index: 1;
+                border-radius: 50%;
+                background-color: @success;
+                padding: 2px 5px;
+                border: 1px solid @gray-coal;
+            }
         }
     }
 }
