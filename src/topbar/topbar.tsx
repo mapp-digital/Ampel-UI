@@ -26,6 +26,7 @@ class Topbar<T extends Item> extends React.Component<Props<T>> {
                     {this.props.icons &&
                         this.props.icons.map((icon, index) =>
                             <div className="topbar-icon" role="link" key={index} onClick={icon.onClick}>
+                                {icon.label && <span className="badge">{icon.label}</span>}
                                 <span className={icon.classes} />
                             </div>
                         )
