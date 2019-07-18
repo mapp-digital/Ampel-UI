@@ -4,35 +4,28 @@ interface Props {
     id: string;
     value: boolean;
     disabled?: boolean;
-    onLabel?: string;
-    offLabel?: string;
     description?: string;
     onChange: (newValue: boolean) => void;
+    /** @deprecated */
+    onLabel?: string;
+    offLabel?: string;
 }
 
 const Toggle: React.FunctionComponent<Props> = (props) => {
-    const toggleStateClass = props.value ? 'toggle-on' : 'toggle-off';
-    const toggleHandler = () => !props.disabled && props.onChange(!props.value);
+    const toggleHandler = (event: React.ChangeEvent<HTMLInputElement>) =>
+        !props.disabled && props.onChange(event.target.checked);
     return (
-        <div>
-            <button
-                id={props.id}
-                type="button"
+        <div className="toggle-wrapper">
+            <input
+                type="checkbox"
                 className="toggle"
-                onClick={toggleHandler}
-                disabled={props.disabled}
                 data-qa={`toggle-${props.id}`}
-            >
-                <div
-                    className={`toggle-container toggle-animate ${toggleStateClass}`}
-                    data-qa={`toggle-container-${props.id}`}
-                >
-                    <span className="toggle-left">{props.onLabel}</span>
-                    <span className="toggle-knob" />
-                    <span className="toggle-right">{props.offLabel}</span>
-                </div>
-            </button>
-            {props.description ? (<span className="toggle-description" data-qa={`toggle-${props.id}--description`}>{props.description}</span>) : null}
+                onChange={toggleHandler}
+                aria-checked={props.value}
+                checked={props.value}
+                disabled={props.disabled}
+            />
+            {props.description ? <label data-qa={`toggle-${props.id}--description`}>{props.description}</label> : null}
         </div>
     );
 };
