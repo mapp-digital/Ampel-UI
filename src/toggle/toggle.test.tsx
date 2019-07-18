@@ -36,10 +36,9 @@ describe('Toggle', () => {
         const onChange = jest.fn();
         const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} />);
 
-        const toggleContainer = getByDataQa(`toggle-container-${id}`);
+        const toggle = getByDataQa(`toggle-${id}`) as HTMLInputElement;
 
-        expect(toggleContainer.classList.contains('toggle-on')).toBeTruthy();
-        expect(toggleContainer.classList.contains('toggle-off')).toBeFalsy();
+        expect(toggle.checked).toBeTruthy();
     });
 
     it('should set toggle state to off', () => {
@@ -48,10 +47,9 @@ describe('Toggle', () => {
         const onChange = jest.fn();
         const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} />);
 
-        const toggleContainer = getByDataQa(`toggle-container-${id}`);
+        const toggle = getByDataQa(`toggle-${id}`) as HTMLInputElement;
 
-        expect(toggleContainer.classList.contains('toggle-off')).toBeTruthy();
-        expect(toggleContainer.classList.contains('toggle-on')).toBeFalsy();
+        expect(toggle.checked).toBeFalsy();
     });
 
     it('should render toggle with disabled state', () => {
@@ -66,25 +64,12 @@ describe('Toggle', () => {
         expect(toggle.disabled).toBeTruthy();
     });
 
-    it('should not update value onChange, if toggle is disabled', () => {
-        const id = 'my-toggle';
-        const value = true;
-        const onChange = jest.fn();
-        const disabled = true;
-        const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} disabled={disabled} />);
-
-        const toggle = getByDataQa(`toggle-${id}`);
-        toggle.click();
-
-        expect(onChange).not.toHaveBeenCalled();
-    });
-
     it('should render toggle with description', () => {
         const id = 'my-toggle';
         const value = true;
         const onChange = jest.fn();
         const description = 'description';
-        const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} description={description}/>);
+        const { getByDataQa } = render(<Toggle id={id} value={value} onChange={onChange} description={description} />);
 
         const descriptionNode = getByDataQa(`toggle-${id}--description`);
 

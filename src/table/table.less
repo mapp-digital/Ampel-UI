@@ -28,21 +28,24 @@
 
         .rt-table {
             border-top: @default-border;
-            border-bottom: @default-border;
         }
 
         .rt-thead.-header {
-            box-shadow: none;
+            background: @gray-lighter;
             font-weight: bold;
+            margin: 0 1px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
+            padding-top: 4px;
+            padding-bottom: 4px;
+
+            border-bottom: 0;
 
             .rt-th {
                 padding: 8px;
                 text-align: left;
 
-                &:not(:last-child) {
-                    border-right: @default-border;
-                    border-right-style: dashed;
-                }
+                border: 0;
 
                 &:focus {
                     outline: none;
@@ -52,6 +55,9 @@
 
         .rt-tr-group {
             border: none;
+            background: @white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            margin: 2.5px 1px;
         }
 
         .rt-tbody {
@@ -65,22 +71,22 @@
             align-items: center;
 
             padding: 8px;
-            border-top: @default-border;
+            border: 0;
             white-space: normal;
-
-            &:not(:last-child) {
-                border-right: @default-border;
-                border-right-style: dashed;
-            }
         }
     }
 
     .table-top {
         display: flex;
+        align-items: center;
         justify-content: space-between;
 
         width: 100%;
         height: 100%;
+
+        padding: 2px 0;
+
+        border-top: 1px solid @gray-mid;
 
         .table-pagination {
             @pagination-part-padding: 3px 4px;
@@ -166,6 +172,7 @@
 
             .select-option-items {
                 border: @default-border;
+                border-top: 0;
                 text-align: right;
             }
         }
@@ -176,6 +183,7 @@
         padding: 0;
         width: 15px;
         height: 15px;
+        margin-right: 8px;
 
         &:before {
             display: block;
@@ -194,8 +202,7 @@
 
     .table-actions-cell {
         display: flex;
-        justify-content: space-around;
-        padding: 0 3px;
+        justify-content: flex-start;
         width: 100%;
     }
 
@@ -219,8 +226,7 @@
         justify-content: space-between;
 
         height: 30px;
-        width: 250px;
-        margin-bottom: 5px;
+        width: 350px;
         border: @default-border;
         background-color: @white;
 
@@ -228,6 +234,8 @@
             @table-search-bar-icon();
             font-size: 14px;
             line-height: 30px;
+            padding-left: 5px;
+            padding-right: 0;
         }
 
         .search-bar-filter {
@@ -235,6 +243,7 @@
             padding-left: 6px;
             border: none;
             box-shadow: none;
+            font-size: 12px;
 
             &:focus {
                 outline: none;

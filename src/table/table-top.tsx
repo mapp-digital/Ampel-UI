@@ -119,6 +119,7 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onFilterChange(event.target.value);
     return (
         <div className="search-bar">
+            <span className="search-bar-icon" />
             <input
                 type="text"
                 data-qa={`table--search-bar`}
@@ -126,7 +127,6 @@ const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
                 className="search-bar-filter"
                 placeholder={props.searchPlaceholder}
             />
-            <span className="search-bar-icon" />
         </div>
     );
 };
