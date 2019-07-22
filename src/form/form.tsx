@@ -139,7 +139,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         return (
             <form onSubmit={this.onSubmit} className="form">
                 {this.resolveGroups(this.props.children)}
-                <div className="row end-xs">
+                <div className="row center">
                     <div className="col-xs-12">
                         {this.props.onCancel && this.getCancelButton()}
 
