@@ -75,7 +75,7 @@ interface ValidationOptions {
     delayMillis?: number;
 }
 
-type ViolationMessageResolver = (key: string, context: object | null) => string
+type ViolationMessageResolver = (key: string, context: object | null) => string;
 
 interface Props<MODEL> {
     model: MODEL;
@@ -97,7 +97,7 @@ interface State<MODEL> {
     violations?: ConstraintViolations;
     initialModel: MODEL;
     isSubmitting: boolean;
-    expandedGroupId: string | null;
+    expandedGroupsIds: Array<string>;
 }
 
 class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MODEL>> {
@@ -117,7 +117,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             violations: this.props.violations || {},
             initialModel: this.props.model,
             isSubmitting: false,
-            expandedGroupId: this.props.children[0].id,
+            expandedGroupsIds: [this.props.children[0].id],
         };
 
         this.validationOptions = Object.assign(this.props.validationOptions || {}, getValidationOptionsDefaults());
@@ -223,14 +223,18 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private onGroupClick(expandedGroupId: string) {
         if (this.isCurrentlyExpandedGroupId(expandedGroupId)) {
-            this.setState({ expandedGroupId: null });
+            this.setState((prevState) => ({
+                expandedGroupsIds: prevState.expandedGroupsIds.filter((groupId) => groupId !== expandedGroupId),
+            }));
         } else {
-            this.setState({ expandedGroupId });
+            this.setState((prevState) => ({
+                expandedGroupsIds: [...prevState.expandedGroupsIds, expandedGroupId],
+            }));
         }
     }
 
     private isCurrentlyExpandedGroupId(expandedGroupId: string) {
-        return this.state.expandedGroupId === expandedGroupId;
+        return this.state.expandedGroupsIds.includes(expandedGroupId);
     }
 
     private resolveGroup(group: Group) {
@@ -425,7 +429,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private setViolationsFromProps() {
         this.setState({
-            violations: this.props.violations
+            violations: this.props.violations,
         });
     }
 

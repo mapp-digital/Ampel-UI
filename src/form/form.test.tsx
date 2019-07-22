@@ -204,7 +204,7 @@ describe('FormGroup', () => {
         expect(secondGroupElement).toBeFalsy();
     });
 
-    it('should collapse the first when expanding another', () => {
+    it('should have both formGroups expanded at the time', () => {
         const firstGroupContent = 'firstGroupContent';
         const secondGroupContent = 'secondGroupContent';
         const expandedTargetGroupId = 'groupB';
@@ -229,7 +229,7 @@ describe('FormGroup', () => {
         const firstGroupElement = queryByText(firstGroupContent);
         const secondGroupElement = queryByText(secondGroupContent);
 
-        expect(firstGroupElement).toBeFalsy();
+        expect(firstGroupElement).toBeTruthy();
         expect(secondGroupElement).toBeTruthy();
     });
 

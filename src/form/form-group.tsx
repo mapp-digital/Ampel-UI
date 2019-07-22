@@ -25,7 +25,6 @@ const FormGroup: React.FunctionComponent<Props> = (props) => {
     const onClick = () => props.onClick(props.id);
     return (
         <div className={getClass(props)} data-qa={`form-group-${props.id}`}>
-            <span className="form-group-icon" />
             <div className="form-group-wrap">
                 <div className="form-group-header">
                     <button
@@ -34,8 +33,14 @@ const FormGroup: React.FunctionComponent<Props> = (props) => {
                         data-qa={`form-group--toggle-${props.id}`}
                         className="form-group-toggle"
                     >
+                        {props.isExpanded ? (
+                            <span className="icon icon-expanded" />
+                        ) : (
+                            <span className="icon icon-collapsed" />
+                        )}
                         {props.label}
                     </button>
+                    <span className="form-group-icon" />
                 </div>
                 {props.isExpanded && <div className="form-group-content">{props.children}</div>}
             </div>
