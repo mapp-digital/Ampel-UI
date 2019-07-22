@@ -113,12 +113,7 @@ class Dropdown<T extends Item> extends React.Component<Props<T>, State> {
             }
         };
         return (
-            <button
-                type="button"
-                onClick={onClick}
-                data-qa={`dropdown--item-${item.id}`}
-                className="dropdown-item"
-            >
+            <button type="button" onClick={onClick} data-qa={`dropdown--item-${item.id}`} className="dropdown-item">
                 {item.label}
             </button>
         );

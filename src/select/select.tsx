@@ -15,7 +15,7 @@ interface Props<T> {
     className?: string;
     searchable?: boolean;
     placeholder?: string;
-    disableOptionWhen?: (value: T) => boolean
+    disableOptionWhen?: (value: T) => boolean;
     searchPlaceholder?: string;
 }
 
@@ -36,7 +36,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
         this.state = {
             expanded: false,
-            options: this.props.options
+            options: this.props.options,
         };
 
         this.searchInputRef = React.createRef();
@@ -114,18 +114,20 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
 
     private getFilter() {
         return (
-            this.props.searchable && <div className="select-filter-bar">
-                <input
-                    type="text"
-                    data-qa={`select--filter-${this.props.id}`}
-                    className="form-control"
-                    placeholder={this.props.searchPlaceholder || 'search'}
-                    onChange={this.filterOptions}
-                    ref={this.searchInputRef}
-                />
-                <span className="select-filter-icon" />
-            </div>
-        )
+            this.props.searchable && (
+                <div className="select-filter-bar">
+                    <input
+                        type="text"
+                        data-qa={`select--filter-${this.props.id}`}
+                        className="form-control"
+                        placeholder={this.props.searchPlaceholder || 'search'}
+                        onChange={this.filterOptions}
+                        ref={this.searchInputRef}
+                    />
+                    <span className="select-filter-icon" />
+                </div>
+            )
+        );
     }
 
     private getLabel() {
@@ -169,14 +171,17 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private toggleOptionsList() {
-        this.setState((prevState) => {
-            return {
-                expanded: !prevState.expanded,
-                options: this.props.options
-            };
-        }, () => {
-            this.focusSearchInput();
-        });
+        this.setState(
+            (prevState) => {
+                return {
+                    expanded: !prevState.expanded,
+                    options: this.props.options,
+                };
+            },
+            () => {
+                this.focusSearchInput();
+            }
+        );
     }
 
     private focusSearchInput() {
@@ -192,7 +197,7 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
     private filterOptions(event: React.ChangeEvent<HTMLInputElement>) {
         const filteredOptions = this.props.options.filter((option) => matches(event.target.value, option.label));
         this.setState({
-            options: filteredOptions
+            options: filteredOptions,
         });
     }
 }

@@ -312,13 +312,15 @@ describe('Table', () => {
         const rows = getTwoRows();
 
         const { getByDataQa } = render(
-            getCheckboxTable({...defaultProps, data, columns, rows, onChange: changeHandler, isDisabledCell})
+            getCheckboxTable({ ...defaultProps, data, columns, rows, onChange: changeHandler, isDisabledCell })
         );
 
         const firstCell = getByDataQa(`checkbox-someId-table--row-someEntry-col-someFlag`) as HTMLInputElement;
         firstCell.click();
 
-        const secondCell = getByDataQa(`checkbox-someId-table--row-someOtherEntry-col-someOtherFlag`) as HTMLInputElement;
+        const secondCell = getByDataQa(
+            `checkbox-someId-table--row-someOtherEntry-col-someOtherFlag`
+        ) as HTMLInputElement;
         secondCell.click();
 
         expect(changeHandler).not.toHaveBeenCalled();

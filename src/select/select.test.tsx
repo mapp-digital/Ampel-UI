@@ -145,7 +145,9 @@ describe('Select', () => {
     it('should render filter correctly', () => {
         const id = 'someId';
         const options: Array<Option<string>> = [];
-        const { getByDataQa } = render(<StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />);
+        const { getByDataQa } = render(
+            <StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />
+        );
         const toggle = getByDataQa('select--toggle-' + id);
         toggle.click();
 
@@ -156,7 +158,9 @@ describe('Select', () => {
     it('should filter items correctly', () => {
         const id = 'someId';
         const options: Array<Option<string>> = [{ label: 'John', value: 'john' }, { label: 'Arya', value: 'arya' }];
-        const { getByDataQa } = render(<StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />);
+        const { getByDataQa } = render(
+            <StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />
+        );
         const toggle = getByDataQa('select--toggle-' + id);
         toggle.click();
 
@@ -193,7 +197,9 @@ describe('Select', () => {
         const id = 'someId';
         const disabled = true;
         const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
-        const { getByDataQa, queryByDataQa } = render(<StringSelect id={id} disabled={disabled} options={options} onChange={jest.fn()} />);
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} disabled={disabled} options={options} onChange={jest.fn()} />
+        );
         const toggle = getByDataQa('select--toggle-' + id);
         toggle.click();
 
@@ -207,7 +213,9 @@ describe('Select', () => {
         const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
         const disableOptionWhen = jest.fn().mockReturnValue(true);
         const onChange = jest.fn();
-        const { getByDataQa } = render(<StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />);
+        const { getByDataQa } = render(
+            <StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />
+        );
         const toggle = getByDataQa('select--toggle-' + id);
         toggle.click();
 
@@ -222,7 +230,9 @@ describe('Select', () => {
         const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
         const disableOptionWhen = jest.fn().mockReturnValue(true);
         const onChange = jest.fn();
-        const { getByDataQa } = render(<StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />);
+        const { getByDataQa } = render(
+            <StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />
+        );
         const toggle = getByDataQa('select--toggle-' + id);
         toggle.click();
 

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { cleanup, fireEvent, render, waitForElement } from '@config/testing';
 
 import { ViolationSeverity } from '../api';
-import {FieldType, Form, SectionType, ViolationMessageResolver} from './form';
+import { FieldType, Form, SectionType, ViolationMessageResolver } from './form';
 import { ConstraintLevels } from './types';
 
 afterEach(cleanup);
@@ -147,7 +147,7 @@ describe('Form Validation', () => {
 
         const assert = (violationTextNode: HTMLElement) => {
             expect(violationTextNode.textContent).toEqual(someMessage);
-            expect(messageResolver).toHaveBeenCalledWith('form.violation.pattern', null)
+            expect(messageResolver).toHaveBeenCalledWith('form.violation.pattern', null);
         };
 
         return runTest(constraints, newInvalidValue, assert, messageResolver);
@@ -158,7 +158,7 @@ const runTest = (
     constraints: ConstraintLevels<any, any>,
     newInvalidValue: string,
     assert: (textNode: HTMLElement) => void,
-    messageResolver?: ViolationMessageResolver,
+    messageResolver?: ViolationMessageResolver
 ) => {
     const { getByDataQa, queryByDataQa } = createForm(constraints, messageResolver);
 

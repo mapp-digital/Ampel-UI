@@ -91,9 +91,7 @@ describe('Textarea', () => {
         const onChange = jest.fn();
         const disabled = true;
 
-        const { getByDataQa } = render(
-            <Textarea id={id} value={value} onChange={onChange} disabled={disabled} />
-        );
+        const { getByDataQa } = render(<Textarea id={id} value={value} onChange={onChange} disabled={disabled} />);
         const textarea = getByDataQa(`textarea--element-${id}`) as HTMLTextAreaElement;
 
         expect(textarea.disabled).toBeTruthy();
