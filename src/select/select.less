@@ -37,6 +37,7 @@
         text-align: left;
         white-space: nowrap;
         text-overflow: ellipsis;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
         &:hover {
             text-decoration: none;
@@ -77,7 +78,7 @@
             border: @default-border;
             border-top: none;
             padding: 0 5px 0 0;
-    
+
             input {
                 padding-left: 10px;
                 border: none;
@@ -91,35 +92,35 @@
                 line-height: 30px;
             }
         }
-    
+
         .select-option-items {
             width: 100%;
             max-height: 281px;
             margin: 0;
             padding: 0;
-    
+
             border: @default-border;
             border-top: none;
             background: @white;
             list-style-type: none;
             box-shadow: none;
             overflow: auto;
-    
+
             .active {
                 background-color: @info-light;
             }
-    
+
             .item {
                 padding: 7px 10px 7px 10px;
                 overflow: hidden;
                 white-space: nowrap;
                 text-overflow: ellipsis;
-    
+
                 &:hover {
                     background-color: @info-light;
                 }
             }
-    
+
             .selected {
                 font-weight: bold;
             }
