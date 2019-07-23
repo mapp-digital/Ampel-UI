@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Dropdown, Item } from './dropdown';
+import { Dropdown, Item, SELECTED_CLASS } from './dropdown';
 import { NavigationItems } from './navigation-items';
 
 interface Props<T extends Item> {
@@ -25,7 +25,7 @@ class Topbar<T extends Item> extends React.Component<Props<T>> {
                 <div className="right">
                     {this.props.icons &&
                         this.props.icons.map((icon, index) =>
-                            <div className="topbar-icon" role="link" key={index} onClick={icon.onClick}>
+                            <div className={`topbar-icon ${this.props.selectedItemWhen(icon) ? SELECTED_CLASS : ''}`} role="link" key={index} onClick={icon.onClick}>
                                 {icon.label && <span className="badge">{icon.label}</span>}
                                 <span className={icon.classes} />
                             </div>
