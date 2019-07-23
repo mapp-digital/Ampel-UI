@@ -18,18 +18,21 @@ const RadioGroup: React.FunctionComponent<Props> = (props) => {
     return (
         <>
             {props.options.map((option, index) => (
-                <div className={`radio ${props.className || ''}`} key={index}>
-                    <input
-                        id={`${props.id}-${index}`}
-                        type="radio"
-                        name={props.name}
-                        value={option.value}
-                        aria-checked={option.value === props.value}
-                        checked={option.value === props.value}
-                        onChange={onChange}
-                        data-qa={`radio-${props.id}-${index}`}
-                    />
-                    <label htmlFor={props.id}>{option.label}</label>
+                <div key={index} className={`${props.className || ''}`}>
+                    <label className="radio">
+                        <span>{option.label}</span>
+                        <input
+                            id={`${props.id}-${index}`}
+                            type="radio"
+                            name={props.name}
+                            value={option.value}
+                            aria-checked={option.value === props.value}
+                            checked={option.value === props.value}
+                            onChange={onChange}
+                            data-qa={`radio-${props.id}-${index}`}
+                        />
+                        <span className="checkmark" />
+                    </label>
                 </div>
             ))}
         </>

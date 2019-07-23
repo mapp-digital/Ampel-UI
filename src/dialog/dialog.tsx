@@ -30,7 +30,7 @@ class Dialog extends React.Component<Props, {}> {
 
     public componentDidMount() {
         this.focus();
-        this.dispose = onOuterClick(this.node.firstChild as Node, this.props.onCancel)
+        this.dispose = onOuterClick(this.node.firstChild as Node, this.props.onCancel);
     }
 
     public componentWillUnmount() {
@@ -39,7 +39,7 @@ class Dialog extends React.Component<Props, {}> {
 
     public render() {
         return (
-            <div ref={this.setNode} >
+            <div ref={this.setNode}>
                 <div
                     id={this.props.id}
                     className="dialog"

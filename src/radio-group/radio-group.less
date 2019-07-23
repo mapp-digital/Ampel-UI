@@ -1,11 +1,46 @@
-.radio {
-    font-size: 12px;
+@radio-size: 22px;
+@radio-content-size: 11px;
 
-    label {
-        margin-left: 5px;
-    }
+.radio {
+    display: block;
+    position: relative;
+    padding-top: 5px;
+    padding-left: 35px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    user-select: none;
 
     input {
-        width: 14px;
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+
+        &:checked ~ .checkmark:after {
+            display: block;
+        }
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: @radio-size;
+        width: @radio-size;
+        background-color: @white;
+        border-radius: 50%;
+        border: 1px solid @gray-darker;
+
+        &:after {
+            content: '';
+            position: absolute;
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: @radio-content-size;
+            height: @radio-content-size;
+            border-radius: 50%;
+            background: @info-darker;
+        }
     }
 }

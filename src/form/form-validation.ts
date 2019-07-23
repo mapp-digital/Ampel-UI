@@ -73,16 +73,26 @@ const createFieldValidators = <FIELD, MODEL>(violationFactory: ViolationFactory,
                 constraintValidators.push(createRequiredValidator(violationFactory.bind(null, severity), field.type));
             }
             if (constraintForSeverity.min) {
-                constraintValidators.push(createMinValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.min));
+                constraintValidators.push(
+                    createMinValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.min)
+                );
             }
             if (constraintForSeverity.max) {
-                constraintValidators.push(createMaxValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.max));
+                constraintValidators.push(
+                    createMaxValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.max)
+                );
             }
             if (constraintForSeverity.email) {
                 constraintValidators.push(createEmailValidator(violationFactory.bind(null, severity), field.type));
             }
             if (constraintForSeverity.pattern) {
-                constraintValidators.push(createPatternValidator(violationFactory.bind(null, severity), field.type, constraintForSeverity.pattern));
+                constraintValidators.push(
+                    createPatternValidator(
+                        violationFactory.bind(null, severity),
+                        field.type,
+                        constraintForSeverity.pattern
+                    )
+                );
             }
             if (constraintForSeverity.custom) {
                 constraintValidators.push.apply(constraintValidators, constraintForSeverity.custom);
@@ -132,27 +142,35 @@ const createRequiredValidator = <FIELD, MODEL>(violationFactory: ViolationFactor
     return requiredValidator;
 };
 
-const createMinValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, minValue: number) => {
+const createMinValidator = <FIELD, MODEL>(
+    violationFactory: ViolationFactoryBound,
+    fieldType: FieldType,
+    minValue: number
+) => {
     const minValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .min(minValue)
             .isValid(value)
             .then((isValid: boolean) => {
-                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.min`, {minValue});
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.min`, { minValue });
             });
     };
     return minValidator;
 };
 
-const createMaxValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, maxValue: number) => {
+const createMaxValidator = <FIELD, MODEL>(
+    violationFactory: ViolationFactoryBound,
+    fieldType: FieldType,
+    maxValue: number
+) => {
     const maxValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
             .max(maxValue)
             .isValid(value)
             .then((isValid: boolean) => {
-                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.max`, {maxValue});
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.max`, { maxValue });
             });
     };
     return maxValidator;
@@ -193,7 +211,11 @@ const createIntegerValidator = <FIELD, MODEL>(violationFactory: ViolationFactory
     return integerValidator;
 };
 
-const createPatternValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType, pattern: RegExp) => {
+const createPatternValidator = <FIELD, MODEL>(
+    violationFactory: ViolationFactoryBound,
+    fieldType: FieldType,
+    pattern: RegExp
+) => {
     const patternValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()

@@ -3,23 +3,26 @@
     margin-left: 15px;
     margin-bottom: 15px;
 
-    .form-group-icon {
-        position: absolute;
-        top: 10px;
-        left: -22px;
-    }
-
     .form-group-header {
         display: flex;
         align-items: center;
 
+        border-bottom: 1px solid @gray-mid;
+
+        .icon {
+            color: @info-dark;
+            font-size: 14px;
+            padding-left: 15px;
+            padding-right: 15px;
+            width: 20px;
+        }
+
         .form-group-toggle {
-            width: 100%;
             padding: 10px;
 
-            background-color: @gray-mid;
+            background-color: transparent;
             text-align: start;
-            font-weight: bold;
+            font-size: 1.5em;
             border: none;
             cursor: pointer;
             color: @gray-darkest;
@@ -29,17 +32,24 @@
             }
         }
     }
+
+    .icon-expanded {
+        @dropdown-icon();
+    }
+
+    .icon-collapsed {
+        @table-pagination-next();
+    }
 }
 
 .expanded {
     .form-group-header {
         .form-group-toggle {
-            color: @gray-coal;
-            background-color: @gray-darker;
+            color: @gray-darkest !important;
         }
     }
 }
 
 .form-group-content {
-    padding: 15px;
+    padding: 15px 0 15px 60px;
 }

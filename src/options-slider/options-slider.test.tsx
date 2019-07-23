@@ -44,28 +44,28 @@ describe('OptionsSlider', () => {
         expect(onChange).toHaveBeenCalledWith(desiredValue);
     });
 
-   it('should not invoke `onChange` handler when clicking on the label, if `disabled` prop is provided', () => {
-       const desiredValue = 'valueToBeSelected';
-       const options = [
-           {
-               value: 'someOtherValue',
-               label: 'Some Other Label',
-           },
-           {
-               value: desiredValue,
-               label: 'Select Me!',
-           },
-       ];
-       const onChange = jest.fn();
-       const disabled = true;
+    it('should not invoke `onChange` handler when clicking on the label, if `disabled` prop is provided', () => {
+        const desiredValue = 'valueToBeSelected';
+        const options = [
+            {
+                value: 'someOtherValue',
+                label: 'Some Other Label',
+            },
+            {
+                value: desiredValue,
+                label: 'Select Me!',
+            },
+        ];
+        const onChange = jest.fn();
+        const disabled = true;
 
-       const { getByDataQa } = render(
-           <OptionsSlider id="someId" value={null} options={options} onChange={onChange} disabled={disabled} />
-       );
+        const { getByDataQa } = render(
+            <OptionsSlider id="someId" value={null} options={options} onChange={onChange} disabled={disabled} />
+        );
 
-       const label = getByDataQa(`options-slider--mark-${desiredValue}`);
-       label.click();
+        const label = getByDataQa(`options-slider--mark-${desiredValue}`);
+        label.click();
 
-       expect(onChange).not.toHaveBeenCalled();
-   });
+        expect(onChange).not.toHaveBeenCalled();
+    });
 });
