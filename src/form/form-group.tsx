@@ -33,11 +33,7 @@ const FormGroup: React.FunctionComponent<Props> = (props) => {
                         data-qa={`form-group--toggle-${props.id}`}
                         className="form-group-toggle"
                     >
-                        {props.isExpanded ? (
-                            <span className="icon icon-expanded" />
-                        ) : (
-                            <span className="icon icon-collapsed" />
-                        )}
+                        <span className={`icon icon-${props.isExpanded ? 'expanded' : 'collapsed'}`} />
                         {props.label}
                     </button>
                     <span className="form-group-icon" />
