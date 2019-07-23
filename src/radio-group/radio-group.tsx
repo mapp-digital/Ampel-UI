@@ -19,9 +19,8 @@ const RadioGroup: React.FunctionComponent<Props> = (props) => {
         <>
             {props.options.map((option, index) => (
                 <div key={index} className={`${props.className || ''}`}>
-                    <label className={`radio`}>
-                        {' '}
-                        {option.label}
+                    <label className="radio">
+                        <span>{option.label}</span>
                         <input
                             id={`${props.id}-${index}`}
                             type="radio"
