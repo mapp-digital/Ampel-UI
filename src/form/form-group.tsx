@@ -35,8 +35,8 @@ const FormGroup: React.FunctionComponent<Props> = (props) => {
                     >
                         <span className={`icon icon-${props.isExpanded ? 'expanded' : 'collapsed'}`} />
                         {props.label}
+                        <span className="form-group-icon" />
                     </button>
-                    <span className="form-group-icon" />
                 </div>
                 {props.isExpanded && <div className="form-group-content">{props.children}</div>}
             </div>

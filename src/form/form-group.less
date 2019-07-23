@@ -4,9 +4,6 @@
     margin-bottom: 15px;
 
     .form-group-header {
-        display: flex;
-        align-items: center;
-
         border-bottom: 1px solid @gray-mid;
 
         .icon {
@@ -19,6 +16,10 @@
 
         .form-group-toggle {
             padding: 10px;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
 
             background-color: transparent;
             text-align: start;
@@ -26,6 +27,11 @@
             border: none;
             cursor: pointer;
             color: @gray-darkest;
+
+            .form-group-icon {
+                font-size: 12px;
+                margin-left: 10px;
+            }
 
             &:focus {
                 outline: none;
