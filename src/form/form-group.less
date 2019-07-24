@@ -39,6 +39,26 @@
         }
     }
 
+    .form-group-content {
+        padding: 15px 0 15px 60px;
+    }
+
+    &.group-valid {
+        .form-group-icon {
+            @success-icon();
+            color: @success;
+            padding-right: 10px;
+        }
+    }
+
+    &.group-error {
+        .form-group-icon {
+            @error-icon();
+            color: @error;
+            padding-right: 10px;
+        }
+    }
+
     .icon-expanded {
         @dropdown-icon();
     }
@@ -46,16 +66,4 @@
     .icon-collapsed {
         @table-pagination-next();
     }
-}
-
-.expanded {
-    .form-group-header {
-        .form-group-toggle {
-            color: @gray-darkest !important;
-        }
-    }
-}
-
-.form-group-content {
-    padding: 15px 0 15px 60px;
 }
