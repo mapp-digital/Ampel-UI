@@ -4,9 +4,6 @@
     margin-bottom: 15px;
 
     .form-group-header {
-        display: flex;
-        align-items: center;
-
         border-bottom: 1px solid @gray-mid;
 
         .icon {
@@ -19,6 +16,10 @@
 
         .form-group-toggle {
             padding: 10px;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
 
             background-color: transparent;
             text-align: start;
@@ -27,9 +28,34 @@
             cursor: pointer;
             color: @gray-darkest;
 
+            .form-group-icon {
+                font-size: 12px;
+                margin-left: 10px;
+            }
+
             &:focus {
                 outline: none;
             }
+        }
+    }
+
+    .form-group-content {
+        padding: 15px 0 15px 60px;
+    }
+
+    &.group-valid {
+        .form-group-icon {
+            @success-icon();
+            color: @success;
+            padding-right: 10px;
+        }
+    }
+
+    &.group-error {
+        .form-group-icon {
+            @error-icon();
+            color: @error;
+            padding-right: 10px;
         }
     }
 
@@ -40,16 +66,4 @@
     .icon-collapsed {
         @table-pagination-next();
     }
-}
-
-.expanded {
-    .form-group-header {
-        .form-group-toggle {
-            color: @gray-darkest !important;
-        }
-    }
-}
-
-.form-group-content {
-    padding: 15px 0 15px 60px;
 }
