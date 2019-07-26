@@ -67,17 +67,14 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
     <div className="node-box" data-qa={`container-${props.levelHeaderLabel}`}>
         <span className="icon" />
         <div className="header">
-            <h3 className="header-label" data-qa={`header-label-${props.id}`}>
-                {props.levelHeaderLabel}
-            </h3>
-        </div>
-        <div className="select-all">
-            <Checkbox
-                id={`select-all-${props.id}`}
-                value={isNodeChecked(props.node)}
-                onChange={props.onSelectAll.bind(null, props.node)}
-            />
-            <Label for={`select-all-${props.id}`} value={props.selectAllLabel} />
+            <div className="header-label" data-qa={`header-label-${props.id}`}>
+                <Checkbox
+                    id={`select-all-${props.id}`}
+                    value={isNodeChecked(props.node)}
+                    onChange={props.onSelectAll.bind(null, props.node)}
+                />
+                <Label for={`select-all-${props.id}`} value={props.levelHeaderLabel} />
+            </div>
         </div>
         <ul className="node-list">
             {hasChildren(props.node) &&
@@ -87,7 +84,7 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                         role="listitem"
                         data-qa={`node-${node.label}`}
                         onClick={props.onNodeClick.bind(null, node)}
-                        className="node-list-item"
+                        className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''}`}
                     >
                         <div>
                             <TriStateCheckbox
