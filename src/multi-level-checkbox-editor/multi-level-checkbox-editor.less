@@ -6,8 +6,9 @@
     };
 
     .node-box {
-        padding: 20px;
+        margin: 20px;
         position: relative;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.05);
 
         &:not(:first-child) {
             .icon {
@@ -31,13 +32,20 @@
 
         .header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
+            justify-content: center;
             flex-direction: column;
-            padding: 10px;
+            padding: 10px 15px;
             border: @default-border;
+            border-bottom: 0;
+            background: @white;
 
             .header-label {
                 margin: 0;
+            }
+
+            label {
+                font-weight: bold;
             }
         }
 
@@ -48,12 +56,13 @@
         }
 
         .node-list {
-            margin: 10px 0 0 0;
+            margin: 0;
             padding: 0;
             max-height: 184px;
             overflow-y: auto;
             border: @default-border;
             list-style-type: none;
+            background: @white;
 
             .node-list-item {
                 @node-padding();
@@ -63,12 +72,18 @@
                 align-items: baseline;
                 cursor: pointer;
 
-                &:not(:first-child) {
-                    border-top: @default-border;
-                }
+                //&:not(:first-child) {
+                //    border-top: @default-border;
+                //}
 
                 .child-node-count {
-                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: @gray-light;
+                    min-width: 55px;
+                    padding: 5px;
+                    border-radius: 10%;
                 }
             }
         }
