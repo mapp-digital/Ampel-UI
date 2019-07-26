@@ -6,7 +6,7 @@
     };
 
     .node-box {
-        margin: 20px;
+        padding: 20px;
         position: relative;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
@@ -31,20 +31,13 @@
 
         .header {
             display: flex;
-            align-items: flex-start;
-            justify-content: center;
+            align-items: center;
             flex-direction: column;
-            padding: 10px 15px;
+            padding: 10px;
             border: @default-border;
-            border-bottom: 0;
-            background: @white;
 
             .header-label {
                 margin: 0;
-            }
-
-            label {
-                font-weight: bold;
             }
         }
 
@@ -55,13 +48,12 @@
         }
 
         .node-list {
-            margin: 0;
+            margin: 10px 0 0 0;
             padding: 0;
             max-height: 184px;
             overflow-y: auto;
             border: @default-border;
             list-style-type: none;
-            background: @white;
 
             .node-list-item {
                 @node-padding();
@@ -86,13 +78,7 @@
                 }
 
                 .child-node-count {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    background: @gray-light;
-                    min-width: 55px;
-                    padding: 5px;
-                    border-radius: 10%;
+                    font-weight: bold;
                 }
             }
         }

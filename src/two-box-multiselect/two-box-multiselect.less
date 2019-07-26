@@ -18,31 +18,28 @@
         width: 45%;
 
         .two-box-multiselect-label {
+            font-weight: bold;
             margin-bottom: 10px;
         }
 
         .two-box-multiselect-select-box {
             border: @default-border;
             background: @white;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
             .two-box-multiselect-filter-bar {
                 @border-gap: 10px;
 
                 display: flex;
-                width: 100%;
-                padding: 0 5px;
+                width: calc(100% - (2*@border-gap));
+                margin-left: @border-gap;
                 margin-bottom: 5px;
 
-                color: @gray-darker;
                 border-bottom: @default-border;
 
                 .two-box-multiselect-filter-icon {
                     @two-box-filter-icon();
                     font-size: 14px;
                     padding-top: 3px;
-                    padding-right: 5px;
-                    padding-left: 3px;
                     line-height: 30px;
                 }
 
@@ -111,15 +108,13 @@
             };
 
             .action-button {
-                width: 34px;
-                height: 30px;
+                width: 26px;
+                height: 26px;
                 margin-bottom: 10px;
-                padding: 5px;
 
-                background-color: @white;
-                color: @info-dark;
+                background-color: transparent;
                 cursor: pointer;
-                border: 1px solid @info-dark;
+                border: none;
 
                 &:focus {
                     outline: none;
@@ -135,31 +130,30 @@
             }
 
             .remove-buttons {
-                margin-top: 10px;
                 @button-container();
             }
 
             .add-all {
                 line-height: 26px;
-                font-size: 14px;
+                font-size: 17px;
                 @two-box-add-all();
             }
 
             .add-highlighted {
                 line-height: 26px;
-                font-size: 14px;
+                font-size: 17px;
                 @two-box-add-highlighted();
             }
 
             .remove-highlighted {
                 line-height: 26px;
-                font-size: 14px;
+                font-size: 17px;
                 @two-box-remove-highlighted();
             }
 
             .remove-all {
                 line-height: 26px;
-                font-size: 14px;
+                font-size: 17px;
                 @two-box-remove-all();
             }
         }
