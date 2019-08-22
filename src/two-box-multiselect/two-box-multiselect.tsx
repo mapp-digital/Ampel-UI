@@ -156,7 +156,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
                     key={`${option.value}`}
                     role="option"
                     onClick={onClick}
-                    data-qa={`two-box-multiselect--${side}-item-${option.value}`}
+                    data-qa={`two-box-multiselect--${side}-item-${option.label}`}
                     className={`item ${highlighted ? 'highlighted' : ''}`}
                     aria-selected={highlighted}
                     onDoubleClick={onDoubleClick}
