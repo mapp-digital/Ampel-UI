@@ -28,7 +28,7 @@ describe('Dialog', () => {
             />
         );
 
-        const dialog = getByDataQa(`dialog-${id}`);
+        const dialog = getByDataQa(`dialog`);
 
         expect(dialog).toBeTruthy();
     });
@@ -108,7 +108,7 @@ describe('Dialog', () => {
             />
         );
 
-        const dialog = getByDataQa(`dialog-${id}`);
+        const dialog = getByDataQa(`dialog`);
         expect(dialog.focus).toBeTruthy();
     });
 
@@ -133,7 +133,7 @@ describe('Dialog', () => {
             />
         );
 
-        const dialog = getByDataQa(`dialog-${id}`);
+        const dialog = getByDataQa(`dialog`);
         fireEvent.keyUp(dialog, { keyCode: 27 });
 
         expect(onCancel).toHaveBeenCalledTimes(1);
@@ -159,7 +159,7 @@ describe('Dialog', () => {
                 onConfirm={onConfirm}
             />
         );
-        const dialog = getByDataQa(`dialog-${id}`);
+        const dialog = getByDataQa(`dialog`);
         fireEvent.mouseDown(dialog.parentElement as HTMLElement);
         expect(onCancel).toHaveBeenCalledTimes(1);
     });
@@ -184,7 +184,7 @@ describe('Dialog', () => {
                 onConfirm={onConfirm}
             />
         );
-        const dialog = getByDataQa(`dialog-${id}`);
+        const dialog = getByDataQa(`dialog`);
         fireEvent.mouseDown(dialog.firstChild as HTMLElement);
         expect(onCancel).not.toHaveBeenCalledTimes(1);
     });

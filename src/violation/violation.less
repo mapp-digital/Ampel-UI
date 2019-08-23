@@ -1,15 +1,27 @@
 .violation {
     font-size: 12px;
+    display: flex;
+    align-items: center;
 
     .violation-icon {
-        @error-icon();
-
-        vertical-align: -5%;
         padding-right: 5px;
-        color: @error;
     }
 
-    .violation-text {
+    &.error {
         color: @error;
+
+        .violation-icon {
+            @error-icon();
+        }
+
     }
+
+    &.info {
+        color: @info-deep;
+
+        .violation-icon {
+            @info-icon();
+        }
+    }
+
 }

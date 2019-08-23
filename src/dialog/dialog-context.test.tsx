@@ -36,7 +36,7 @@ describe('Dialog Context', () => {
         const btn = getByDataQa(`trigger-dialog-button`);
         btn.click();
 
-        const dialog = getByDataQa(`dialog-my-dialog`);
+        const dialog = getByDataQa(`dialog`);
 
         expect(dialog).toBeTruthy();
     });
@@ -47,10 +47,10 @@ describe('Dialog Context', () => {
         const btn = getByDataQa(`trigger-dialog-button`);
         btn.click();
 
-        const dialog = getByDataQa(`dialog-my-dialog`);
+        const dialog = getByDataQa(`dialog`);
         fireEvent.keyUp(dialog, { keyCode: 27 });
 
-        const maybeDialog = queryByDataQa(`dialog-my-dialog`) as HTMLElement;
+        const maybeDialog = queryByDataQa(`dialog`) as HTMLElement;
         expect(maybeDialog).toBeFalsy();
     });
 });

@@ -77,7 +77,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const leftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${value}`);
+        const leftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${label}`);
 
         expect(leftBoxItem).toBeTruthy();
         expect(leftBoxItem!.textContent).toEqual(label);
@@ -104,7 +104,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const rightBoxItem = queryByDataQa(`two-box-multiselect--right-item-${value}`);
+        const rightBoxItem = queryByDataQa(`two-box-multiselect--right-item-${label}`);
 
         expect(rightBoxItem).toBeTruthy();
         expect(rightBoxItem!.textContent).toEqual(label);
@@ -136,7 +136,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const leftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${value}`);
+        const leftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${label}`);
 
         expect(leftBoxItem).toBeFalsy();
     });
@@ -146,14 +146,17 @@ describe('TwoBoxMultiselect', () => {
             const id = 'someId';
             const value = 'someValue';
             const someOtherValue = 'someOtherValue';
+            const label = 'Some label';
+            const someOtherLabel = 'Some other label';
+
             const leftItems = [
                 {
                     value,
-                    label: '',
+                    label,
                 },
                 {
                     value: someOtherValue,
-                    label: '',
+                    label: someOtherLabel,
                 },
             ];
             const { getByDataQa } = render(
@@ -167,10 +170,10 @@ describe('TwoBoxMultiselect', () => {
                 />
             );
 
-            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${value}`);
+            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${label}`);
             someBoxItem.click();
 
-            const someOtherBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${someOtherValue}`);
+            const someOtherBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${someOtherLabel}`);
 
             expect(someBoxItem.classList.contains('highlighted')).toBeTruthy();
             expect(someOtherBoxItem.classList.contains('highlighted')).toBeFalsy();
@@ -185,16 +188,18 @@ describe('TwoBoxMultiselect', () => {
             const id = 'someId';
             const value = 'someValue';
             const someOtherValue = 'someOtherValue';
+            const label = 'Some label';
+            const someOtherLabel = 'Some other label';
             const onChange = jest.fn();
 
             const leftItems = [
                 {
                     value,
-                    label: '',
+                    label,
                 },
                 {
                     value: someOtherValue,
-                    label: '',
+                    label: someOtherLabel,
                 },
             ];
             const { getByDataQa } = render(
@@ -209,7 +214,7 @@ describe('TwoBoxMultiselect', () => {
                 />
             );
 
-            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${value}`);
+            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${label}`);
             someBoxItem.click();
 
             expect(someBoxItem.classList.contains('highlighted')).toBeFalsy();
@@ -219,16 +224,18 @@ describe('TwoBoxMultiselect', () => {
             const id = 'someId';
             const value = 'someValue';
             const someOtherValue = 'someOtherValue';
+            const label = 'Some label';
+            const someOtherLabel = 'Some other label';
             const onChange = jest.fn();
 
             const leftItems = [
                 {
                     value,
-                    label: '',
+                    label,
                 },
                 {
                     value: someOtherValue,
-                    label: '',
+                    label: someOtherLabel,
                 },
             ];
             const { getByDataQa } = render(
@@ -243,7 +250,7 @@ describe('TwoBoxMultiselect', () => {
                 />
             );
 
-            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${value}`);
+            const someBoxItem = getByDataQa(`two-box-multiselect--${side}-item-${label}`);
             fireEvent.doubleClick(someBoxItem);
 
             expect(onChange).not.toHaveBeenCalled();
@@ -253,10 +260,11 @@ describe('TwoBoxMultiselect', () => {
     it(`should not show any options if their values are selected`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
         ];
         const { queryByDataQa } = render(
@@ -270,7 +278,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someLeftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${value}`);
+        const someLeftBoxItem = queryByDataQa(`two-box-multiselect--left-item-${label}`);
 
         expect(someLeftBoxItem).toBeFalsy();
     });
@@ -278,11 +286,12 @@ describe('TwoBoxMultiselect', () => {
     it(`should invoke onChange callback with highlighted left option values when doubleClicking an option`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const onChange = jest.fn();
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
         ];
         const { getByDataQa } = render(
@@ -296,7 +305,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${label}`);
         fireEvent.doubleClick(someLeftBoxItem);
 
         expect(onChange).toHaveBeenCalledWith([value]);
@@ -305,11 +314,12 @@ describe('TwoBoxMultiselect', () => {
     it(`should invoke onChange callback without highlighted right option value when doubleClicking a selected value`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const onChange = jest.fn();
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
         ];
         const { getByDataQa } = render(
@@ -323,7 +333,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${label}`);
         fireEvent.doubleClick(someRightBoxItem);
 
         expect(onChange).toHaveBeenCalledWith([]);
@@ -332,11 +342,12 @@ describe('TwoBoxMultiselect', () => {
     it(`should invoke onChange callback with highlighted left options values when clicking the 'add' button`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const onChange = jest.fn();
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
         ];
         const { getByDataQa } = render(
@@ -350,7 +361,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${label}`);
         someLeftBoxItem.click();
 
         const addSingleButton = getByDataQa(`two-box-multiselect--add-highlighted-${id}`);
@@ -362,11 +373,12 @@ describe('TwoBoxMultiselect', () => {
     it(`should NOT invoke onChange callback when clicking the 'add' button if 'disabled' prop is provided`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const onChange = jest.fn();
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
         ];
         const { getByDataQa } = render(
@@ -381,7 +393,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+        const someLeftBoxItem = getByDataQa(`two-box-multiselect--left-item-${label}`);
         someLeftBoxItem.click();
 
         const addSingleButton = getByDataQa(`two-box-multiselect--add-highlighted-${id}`);
@@ -481,18 +493,21 @@ describe('TwoBoxMultiselect', () => {
         const onChange = jest.fn();
         const someOtherValue = 'someOtherValue';
         const someThirdValue = 'someThirdValue';
+        const label = 'Some label';
+        const someOtherLabel = 'Some other label';
+        const someThirdLabel = 'Some third label';
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
             {
                 value: someOtherValue,
-                label: '',
+                label: someOtherLabel,
             },
             {
                 value: someThirdValue,
-                label: '',
+                label: someThirdLabel,
             },
         ];
         const { getByDataQa } = render(
@@ -506,10 +521,10 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${label}`);
         someRightBoxItem.click();
 
-        const someThirdRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${someThirdValue}`);
+        const someThirdRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${someThirdLabel}`);
         someThirdRightBoxItem.click();
 
         const removeSingleButton = getByDataQa(`two-box-multiselect--remove-highlighted-${id}`);
@@ -524,18 +539,21 @@ describe('TwoBoxMultiselect', () => {
         const onChange = jest.fn();
         const someOtherValue = 'someOtherValue';
         const someThirdValue = 'someThirdValue';
+        const label = 'Some label';
+        const someOtherLabel = 'Some other label';
+        const someThirdLabel = 'Some third label';
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
             {
                 value: someOtherValue,
-                label: '',
+                label: someOtherLabel,
             },
             {
                 value: someThirdValue,
-                label: '',
+                label: someThirdLabel,
             },
         ];
         const { getByDataQa } = render(
@@ -550,10 +568,10 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+        const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${label}`);
         someRightBoxItem.click();
 
-        const someThirdRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${someThirdValue}`);
+        const someThirdRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${someThirdLabel}`);
         someThirdRightBoxItem.click();
 
         const removeSingleButton = getByDataQa(`two-box-multiselect--remove-highlighted-${id}`);
@@ -566,14 +584,16 @@ describe('TwoBoxMultiselect', () => {
         const id = 'someId';
         const value = 'someValue';
         const someOtherValue = 'someOtherValue';
+        const label = 'Some label';
+        const someOtherLabel = 'Some other label';
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
             {
                 value: someOtherValue,
-                label: '',
+                label: someOtherLabel,
             },
         ];
         const component = (
@@ -589,7 +609,7 @@ describe('TwoBoxMultiselect', () => {
         const { getByDataQa, rerender } = render(component);
 
         const selectItem = () => {
-            const someBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+            const someBoxItem = getByDataQa(`two-box-multiselect--right-item-${label}`);
             someBoxItem.click();
         };
 
@@ -601,7 +621,7 @@ describe('TwoBoxMultiselect', () => {
         const resetComponent = () => rerender(component);
 
         const expectNotHighlighted = () => {
-            const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${value}`);
+            const someRightBoxItem = getByDataQa(`two-box-multiselect--right-item-${label}`);
             expect(someRightBoxItem.classList.contains('highlighted')).toBeFalsy();
         };
 
@@ -620,14 +640,16 @@ describe('TwoBoxMultiselect', () => {
         const id = 'someId';
         const value = 'someValue';
         const someOtherValue = 'someOtherValue';
+        const label = 'Some label';
+        const someOtherLabel = 'Some other label';
         const leftItems = [
             {
                 value,
-                label: '',
+                label,
             },
             {
                 value: someOtherValue,
-                label: '',
+                label: someOtherLabel,
             },
         ];
         const component = (
@@ -643,7 +665,7 @@ describe('TwoBoxMultiselect', () => {
         const { getByDataQa, rerender } = render(component);
 
         const selectItem = () => {
-            const someBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+            const someBoxItem = getByDataQa(`two-box-multiselect--left-item-${label}`);
             someBoxItem.click();
         };
 
@@ -655,7 +677,7 @@ describe('TwoBoxMultiselect', () => {
         const resetComponent = () => rerender(component);
 
         const expectNotHighlighted = () => {
-            const someRightBoxItem = getByDataQa(`two-box-multiselect--left-item-${value}`);
+            const someRightBoxItem = getByDataQa(`two-box-multiselect--left-item-${label}`);
             expect(someRightBoxItem.classList.contains('highlighted')).toBeFalsy();
         };
 
@@ -673,10 +695,11 @@ describe('TwoBoxMultiselect', () => {
     it(`should exclude left side options that don't fit to the current filter`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const leftItems = [
             {
                 value,
-                label: 'Some fancy Label',
+                label,
             },
         ];
         const { getByDataQa, queryByDataQa } = render(
@@ -693,7 +716,7 @@ describe('TwoBoxMultiselect', () => {
         const leftOptionsFilter = getByDataQa(`two-box-multiselect--left-filter-${id}`);
         changeValue(leftOptionsFilter, 'no label like this');
 
-        const absentLeftItem = queryByDataQa(`two-box-multiselect--left-item-${value}`);
+        const absentLeftItem = queryByDataQa(`two-box-multiselect--left-item-${label}`);
 
         expect(absentLeftItem).toBeFalsy();
     });
@@ -701,10 +724,11 @@ describe('TwoBoxMultiselect', () => {
     it(`should exclude right side options that don't fit to the current filter`, () => {
         const id = 'someId';
         const value = 'someValue';
+        const label = 'Some label';
         const leftItems = [
             {
                 value,
-                label: 'Some fancy Label',
+                label,
             },
         ];
         const { getByDataQa, queryByDataQa } = render(
@@ -721,7 +745,7 @@ describe('TwoBoxMultiselect', () => {
         const rightOptionsFilter = getByDataQa(`two-box-multiselect--right-filter-${id}`);
         changeValue(rightOptionsFilter, 'no label like this');
 
-        const absentRightItem = queryByDataQa(`two-box-multiselect--right-item-${value}`);
+        const absentRightItem = queryByDataQa(`two-box-multiselect--right-item-${label}`);
 
         expect(absentRightItem).toBeFalsy();
     });

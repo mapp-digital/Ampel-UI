@@ -144,7 +144,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                         {this.props.onCancel && this.getCancelButton()}
 
                         <Button
-                            id="form"
+                            id="submit"
                             text={this.props.submitButtonText}
                             type="submit"
                             className="btn btn-primary"
@@ -185,7 +185,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     private getCancelButton() {
         return (
             <Button
-                id="cancel-example"
+                id="cancel"
                 text={this.props.cancelButtonText}
                 type="button"
                 onClick={this.props.onCancel}
@@ -308,6 +308,9 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         return getDeclaredFields(this.props.children)
             .map((field: Field<any, MODEL>) => field.id)
             .map(this.getFieldViolations)
+            .filter((violations: Array<ConstraintViolation>) =>
+                violations.some((violation) => violation.severity === ViolationSeverity.ERROR)
+            )
             .every((violations: Array<ConstraintViolation>) => !violations.length);
     }
 

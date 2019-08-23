@@ -47,7 +47,7 @@ class Dialog extends React.Component<Props, {}> {
                     onKeyUp={this.onKeyupHandler}
                     tabIndex={-1}
                     role="dialog"
-                    data-qa={`dialog-${this.props.id}`}
+                    data-qa={`dialog`}
                 >
                     <div className="dialog-content">
                         <div className="dialog-content-header">
