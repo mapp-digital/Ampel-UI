@@ -309,7 +309,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             .map((field: Field<any, MODEL>) => field.id)
             .map(this.getFieldViolations)
             .filter((violations: Array<ConstraintViolation>) =>
-                violations.every((violation) => violation.severity === ViolationSeverity.ERROR)
+                violations.some((violation) => violation.severity === ViolationSeverity.ERROR)
             )
             .every((violations: Array<ConstraintViolation>) => !violations.length);
     }
