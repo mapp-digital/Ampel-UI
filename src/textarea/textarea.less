@@ -3,9 +3,8 @@
     textarea {
         height: auto;
         &:focus {
-            box-shadow: none;
             outline: none;
-            border-color: @success;
+            box-shadow: 0 0 1px fade(@info, 50%);
         }
         &[disabled] {
             background: @gray-light;
