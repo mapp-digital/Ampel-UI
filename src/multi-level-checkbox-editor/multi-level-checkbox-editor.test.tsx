@@ -65,21 +65,6 @@ describe('MultiLevelCheckboxEditor', () => {
         expect(label.textContent).toBe(level1HeaderLabel);
     });
 
-    it('should render select all label', () => {
-        const id = 'someId';
-        const nodes = [
-            {
-                id: '1',
-                label: 'Label 1',
-                value: true,
-            },
-        ];
-        const selectAllLabel = 'Select all';
-        const { getByDataQa } = render(getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, selectAllLabel }));
-        const label = getByDataQa(`label--for-select-all-0`);
-        expect(label.textContent).toBe(selectAllLabel);
-    });
-
     it(`should invoke 'onNodesChange' with the particular node change, when a checkbox is clicked`, () => {
         const id = 'someId';
         const nodes = [

@@ -14,13 +14,14 @@ interface Props {
     onChange: (value: boolean) => void;
     disabled?: boolean;
     className?: string;
+    label?: string;
 }
 
 const TriStateCheckbox: React.FunctionComponent<Props> = (props) => {
     const value = props.value !== TriStateCheckboxState.UNCHECKED;
     const className = props.value === TriStateCheckboxState.INDETERMINATE ? 'indeterminate' : '';
     const onChange = () => props.onChange(props.value === TriStateCheckboxState.UNCHECKED);
-    return <Checkbox id={props.id} className={className} value={value} onChange={onChange} />;
+    return <Checkbox id={props.id} className={className} value={value} onChange={onChange} label={props.label} />;
 };
 
 export { TriStateCheckbox, TriStateCheckboxState };

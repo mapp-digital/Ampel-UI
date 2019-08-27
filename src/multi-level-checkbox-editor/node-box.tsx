@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Checkbox } from '../checkbox';
-import { Label } from '../label';
+// import { Label } from '../label';
 import { Node } from './multi-level-checkbox-editor';
 import { TriStateCheckbox, TriStateCheckboxState } from './tri-state-checkbox';
 
@@ -72,8 +72,8 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                     id={`select-all-${props.id}`}
                     value={isNodeChecked(props.node)}
                     onChange={props.onSelectAll.bind(null, props.node)}
+                    label={props.levelHeaderLabel}
                 />
-                <Label for={`select-all-${props.id}`} value={props.levelHeaderLabel} />
             </div>
         </div>
         <ul className="node-list">
@@ -91,8 +91,8 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                                 id={`node-${node.id}`}
                                 value={getNodeState(node)}
                                 onChange={props.setNodeValue.bind(null, node)}
+                                label={node.label}
                             />
-                            <Label for={`node-${node.id}`} value={node.label} />
                         </div>
                         {hasChildren(node) ? (
                             <span className="child-node-count" data-qa={`node-label-${node.id}`}>{`${countCheckedNodes(

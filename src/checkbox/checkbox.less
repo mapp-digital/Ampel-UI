@@ -1,52 +1,55 @@
-//@checkbox-size: 20px;
-//@radio-content-size: 11px;
-//
-//.checkbox-wrapper {
-//    display: inline-block;
-//    position: relative;
-//    padding-left: 25px;
-//    margin-bottom: 12px;
-//    cursor: pointer;
-//    user-select: none;
-//
-//    input {
-//        position: absolute;
-//        opacity: 0;
-//        cursor: pointer;
-//        height: 0;
-//        width: 0;
-//
-//        &:checked ~ .checkmark {
-//            &:after {
-//                display: block;
-//            }
-//        }
-//    }
-//
-//    .checkmark {
-//        position: absolute;
-//        top: 0;
-//        left: 0;
-//        height: @checkbox-size;
-//        width: @checkbox-size;
-//        background-color: @white;
-//        border: 1px solid @gray-darker;
-//        border-radius: 2px;
-//
-//        display: flex;
-//        align-items: center;
-//        justify-content: center;
-//
-//        &:after {
-//            content: "";
-//            position: absolute;
-//            display: none;
-//
-//            width: 4px;
-//            height: 8px;
-//            border: solid @info-darker;
-//            border-width: 0 3px 3px 0;
-//            transform: rotate(45deg);
-//        }
-//    }
-//}
+.checkbox {
+    position: absolute;
+    visibility: hidden;
+
+    & + label {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        padding: 0;
+
+        &:before {
+            content: '';
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            width: 20px;
+            height: 20px;
+            background: @white;
+            border-radius: 2px;
+            border: 2px solid @gray-dark;
+        }
+    }
+
+    &:focus + label:before {
+        background: @info-light;
+    }
+
+    &:checked + label:before {
+        background: @white;
+    }
+
+    &:disabled + label:before {
+        cursor: not-allowed;
+        border-color: @gray-light;
+    }
+
+    &:checked + label:after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 4px;
+        background: transparent;
+        width: 6px;
+        height: 10px;
+        border: solid @info-darker;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+    }
+
+    &:disabled {
+        &:checked + label:after {
+            border-color: @info-lighter;
+        }
+    }
+}
