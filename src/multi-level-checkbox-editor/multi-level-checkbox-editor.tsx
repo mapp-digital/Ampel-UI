@@ -31,6 +31,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.selectNode = this.selectNode.bind(this);
         this.setNodeValue = this.setNodeValue.bind(this);
         this.setValueRecursively = this.setValueRecursively.bind(this);
+
+        this.setNodeHighlight = this.setNodeHighlight.bind(this);
+        this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
     }
 
     public render() {
@@ -78,6 +81,33 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         });
     }
 
+    private setNodeHighlight(node: Node) {
+        const condition = (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
+        const updatedNodes = this.props.nodes.map(walkTree(this.createSetHighlightWalker(condition)));
+        this.props.onNodesChange(updatedNodes);
+    }
+
+    private createSetHighlightWalker(condition: (node: Node) => boolean) {
+        return (node: Node) => {
+            const n = {
+                ...node,
+                isHighlighted: this.state.selectedNodeIds.includes(node.id),
+            };
+            if (condition(n)) {
+                return this.setHighlightRecursively(n);
+            }
+            return n;
+        };
+    }
+
+    private setHighlightRecursively(node: Node) {
+        const newNode = { ...node };
+        if (hasChildren(newNode)) {
+            newNode.children = newNode.children!.map(this.setHighlightRecursively);
+        }
+        return newNode;
+    }
+
     private setNodeValue(node: Node, value: boolean) {
         const condition = (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
         const updatedNodes = this.props.nodes.map(walkTree(this.createSetValueWalker(condition, value)));
@@ -94,10 +124,14 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     private createSetValueWalker(condition: (node: Node) => boolean, value: boolean) {
         return (node: Node) => {
-            if (condition(node)) {
-                return this.setValueRecursively(value, node);
+            const n = {
+                ...node,
+                isHighlighted: (condition(node) ? value : node.value) && this.state.selectedNodeIds.includes(node.id),
+            };
+            if (condition(n)) {
+                return this.setValueRecursively(value, n);
             }
-            return node;
+            return n;
         };
     }
 

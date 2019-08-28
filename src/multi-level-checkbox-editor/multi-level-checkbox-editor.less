@@ -57,7 +57,7 @@
         .node-list {
             margin: 0;
             padding: 0;
-            max-height: 184px;
+            height: 205px;
             overflow-y: auto;
             border: @default-border;
             list-style-type: none;
@@ -71,6 +71,10 @@
                 align-items: center;
                 cursor: pointer;
                 white-space: pre-line;
+
+                &.highlighted {
+                    background: @info-light;
+                }
 
                 div {
                     display: flex;

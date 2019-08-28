@@ -85,6 +85,7 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: '1',
                 label: 'Label 1',
                 value: false,
+                isHighlighted: false,
             },
         ]);
     });
@@ -114,11 +115,13 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: '1',
                 label: 'Label 1',
                 value: true,
+                isHighlighted: false,
             },
             {
                 id: '2',
                 label: 'Label 2',
                 value: true,
+                isHighlighted: false,
             },
         ]);
     });
@@ -184,18 +187,21 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: nodeId,
                 label: 'Label 1',
                 value: false,
+                isHighlighted: false,
                 children: [
                     {
                         id: '1-1',
                         label: 'Label 1-1',
                         value: false,
                         children: [],
+                        isHighlighted: false,
                     },
                     {
                         id: '1-2',
                         label: 'Label 1-2',
                         value: false,
                         children: [],
+                        isHighlighted: false,
                     },
                 ],
             },
