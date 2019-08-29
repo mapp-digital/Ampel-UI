@@ -41,7 +41,8 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
                 {this.getNodes().map(
                     (node, level) =>
-                        hasChildren(node) && (
+                        hasChildren(node) &&
+                        node.value && (
                             <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
                                 <NodeBox
                                     id={`${level}`}
@@ -68,17 +69,21 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             id: SYNTHETIC_ROOT_ID,
             label: '',
             children: this.props.nodes,
+            value: true,
         };
     }
 
     private selectNode(level: number, node: Node) {
-        this.setState((state) => {
-            const selectedNodeIds = state.selectedNodeIds.slice(0, level);
-            if (node.children && node.children.length) {
-                selectedNodeIds.push(node.id);
-            }
-            return { selectedNodeIds };
-        });
+        this.setState(
+            (state) => {
+                const selectedNodeIds = state.selectedNodeIds.slice(0, level);
+                if (node.children && node.children.length) {
+                    selectedNodeIds.push(node.id);
+                }
+                return { selectedNodeIds };
+            },
+            () => this.setNodeHighlight(node)
+        );
     }
 
     private setNodeHighlight(node: Node) {
@@ -91,7 +96,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return (node: Node) => {
             const n = {
                 ...node,
-                isHighlighted: this.state.selectedNodeIds.includes(node.id),
+                isHighlighted: node.value && this.state.selectedNodeIds.includes(node.id),
             };
             if (condition(n)) {
                 return this.setHighlightRecursively(n);
@@ -101,11 +106,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     private setHighlightRecursively(node: Node) {
-        const newNode = { ...node };
-        if (hasChildren(newNode)) {
-            newNode.children = newNode.children!.map(this.setHighlightRecursively);
+        if (hasChildren(node)) {
+            node.children = node.children!.map(this.setHighlightRecursively);
         }
-        return newNode;
+        return node;
     }
 
     private setNodeValue(node: Node, value: boolean) {
@@ -124,14 +128,14 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     private createSetValueWalker(condition: (node: Node) => boolean, value: boolean) {
         return (node: Node) => {
-            const n = {
+            const nodeWithHighlight = {
                 ...node,
                 isHighlighted: (condition(node) ? value : node.value) && this.state.selectedNodeIds.includes(node.id),
             };
-            if (condition(n)) {
-                return this.setValueRecursively(value, n);
+            if (condition(nodeWithHighlight)) {
+                return this.setValueRecursively(value, nodeWithHighlight);
             }
-            return n;
+            return nodeWithHighlight;
         };
     }
 
