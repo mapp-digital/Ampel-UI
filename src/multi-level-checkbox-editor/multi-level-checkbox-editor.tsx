@@ -11,7 +11,8 @@ interface Props {
     id: string;
     nodes: Array<Node>;
     onNodesChange: (nodes: Array<Node>) => void;
-    selectAllLabel: string;
+    /** @deprecated */
+    selectAllLabel?: string;
     levelHeaderLabels: Array<string>;
 }
 
@@ -30,9 +31,8 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.findNode = this.findNode.bind(this);
         this.selectNode = this.selectNode.bind(this);
         this.setNodeValue = this.setNodeValue.bind(this);
-        this.setValueRecursively = this.setValueRecursively.bind(this);
-
         this.setNodeHighlight = this.setNodeHighlight.bind(this);
+        this.setValueRecursively = this.setValueRecursively.bind(this);
         this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
     }
 
@@ -87,21 +87,40 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     private setNodeHighlight(node: Node) {
-        const condition = (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
+        const condition = this.getCondition(node);
         const updatedNodes = this.props.nodes.map(walkTree(this.createSetHighlightWalker(condition)));
+        this.props.onNodesChange(updatedNodes);
+    }
+
+    private setNodeValue(node: Node, value: boolean) {
+        const condition = this.getCondition(node);
+        const updatedNodes = this.props.nodes.map(walkTree(this.createSetValueWalker(condition, value)));
         this.props.onNodesChange(updatedNodes);
     }
 
     private createSetHighlightWalker(condition: (node: Node) => boolean) {
         return (node: Node) => {
-            const n = {
+            const nodeWithHighlight = {
                 ...node,
-                isHighlighted: node.value && this.state.selectedNodeIds.includes(node.id),
+                isHighlighted: this.isNodeHighlighted(node),
             };
-            if (condition(n)) {
-                return this.setHighlightRecursively(n);
+            if (condition(nodeWithHighlight)) {
+                return this.setHighlightRecursively(nodeWithHighlight);
             }
-            return n;
+            return nodeWithHighlight;
+        };
+    }
+
+    private createSetValueWalker(condition: (node: Node) => boolean, value: boolean) {
+        return (node: Node) => {
+            const nodeWithHighlight = {
+                ...node,
+                isHighlighted: this.isNodeHighlighted(node),
+            };
+            if (condition(nodeWithHighlight)) {
+                return this.setValueRecursively(value, nodeWithHighlight);
+            }
+            return nodeWithHighlight;
         };
     }
 
@@ -112,12 +131,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return node;
     }
 
-    private setNodeValue(node: Node, value: boolean) {
-        const condition = (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
-        const updatedNodes = this.props.nodes.map(walkTree(this.createSetValueWalker(condition, value)));
-        this.props.onNodesChange(updatedNodes);
-    }
-
     private setValueRecursively(v: boolean, node: Node) {
         const newNode = { ...node, value: v };
         if (hasChildren(newNode)) {
@@ -126,17 +139,12 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return newNode;
     }
 
-    private createSetValueWalker(condition: (node: Node) => boolean, value: boolean) {
-        return (node: Node) => {
-            const nodeWithHighlight = {
-                ...node,
-                isHighlighted: (condition(node) ? value : node.value) && this.state.selectedNodeIds.includes(node.id),
-            };
-            if (condition(nodeWithHighlight)) {
-                return this.setValueRecursively(value, nodeWithHighlight);
-            }
-            return nodeWithHighlight;
-        };
+    private isNodeHighlighted(node: Node) {
+        return node.value && this.state.selectedNodeIds.includes(node.id);
+    }
+
+    private getCondition(node: Node) {
+        return (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
     }
 
     private findNode(nodeId: string): Node {

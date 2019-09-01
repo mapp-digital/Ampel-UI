@@ -4,15 +4,15 @@
 
     & + label {
         position: relative;
-        display: inline-block;
+        display: flex;
+        align-items: center;
         cursor: pointer;
         padding: 0;
 
         &:before {
             content: '';
+            flex: 0 0 20px;
             margin-right: 10px;
-            display: inline-block;
-            vertical-align: middle;
             width: 20px;
             height: 20px;
             background: @white;
@@ -37,14 +37,14 @@
     &:checked + label:after {
         content: '';
         position: absolute;
-        left: 7px;
-        top: 4px;
+        top: 45%;
+        left: 3px;
         background: transparent;
         width: 6px;
         height: 10px;
         border: solid @info-darker;
         border-width: 0 3px 3px 0;
-        transform: rotate(45deg);
+        transform: translate(50%, -50%) rotate(45deg);
     }
 
     &:disabled {

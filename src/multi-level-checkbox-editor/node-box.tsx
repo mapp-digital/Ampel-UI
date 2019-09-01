@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Checkbox } from '../checkbox';
-// import { Label } from '../label';
 import { Node } from './multi-level-checkbox-editor';
 import { TriStateCheckbox, TriStateCheckboxState } from './tri-state-checkbox';
 
@@ -11,7 +10,8 @@ interface Props {
     onSelectAll: (node: Node, value: boolean) => void;
     onNodeClick: (node: Node) => void;
     setNodeValue: (node: Node, value: boolean) => void;
-    selectAllLabel: string;
+    /** @deprecated */
+    selectAllLabel?: string;
     levelHeaderLabel: string;
 }
 
