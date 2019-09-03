@@ -33,8 +33,6 @@ interface Props {
     onChange: (data: CheckboxTableData) => void;
     selectAllLabel: string;
     isDisabledCell?: (columnKey: string, rowKey: string) => boolean;
-    /** @deprecated */
-    selectAllColumnLabel?: string;
 }
 
 const ROW_SELECTION_COLUMN_ID = 'rowSelectionColumn';

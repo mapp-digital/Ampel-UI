@@ -40,7 +40,7 @@ const getAllTrueData = () => ({
 });
 
 const getCheckboxTable = (props: CheckboxTableProps) => <CheckboxTable {...props} />;
-const defaultProps = { id: 'someId', selectAllColumnLabel: '', selectAllLabel: '' };
+const defaultProps = { id: 'someId', selectAllLabel: '' };
 
 describe('Table', () => {
     afterEach(cleanup);
