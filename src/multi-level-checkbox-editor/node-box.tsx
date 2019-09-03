@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Checkbox } from '../checkbox';
-import { Label } from '../label';
 import { Node } from './multi-level-checkbox-editor';
 import { TriStateCheckbox, TriStateCheckboxState } from './tri-state-checkbox';
 
@@ -11,7 +10,6 @@ interface Props {
     onSelectAll: (node: Node, value: boolean) => void;
     onNodeClick: (node: Node) => void;
     setNodeValue: (node: Node, value: boolean) => void;
-    selectAllLabel: string;
     levelHeaderLabel: string;
 }
 
@@ -67,17 +65,14 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
     <div className="node-box" data-qa={`container-${props.levelHeaderLabel}`}>
         <span className="icon" />
         <div className="header">
-            <h3 className="header-label" data-qa={`header-label-${props.id}`}>
-                {props.levelHeaderLabel}
-            </h3>
-        </div>
-        <div className="select-all">
-            <Checkbox
-                id={`select-all-${props.id}`}
-                value={isNodeChecked(props.node)}
-                onChange={props.onSelectAll.bind(null, props.node)}
-            />
-            <Label for={`select-all-${props.id}`} value={props.selectAllLabel} />
+            <div className="header-label" data-qa={`header-label-${props.id}`}>
+                <Checkbox
+                    id={`select-all-${props.id}`}
+                    value={isNodeChecked(props.node)}
+                    onChange={props.onSelectAll.bind(null, props.node)}
+                    label={props.levelHeaderLabel}
+                />
+            </div>
         </div>
         <ul className="node-list">
             {hasChildren(props.node) &&
@@ -87,15 +82,15 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                         role="listitem"
                         data-qa={`node-${node.label}`}
                         onClick={props.onNodeClick.bind(null, node)}
-                        className="node-list-item"
+                        className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''}`}
                     >
                         <div>
                             <TriStateCheckbox
                                 id={`node-${node.id}`}
                                 value={getNodeState(node)}
                                 onChange={props.setNodeValue.bind(null, node)}
+                                label={node.label}
                             />
-                            <Label for={`node-${node.id}`} value={node.label} />
                         </div>
                         {hasChildren(node) ? (
                             <span className="child-node-count" data-qa={`node-label-${node.id}`}>{`${countCheckedNodes(

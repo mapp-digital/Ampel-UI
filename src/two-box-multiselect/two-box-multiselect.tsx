@@ -116,6 +116,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
         return (
             <div className={`two-box-multiselect-select-box`}>
                 <div className="two-box-multiselect-filter-bar">
+                    <span className="two-box-multiselect-filter-icon" />
                     <input
                         type="text"
                         data-qa={`two-box-multiselect--${side}-filter-${this.props.id}`}
@@ -123,7 +124,6 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
                         className="form-control two-box-multiselect-filter"
                         placeholder={this.getFilterPlaceholder(side)}
                     />
-                    <span className="two-box-multiselect-filter-icon" />
                 </div>
                 <ul className={`two-box-option-items option-items-${side} ${this.props.disabled && 'disabled'}`}>
                     {options.map(

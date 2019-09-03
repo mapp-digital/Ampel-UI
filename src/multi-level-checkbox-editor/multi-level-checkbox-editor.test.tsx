@@ -7,7 +7,6 @@ import { TriStateCheckboxState } from './tri-state-checkbox';
 
 const getMultiLevelCheckboxEditor = (props: MultiLevelCheckboxEditorProps) => <MultiLevelCheckboxEditor {...props} />;
 const defaultProps = {
-    selectAllLabel: 'Select all',
     onNodesChange: jest.fn(),
     levelHeaderLabels: ['Level 1', 'Level 2'],
 };
@@ -65,21 +64,6 @@ describe('MultiLevelCheckboxEditor', () => {
         expect(label.textContent).toBe(level1HeaderLabel);
     });
 
-    it('should render select all label', () => {
-        const id = 'someId';
-        const nodes = [
-            {
-                id: '1',
-                label: 'Label 1',
-                value: true,
-            },
-        ];
-        const selectAllLabel = 'Select all';
-        const { getByDataQa } = render(getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, selectAllLabel }));
-        const label = getByDataQa(`label--for-select-all-0`);
-        expect(label.textContent).toBe(selectAllLabel);
-    });
-
     it(`should invoke 'onNodesChange' with the particular node change, when a checkbox is clicked`, () => {
         const id = 'someId';
         const nodes = [
@@ -100,6 +84,7 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: '1',
                 label: 'Label 1',
                 value: false,
+                isHighlighted: false,
             },
         ]);
     });
@@ -129,11 +114,13 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: '1',
                 label: 'Label 1',
                 value: true,
+                isHighlighted: false,
             },
             {
                 id: '2',
                 label: 'Label 2',
                 value: true,
+                isHighlighted: false,
             },
         ]);
     });
@@ -199,18 +186,21 @@ describe('MultiLevelCheckboxEditor', () => {
                 id: nodeId,
                 label: 'Label 1',
                 value: false,
+                isHighlighted: false,
                 children: [
                     {
                         id: '1-1',
                         label: 'Label 1-1',
                         value: false,
                         children: [],
+                        isHighlighted: false,
                     },
                     {
                         id: '1-2',
                         label: 'Label 1-2',
                         value: false,
                         children: [],
+                        isHighlighted: false,
                     },
                 ],
             },

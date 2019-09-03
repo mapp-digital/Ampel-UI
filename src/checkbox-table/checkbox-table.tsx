@@ -3,7 +3,6 @@ import * as React from 'react';
 import ReactTable from 'react-table';
 
 import { Checkbox } from '@ampel-ui/checkbox';
-import { Label } from '@ampel-ui/label';
 
 interface Column {
     id: string;
@@ -34,7 +33,6 @@ interface Props {
     onChange: (data: CheckboxTableData) => void;
     selectAllLabel: string;
     isDisabledCell?: (columnKey: string, rowKey: string) => boolean;
-    selectAllColumnLabel: string;
 }
 
 const ROW_SELECTION_COLUMN_ID = 'rowSelectionColumn';
@@ -102,8 +100,8 @@ class CheckboxTable extends React.Component<Props, {}> {
                         value={this.getRowAggregate(context.row.id)}
                         disabled={this.isDisabled(this.getAllColumnKeys(), [context.row.id])}
                         onChange={this.setAllRowValues.bind(this, context.row.id)}
+                        label={context.value}
                     />
-                    <Label for={`${this.props.id}-table--row-${context.row.id}`} value={context.value} />
                 </div>
             ),
             Header: () => (
@@ -113,8 +111,8 @@ class CheckboxTable extends React.Component<Props, {}> {
                         value={this.getTableAggregate()}
                         disabled={this.isDisabled(this.getAllColumnKeys(), this.getAllRowKeys())}
                         onChange={this.setAll}
+                        label={this.props.selectAllLabel}
                     />
-                    <Label for={`${this.props.id}-select-all-column-header`} value={this.props.selectAllLabel} />
                 </div>
             ),
         };
@@ -137,17 +135,13 @@ class CheckboxTable extends React.Component<Props, {}> {
                 ),
                 Header: () => (
                     <div>
-                        <span>{column.label}</span>
                         <div>
                             <Checkbox
                                 id={`${this.props.id}-table--header-${column.id}`}
                                 value={this.getColumnAggregate(column.id)}
                                 disabled={this.isDisabled([column.id], this.getAllRowKeys())}
                                 onChange={this.setAllColumnValues.bind(this, column.id)}
-                            />
-                            <Label
-                                for={`${this.props.id}-table--header-${column.id}`}
-                                value={this.props.selectAllColumnLabel}
+                                label={column.label}
                             />
                         </div>
                     </div>
