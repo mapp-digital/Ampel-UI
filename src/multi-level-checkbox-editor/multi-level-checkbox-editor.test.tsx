@@ -7,7 +7,6 @@ import { TriStateCheckboxState } from './tri-state-checkbox';
 
 const getMultiLevelCheckboxEditor = (props: MultiLevelCheckboxEditorProps) => <MultiLevelCheckboxEditor {...props} />;
 const defaultProps = {
-    selectAllLabel: 'Select all',
     onNodesChange: jest.fn(),
     levelHeaderLabels: ['Level 1', 'Level 2'],
 };

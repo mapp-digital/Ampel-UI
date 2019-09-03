@@ -11,8 +11,6 @@ interface Props {
     id: string;
     nodes: Array<Node>;
     onNodesChange: (nodes: Array<Node>) => void;
-    /** @deprecated */
-    selectAllLabel?: string;
     levelHeaderLabels: Array<string>;
 }
 
@@ -50,7 +48,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     onSelectAll={this.setNodeValue}
                                     onNodeClick={this.selectNode.bind(this, level)}
                                     setNodeValue={this.setNodeValue}
-                                    selectAllLabel={this.props.selectAllLabel}
                                     levelHeaderLabel={this.props.levelHeaderLabels[level]}
                                 />
                             </div>

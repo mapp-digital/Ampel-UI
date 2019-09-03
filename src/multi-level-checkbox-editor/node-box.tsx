@@ -10,8 +10,6 @@ interface Props {
     onSelectAll: (node: Node, value: boolean) => void;
     onNodeClick: (node: Node) => void;
     setNodeValue: (node: Node, value: boolean) => void;
-    /** @deprecated */
-    selectAllLabel?: string;
     levelHeaderLabel: string;
 }
 
