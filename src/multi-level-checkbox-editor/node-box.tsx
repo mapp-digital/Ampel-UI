@@ -89,8 +89,8 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                                 id={`node-${node.id}`}
                                 value={getNodeState(node)}
                                 onChange={props.setNodeValue.bind(null, node)}
-                                label={node.label}
                             />
+                            {node.label}
                         </div>
                         {hasChildren(node) ? (
                             <span className="child-node-count" data-qa={`node-label-${node.id}`}>{`${countCheckedNodes(
