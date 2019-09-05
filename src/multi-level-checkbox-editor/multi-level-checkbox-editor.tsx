@@ -110,7 +110,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return (node: Node) => {
             const nodeWithHighlight = {
                 ...node,
-                isHighlighted: condition(node) && this.isNodeSelected(node),
+                isHighlighted: this.isNodeSelected(node),
             };
             if (condition(nodeWithHighlight)) {
                 return this.setValueRecursively(value, nodeWithHighlight);
