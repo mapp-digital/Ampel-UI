@@ -39,8 +39,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
                 {this.getNodes().map(
                     (node, level) =>
-                        hasChildren(node) &&
-                        node.value && (
+                        hasChildren(node) && (
                             <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
                                 <NodeBox
                                     id={`${level}`}
@@ -66,7 +65,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             id: SYNTHETIC_ROOT_ID,
             label: '',
             children: this.props.nodes,
-            value: true,
         };
     }
 
@@ -99,7 +97,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return (node: Node) => {
             const nodeWithHighlight = {
                 ...node,
-                isHighlighted: this.isNodeHighlighted(node),
+                isHighlighted: this.isNodeSelected(node),
             };
             if (condition(nodeWithHighlight)) {
                 return this.setHighlightRecursively(nodeWithHighlight);
@@ -112,7 +110,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return (node: Node) => {
             const nodeWithHighlight = {
                 ...node,
-                isHighlighted: this.isNodeHighlighted(node),
+                isHighlighted: condition(node) && this.isNodeSelected(node),
             };
             if (condition(nodeWithHighlight)) {
                 return this.setValueRecursively(value, nodeWithHighlight);
@@ -136,8 +134,8 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return newNode;
     }
 
-    private isNodeHighlighted(node: Node) {
-        return node.value && this.state.selectedNodeIds.includes(node.id);
+    private isNodeSelected(node: Node) {
+        return this.state.selectedNodeIds.includes(node.id);
     }
 
     private getCondition(node: Node) {
