@@ -88,6 +88,7 @@ interface Props<MODEL> {
     validationSchema?: any;
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
+    createButtonFactories?: Array<(buttonProps: {}) => React.ReactNode>;
 }
 
 interface State<MODEL> {
@@ -142,6 +143,11 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                 <div className="row center">
                     <div className="col-xs-12">
                         {this.props.onCancel && this.getCancelButton()}
+
+                        {this.props.createButtonFactories &&
+                            this.props.createButtonFactories.map((createButtonFactory, index) =>
+                                createButtonFactory({ key: index, disabled: !this.state.isDirty })
+                            )}
 
                         <Button
                             id="submit"
