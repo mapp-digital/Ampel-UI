@@ -77,6 +77,13 @@ interface ValidationOptions {
 
 type ViolationMessageResolver = (key: string, context: object | null) => string;
 
+interface FormButtonProps {
+    key: number;
+    isSubmitting: boolean;
+    isDirty: boolean;
+    isValid: boolean;
+}
+
 interface Props<MODEL> {
     model: MODEL;
     onCancel?: () => void;
@@ -88,7 +95,7 @@ interface Props<MODEL> {
     validationSchema?: any;
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
-    createButtonFactories?: Array<(buttonProps: {}) => React.ReactNode>;
+    additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
 }
 
 interface State<MODEL> {
@@ -144,9 +151,14 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                     <div className="col-xs-12">
                         {this.props.onCancel && this.getCancelButton()}
 
-                        {this.props.createButtonFactories &&
-                            this.props.createButtonFactories.map((createButtonFactory, index) =>
-                                createButtonFactory({ key: index, disabled: !this.state.isDirty })
+                        {this.props.additionalButtonRenderers &&
+                            this.props.additionalButtonRenderers.map((buttonRenderer, index) =>
+                                buttonRenderer({
+                                    key: index,
+                                    isSubmitting: this.state.isSubmitting,
+                                    isDirty: this.state.isDirty,
+                                    isValid: this.state.isValid,
+                                })
                             )}
 
                         <Button
@@ -472,4 +484,4 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 }
 
-export { Form, SectionType, FieldType, FieldContext, ViolationMessageResolver };
+export { Form, SectionType, FieldType, FieldContext, ViolationMessageResolver, FormButtonProps };
