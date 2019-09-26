@@ -82,6 +82,7 @@ interface FormButtonProps {
     isSubmitting: boolean;
     isDirty: boolean;
     isValid: boolean;
+    resetForm: () => void;
 }
 
 interface Props<MODEL> {
@@ -132,6 +133,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
         this.onSubmit = this.onSubmit.bind(this);
         this.getValue = this.getValue.bind(this);
+        this.resetForm = this.resetForm.bind(this);
         this.onGroupClick = this.onGroupClick.bind(this);
         this.setViolations = this.setViolations.bind(this);
         this.getValueSetter = this.getValueSetter.bind(this);
@@ -158,6 +160,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                                     isSubmitting: this.state.isSubmitting,
                                     isDirty: this.state.isDirty,
                                     isValid: this.state.isValid,
+                                    resetForm: this.resetForm,
                                 })
                             )}
 
@@ -198,6 +201,13 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         if (!isEqual(this.state.initialModel, prevState.initialModel)) {
             this.computeDirtyState();
         }
+    }
+
+    private resetForm() {
+        this.setState({
+            model: this.state.initialModel,
+            violations: {},
+        });
     }
 
     private getCancelButton() {
