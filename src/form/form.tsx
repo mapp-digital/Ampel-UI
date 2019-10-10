@@ -136,6 +136,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         this.resetForm = this.resetForm.bind(this);
         this.onGroupClick = this.onGroupClick.bind(this);
         this.setViolations = this.setViolations.bind(this);
+        this.validateField = this.validateField.bind(this);
         this.getValueSetter = this.getValueSetter.bind(this);
         this.getBlurHandler = this.getBlurHandler.bind(this);
         this.computeValidState = this.computeValidState.bind(this);
@@ -190,11 +191,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     public componentDidUpdate(prevProps: Props<MODEL>, prevState: State<MODEL>) {
         if (!isEqual(this.state.model, prevState.model)) {
             this.computeDirtyState();
-            const fields = this.getUpdatedFields(this.state.initialModel, this.state.model);
-            fields.map((field) => {
-                const fieldValue = this.getValue(field);
-                return this.setViolations(field, fieldValue);
-            });
+            this.validateUpdatedFields();
         }
         if (!isEqual(this.state.violations, prevState.violations)) {
             this.computeValidState();
@@ -206,6 +203,11 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         if (!isEqual(this.state.initialModel, prevState.initialModel)) {
             this.computeDirtyState();
         }
+    }
+
+    private validateUpdatedFields() {
+        const fields = this.getUpdatedFields(this.state.initialModel, this.state.model);
+        fields.map(this.validateField);
     }
 
     private resetForm() {
@@ -386,11 +388,13 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         return Promise.all(
             getDeclaredFields(this.props.children)
                 .map((field) => field.id)
-                .map((fieldId) => {
-                    const fieldValue = this.getValue(fieldId);
-                    return this.setViolations(fieldId, fieldValue);
-                })
+                .map(this.validateField)
         );
+    }
+
+    private validateField(fieldId: string) {
+        const fieldValue = this.getValue(fieldId);
+        return this.setViolations(fieldId, fieldValue);
     }
 
     private parseModel() {
