@@ -1,4 +1,4 @@
-import { debounce, flatMapDeep, get, has, isEqual, set, template } from 'lodash';
+import { debounce, flatMapDeep, get, has, isEqual, isObject, set, template } from 'lodash';
 import * as React from 'react';
 
 import { ConstraintViolations, ModelWithMeta, modelWithViolations, ViolationSeverity } from '../api';
@@ -190,6 +190,11 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     public componentDidUpdate(prevProps: Props<MODEL>, prevState: State<MODEL>) {
         if (!isEqual(this.state.model, prevState.model)) {
             this.computeDirtyState();
+            const fields = this.getUpdatedFields(this.state.initialModel, this.state.model);
+            fields.map((field) => {
+                const fieldValue = this.getValue(field);
+                return this.setViolations(field, fieldValue);
+            });
         }
         if (!isEqual(this.state.violations, prevState.violations)) {
             this.computeValidState();
@@ -398,6 +403,18 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             set(fieldMap, field.id, getVal(field));
             return fieldMap;
         }, {});
+    }
+
+    private getUpdatedFields(prevModel: MODEL, model: MODEL, prevField: string = ''): Array<string> {
+        return Object.keys(prevModel)
+            .flatMap((field) => {
+                const newField = prevField ? `${prevField}.${field}` : field;
+                if (isObject(prevModel[field])) {
+                    return [...this.getUpdatedFields(prevModel[field], model[field], newField)];
+                }
+                return prevModel[field] !== model[field] ? newField : [];
+            }, Infinity)
+            .filter(Boolean);
     }
 
     private commitCurrentModel() {
