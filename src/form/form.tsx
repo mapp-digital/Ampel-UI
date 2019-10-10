@@ -411,15 +411,13 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private getUpdatedFields(prevModel: MODEL, model: MODEL, prevField: string = ''): Array<string> {
         return flatten(
-            Object.keys(prevModel)
-                .map((field) => {
-                    const newField = prevField ? `${prevField}.${field}` : field;
-                    if (isObject(prevModel[field])) {
-                        return this.getUpdatedFields(prevModel[field], model[field], newField);
-                    }
-                    return prevModel[field] !== model[field] ? newField : [];
-                })
-                .filter(Boolean)
+            Object.keys(prevModel).map((field) => {
+                const newField = prevField ? `${prevField}.${field}` : field;
+                if (isObject(prevModel[field])) {
+                    return this.getUpdatedFields(prevModel[field], model[field], newField);
+                }
+                return prevModel[field] !== model[field] ? newField : [];
+            })
         );
     }
 
