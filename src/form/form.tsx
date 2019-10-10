@@ -415,10 +415,10 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                 .map((field) => {
                     const newField = prevField ? `${prevField}.${field}` : field;
                     if (isObject(prevModel[field])) {
-                        return [...this.getUpdatedFields(prevModel[field], model[field], newField)];
+                        return this.getUpdatedFields(prevModel[field], model[field], newField);
                     }
                     return prevModel[field] !== model[field] ? newField : [];
-                }, Infinity)
+                })
                 .filter(Boolean)
         );
     }
