@@ -207,7 +207,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private validateUpdatedFields() {
         const fields = this.getUpdatedFields(this.state.initialModel, this.state.model);
-        fields.map(this.validateField);
+        fields.forEach(this.validateField);
     }
 
     private resetForm() {
