@@ -1,4 +1,5 @@
-import { debounce, flatten, flatMapDeep, get, has, isEqual, isObject, set, template } from 'lodash';
+import { difference } from '@ampel-ui/form/difference';
+import { debounce, flatMapDeep, get, has, isEqual, set, template } from 'lodash';
 import * as React from 'react';
 
 import { ConstraintViolations, ModelWithMeta, modelWithViolations, ViolationSeverity } from '../api';
@@ -206,7 +207,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private validateUpdatedFields() {
-        const fields = this.getUpdatedFields(this.state.initialModel, this.state.model);
+        const fields = difference(this.state.initialModel, this.state.model);
         fields.forEach(this.validateField);
     }
 
@@ -407,18 +408,6 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             set(fieldMap, field.id, getVal(field));
             return fieldMap;
         }, {});
-    }
-
-    private getUpdatedFields(prevModel: MODEL, model: MODEL, prevField: string = ''): Array<string> {
-        return flatten(
-            Object.keys(prevModel).map((field) => {
-                const newField = prevField ? `${prevField}.${field}` : field;
-                if (isObject(prevModel[field])) {
-                    return this.getUpdatedFields(prevModel[field], model[field], newField);
-                }
-                return prevModel[field] !== model[field] ? newField : [];
-            })
-        );
     }
 
     private commitCurrentModel() {
