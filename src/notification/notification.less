@@ -1,5 +1,6 @@
 .with-type(@type) {
     border-color: @type;
+
     .wt-icon {
         color: @type;
     }
@@ -21,27 +22,39 @@
         align-items: center;
         background: @gray-stone;
         border: 1px solid transparent;
+
         &-success {
             .with-type(@success);
         }
+
         &-error {
             .with-type(@error);
         }
+
         &-info {
             .with-type(@info);
         }
+
         &-icon {
             margin-right: 10px;
         }
+
         &-action {
             margin-left: auto;
             margin-bottom: auto;
+
             .wt-icon {
                 color: @gray-dark;
-            };
+            }
         }
-        & + .notification {
+
+        &+.notification {
             margin-top: 10px;
+        }
+
+        .notification-message {
+            overflow: hidden;
+            overflow-wrap: break-word;
         }
     }
 }
