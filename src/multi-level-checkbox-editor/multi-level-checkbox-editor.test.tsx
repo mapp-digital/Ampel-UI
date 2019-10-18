@@ -206,6 +206,44 @@ describe('MultiLevelCheckboxEditor', () => {
             },
         ]);
     });
+
+    it('should render search input', () => {
+        const id = 'someId';
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchPlaceholder = 'Search';
+        const { queryByDataQa } = render(
+            getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, searchPlaceholder })
+        );
+
+        const searchComponent = queryByDataQa(`multi-level-checkbox-editor-filter`);
+        expect(searchComponent).toBeTruthy();
+    });
 });
 
 const createNode = (value: boolean) => {

@@ -1,3 +1,4 @@
+import { matches } from '@ampel-ui/common/search';
 import * as React from 'react';
 
 import { BaseNode, walkTree } from '../api/tree';
@@ -12,11 +13,36 @@ interface Props {
     nodes: Array<Node>;
     onNodesChange: (nodes: Array<Node>) => void;
     levelHeaderLabels: Array<string>;
+    searchPlaceholder?: string;
 }
 
 interface State {
     selectedNodeIds: Array<string>;
+    searchValue: string;
 }
+
+interface SearchBarProps {
+    onFilterChange: (filter: string) => void;
+    searchPlaceholder: string;
+}
+
+const copy = <T extends {}>(o: T) => Object.assign({}, o);
+
+const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onFilterChange(event.target.value);
+    return (
+        <div className="search-bar">
+            <span className="search-bar-icon" />
+            <input
+                type="text"
+                data-qa={`search-bar`}
+                onChange={onChange}
+                className="search-bar-filter"
+                placeholder={props.searchPlaceholder}
+            />
+        </div>
+    );
+};
 
 class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     constructor(props: Props) {
@@ -24,7 +50,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
         this.state = {
             selectedNodeIds: [],
+            searchValue: '',
         };
+
+        this.onFilterChange = this.onFilterChange.bind(this);
 
         this.findNode = this.findNode.bind(this);
         this.selectNode = this.selectNode.bind(this);
@@ -37,6 +66,14 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     public render() {
         return (
             <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
+                {this.props.searchPlaceholder && (
+                    <div className="multi-level-checkbox-editor-filter" data-qa="multi-level-checkbox-editor-filter">
+                        <SearchBar
+                            searchPlaceholder={this.props.searchPlaceholder}
+                            onFilterChange={this.onFilterChange}
+                        />
+                    </div>
+                )}
                 {this.getNodes().map(
                     (node, level) =>
                         hasChildren(node) && (
@@ -56,8 +93,15 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         );
     }
 
+    private onFilterChange(searchValue: string) {
+        this.setState({
+            searchValue,
+        });
+    }
+
     private getNodes() {
-        return [this.getSyntheticRootNode()].concat(this.state.selectedNodeIds.map(this.findNode));
+        const nodes = [this.getSyntheticRootNode()].concat(this.state.selectedNodeIds.map(this.findNode));
+        return this.getFilteredNodes(nodes, this.state.searchValue);
     }
 
     private getSyntheticRootNode(): Node {
@@ -66,6 +110,17 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             label: '',
             children: this.props.nodes,
         };
+    }
+
+    private getFilteredNodes(nodes: Array<Node>, searchValue: string) {
+        return nodes.map(copy).filter(function byLabel(node): any {
+            if (matches(searchValue, node.label)) {
+                return true;
+            }
+            if (node.children) {
+                return (node.children = node.children.map(copy).filter(byLabel)).length;
+            }
+        });
     }
 
     private selectNode(level: number, node: Node) {

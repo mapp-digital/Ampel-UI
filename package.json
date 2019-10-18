@@ -7,6 +7,7 @@
   "scripts": {
     "build": "webpack -p --optimize-minimize",
     "test": "jest --config jestconfig.json",
+    "test:watch": "jest --watch --config jestconfig.json",
     "prepublish": "rm -rf ./dist && npm run build",
     "lint": "tslint-config-prettier-check ./tslint.json",
     "prettier": "prettier --write \"src/**/*.{ts,tsx}\""
