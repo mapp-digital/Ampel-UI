@@ -28,6 +28,17 @@ interface SearchBarProps {
 
 const copy = <T extends {}>(o: T) => Object.assign({}, o);
 
+const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
+    return nodes.map(copy).filter(function byLabel(node): any {
+        if (matches(searchValue, node.label)) {
+            return true;
+        }
+        if (node.children) {
+            return (node.children = node.children.map(copy).filter(byLabel)).length;
+        }
+    });
+};
+
 const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
     const onChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onFilterChange(event.target.value);
     return (
@@ -101,7 +112,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     private getNodes() {
         const nodes = [this.getSyntheticRootNode()].concat(this.state.selectedNodeIds.map(this.findNode));
-        return this.getFilteredNodes(nodes, this.state.searchValue);
+        if (this.props.searchPlaceholder) {
+            return getFilteredNodes(nodes, this.state.searchValue);
+        }
+        return nodes;
     }
 
     private getSyntheticRootNode(): Node {
@@ -110,17 +124,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             label: '',
             children: this.props.nodes,
         };
-    }
-
-    private getFilteredNodes(nodes: Array<Node>, searchValue: string) {
-        return nodes.map(copy).filter(function byLabel(node): any {
-            if (matches(searchValue, node.label)) {
-                return true;
-            }
-            if (node.children) {
-                return (node.children = node.children.map(copy).filter(byLabel)).length;
-            }
-        });
     }
 
     private selectNode(level: number, node: Node) {
@@ -214,4 +217,4 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 }
 
-export { MultiLevelCheckboxEditor, Node, Props as MultiLevelCheckboxEditorProps };
+export { MultiLevelCheckboxEditor, Node, Props as MultiLevelCheckboxEditorProps, getFilteredNodes };
