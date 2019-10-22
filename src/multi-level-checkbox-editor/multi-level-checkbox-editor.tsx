@@ -31,8 +31,9 @@ const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
         if (matches(searchValue, node.label)) {
             return true;
         }
-        if (node.children) {
-            return (node.children = node.children.map(copy).filter(byLabel)).length;
+        if (hasChildren(node)) {
+            node.children = node.children!.map(copy).filter(byLabel);
+            return Boolean(node.children.length);
         }
     });
 };
