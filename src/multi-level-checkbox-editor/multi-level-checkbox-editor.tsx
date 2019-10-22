@@ -70,9 +70,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                     </div>
                 )}
                 <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
-                    {this.getNodes().map(
-                        (node, level) =>
-                            hasChildren(node) && (
+                    {this.getNodes().map((node, level) => (
+                        <>
+                            {hasChildren(node) && (
                                 <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
                                     <NodeBox
                                         id={`${level}`}
@@ -83,10 +83,27 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                         levelHeaderLabel={this.props.levelHeaderLabels[level]}
                                     />
                                 </div>
-                            )
-                    )}
+                            )}
+                            {this.isExplanatoryTextVisible(node, level) && this.getExplanatoryText()}
+                        </>
+                    ))}
                 </div>
             </>
+        );
+    }
+
+    private isExplanatoryTextVisible(node: Node, level: number) {
+        const { selectedNodeIds, searchValue } = this.state;
+        return Boolean(searchValue.length) && hasChildren(node) && level === 0 && !Boolean(selectedNodeIds.length);
+    }
+
+    private getExplanatoryText() {
+        return (
+            <div className="explanatory-text">
+                <span className="explanatory-text-icon" />
+                Some of the matching results belong to sub-groups, please click on the items of the shown level to
+                reveal more.
+            </div>
         );
     }
 
