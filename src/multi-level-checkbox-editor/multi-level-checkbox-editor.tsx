@@ -1,8 +1,11 @@
-import { matches } from '@ampel-ui/common/search';
 import * as React from 'react';
+
+import { matches } from '@ampel-ui/common/search';
 
 import { BaseNode, walkTree } from '../api/tree';
 import { hasChildren, NodeBox } from './node-box';
+
+import { SearchInput } from './search-input';
 
 const SYNTHETIC_ROOT_ID = '_ROOT';
 
@@ -21,11 +24,6 @@ interface State {
     searchValue: string;
 }
 
-interface SearchBarProps {
-    onFilterChange: (filter: string) => void;
-    searchPlaceholder: string;
-}
-
 const copy = <T extends {}>(o: T) => Object.assign({}, o);
 
 const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
@@ -37,22 +35,6 @@ const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
             return (node.children = node.children.map(copy).filter(byLabel)).length;
         }
     });
-};
-
-const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onFilterChange(event.target.value);
-    return (
-        <div className="search-bar">
-            <span className="search-bar-icon" />
-            <input
-                type="text"
-                data-qa={`search-bar`}
-                onChange={onChange}
-                className="search-bar-filter"
-                placeholder={props.searchPlaceholder}
-            />
-        </div>
-    );
 };
 
 class MultiLevelCheckboxEditor extends React.Component<Props, State> {
@@ -76,31 +58,34 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     public render() {
         return (
-            <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
+            <>
                 {this.props.searchPlaceholder && (
                     <div className="multi-level-checkbox-editor-filter" data-qa="multi-level-checkbox-editor-filter">
-                        <SearchBar
+                        <SearchInput
                             searchPlaceholder={this.props.searchPlaceholder}
                             onFilterChange={this.onFilterChange}
+                            value={this.state.searchValue}
                         />
                     </div>
                 )}
-                {this.getNodes().map(
-                    (node, level) =>
-                        hasChildren(node) && (
-                            <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
-                                <NodeBox
-                                    id={`${level}`}
-                                    node={node}
-                                    onSelectAll={this.setNodeValue}
-                                    onNodeClick={this.selectNode.bind(this, level)}
-                                    setNodeValue={this.setNodeValue}
-                                    levelHeaderLabel={this.props.levelHeaderLabels[level]}
-                                />
-                            </div>
-                        )
-                )}
-            </div>
+                <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
+                    {this.getNodes().map(
+                        (node, level) =>
+                            hasChildren(node) && (
+                                <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
+                                    <NodeBox
+                                        id={`${level}`}
+                                        node={node}
+                                        onSelectAll={this.setNodeValue}
+                                        onNodeClick={this.selectNode.bind(this, level)}
+                                        setNodeValue={this.setNodeValue}
+                                        levelHeaderLabel={this.props.levelHeaderLabels[level]}
+                                    />
+                                </div>
+                            )
+                    )}
+                </div>
+            </>
         );
     }
 
