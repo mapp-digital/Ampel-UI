@@ -30,12 +30,12 @@ const copy = <T extends {}>(o: T) => Object.assign({}, o);
 
 const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
     return nodes.map(copy).filter(function byLabel(node): any {
-        if (matches(searchValue, node.label)) {
-            return true;
-        }
         if (hasChildren(node)) {
             node.children = node.children!.map(copy).filter(byLabel);
             return Boolean(node.children.length);
+        }
+        if (matches(searchValue, node.label)) {
+            return true;
         }
     });
 };
