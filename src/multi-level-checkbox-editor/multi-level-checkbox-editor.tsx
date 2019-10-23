@@ -94,35 +94,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         );
     }
 
-    private isInfoTextVisible(node: Node, level: number) {
-        const { selectedNodeIds, searchValue } = this.state;
-        return Boolean(searchValue.length) && hasChildren(node) && level === 0 && !Boolean(selectedNodeIds.length);
-    }
-
-    private getInfoText() {
-        return (
-            this.props.infoText && (
-                <div className="info-text">
-                    <span className="info-text-icon" />
-                    {this.props.infoText}
-                </div>
-            )
-        );
-    }
-
-    private onFilterChange(searchValue: string) {
-        this.setState(
-            {
-                searchValue,
-            },
-            () => {
-                if (this.props.onFilterChange) {
-                    this.props.onFilterChange(this.state.searchValue);
-                }
-            }
-        );
-    }
-
     private getNodes() {
         const nodes = [this.getSyntheticRootNode()].concat(this.state.selectedNodeIds.map(this.findNode));
         if (this.props.searchPlaceholder) {
@@ -205,12 +176,41 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         return newNode;
     }
 
+    private onFilterChange(searchValue: string) {
+        this.setState(
+            {
+                searchValue,
+            },
+            () => {
+                if (this.props.onFilterChange) {
+                    this.props.onFilterChange(this.state.searchValue);
+                }
+            }
+        );
+    }
+
+    private isInfoTextVisible(node: Node, level: number) {
+        const { selectedNodeIds, searchValue } = this.state;
+        return Boolean(searchValue.length) && hasChildren(node) && level === 0 && !Boolean(selectedNodeIds.length);
+    }
+
     private isNodeSelected(node: Node) {
         return this.state.selectedNodeIds.includes(node.id);
     }
 
     private getCondition(node: Node) {
         return (currentNode: Node) => node.id === SYNTHETIC_ROOT_ID || currentNode.id === node.id;
+    }
+
+    private getInfoText() {
+        return (
+            this.props.infoText && (
+                <div className="info-text">
+                    <span className="info-text-icon" />
+                    {this.props.infoText}
+                </div>
+            )
+        );
     }
 
     private findNode(nodeId: string): Node {
