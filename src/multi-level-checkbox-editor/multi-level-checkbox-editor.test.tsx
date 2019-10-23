@@ -417,6 +417,68 @@ describe('getCheckboxState', () => {
 describe('getFilteredNodes', () => {
     afterEach(cleanup);
 
+    it('should perform deep search', () => {
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [
+                            {
+                                id: '1-1-1',
+                                label: 'Label 1-1-1',
+                                value: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchValue = '1-1-1';
+
+        const filteredNodes = getFilteredNodes(nodes, searchValue);
+        expect(filteredNodes).toEqual([
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [
+                            {
+                                id: '1-1-1',
+                                label: 'Label 1-1-1',
+                                value: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+    });
+
     it('should keep children if parent is a match', () => {
         const nodes = [
             {

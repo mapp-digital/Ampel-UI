@@ -17,6 +17,8 @@ interface Props {
     onNodesChange: (nodes: Array<Node>) => void;
     levelHeaderLabels: Array<string>;
     searchPlaceholder?: string;
+    infoText?: string;
+    onFilterChange?: (value: string) => void;
 }
 
 interface State {
@@ -71,9 +73,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 )}
                 <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
                     {this.getNodes().map((node, level) => (
-                        <>
+                        <React.Fragment key={node.id}>
                             {hasChildren(node) && (
-                                <div key={node.id} style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
+                                <div style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
                                     <NodeBox
                                         id={`${level}`}
                                         node={node}
@@ -84,33 +86,41 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     />
                                 </div>
                             )}
-                            {this.isExplanatoryTextVisible(node, level) && this.getExplanatoryText()}
-                        </>
+                            {this.isInfoTextVisible(node, level) && this.getInfoText()}
+                        </React.Fragment>
                     ))}
                 </div>
             </>
         );
     }
 
-    private isExplanatoryTextVisible(node: Node, level: number) {
+    private isInfoTextVisible(node: Node, level: number) {
         const { selectedNodeIds, searchValue } = this.state;
         return Boolean(searchValue.length) && hasChildren(node) && level === 0 && !Boolean(selectedNodeIds.length);
     }
 
-    private getExplanatoryText() {
+    private getInfoText() {
         return (
-            <div className="explanatory-text">
-                <span className="explanatory-text-icon" />
-                Some of the matching results belong to sub-groups, please click on the items of the shown level to
-                reveal more.
-            </div>
+            this.props.infoText && (
+                <div className="info-text">
+                    <span className="info-text-icon" />
+                    {this.props.infoText}
+                </div>
+            )
         );
     }
 
     private onFilterChange(searchValue: string) {
-        this.setState({
-            searchValue,
-        });
+        this.setState(
+            {
+                searchValue,
+            },
+            () => {
+                if (this.props.onFilterChange) {
+                    this.props.onFilterChange(this.state.searchValue);
+                }
+            }
+        );
     }
 
     private getNodes() {
