@@ -18,6 +18,7 @@ interface Props {
     levelHeaderLabels: Array<string>;
     searchPlaceholder?: string;
     infoText?: string;
+    noDataText?: string;
     onFilterChange?: (value: string) => void;
 }
 
@@ -60,6 +61,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     public render() {
+        const nodes = this.getNodes();
         return (
             <>
                 {this.props.searchPlaceholder && (
@@ -71,25 +73,32 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                         />
                     </div>
                 )}
-                <div className="multi-level-checkbox-editor" data-qa={`multi-level-checkbox-editor-${this.props.id}`}>
-                    {this.getNodes().map((node, level) => (
-                        <React.Fragment key={node.id}>
-                            {hasChildren(node) && (
-                                <div style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
-                                    <NodeBox
-                                        id={`${level}`}
-                                        node={node}
-                                        onSelectAll={this.setNodeValue}
-                                        onNodeClick={this.selectNode.bind(this, level)}
-                                        setNodeValue={this.setNodeValue}
-                                        levelHeaderLabel={this.props.levelHeaderLabels[level]}
-                                    />
-                                </div>
-                            )}
-                            {this.isInfoTextVisible(node, level) && this.getInfoText()}
-                        </React.Fragment>
-                    ))}
-                </div>
+                {Boolean(nodes.length) ? (
+                    <div
+                        className="multi-level-checkbox-editor"
+                        data-qa={`multi-level-checkbox-editor-${this.props.id}`}
+                    >
+                        {nodes.map((node, level) => (
+                            <React.Fragment key={node.id}>
+                                {hasChildren(node) && (
+                                    <div style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
+                                        <NodeBox
+                                            id={`${level}`}
+                                            node={node}
+                                            onSelectAll={this.setNodeValue}
+                                            onNodeClick={this.selectNode.bind(this, level)}
+                                            setNodeValue={this.setNodeValue}
+                                            levelHeaderLabel={this.props.levelHeaderLabels[level]}
+                                        />
+                                    </div>
+                                )}
+                                {this.isInfoTextVisible(node, level) && this.getInfoText()}
+                            </React.Fragment>
+                        ))}
+                    </div>
+                ) : (
+                    this.getNoDataText()
+                )}
             </>
         );
     }
@@ -205,10 +214,21 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     private getInfoText() {
         return (
             this.props.infoText && (
-                <div className="info-text">
-                    <span className="info-text-icon" />
+                <div className="info-box info">
+                    <span className="info-box-icon" />
                     {this.props.infoText}
                 </div>
+            )
+        );
+    }
+
+    private getNoDataText() {
+        return (
+            this.props.noDataText && (
+                <span className="info-box warning">
+                    <span className="info-box-icon" />
+                    {this.props.noDataText}
+                </span>
             )
         );
     }

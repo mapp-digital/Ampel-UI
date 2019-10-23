@@ -106,16 +106,31 @@
     margin-left: 20px;
 }
 
-.info-text {
+
+// TODO: Extract to separate component when there are clear requirements
+.info-box {
     max-width: 400px;
-    color: @info-deep;
     display: flex;
     margin-top: 20px;
 
     &-icon {
-        @info-icon-inv();
         font-size: 14px;
         padding-right: 10px;
     }
 
+    &.info {
+        color: @info-deep;
+        .info-box-icon {
+            @info-icon-inv();
+        }
+    }
+
+    &.warning {
+        color: @warning;
+        margin-left: 20px;
+        .info-box-icon {
+            @warning-icon-inv();
+        }
+    }
 }
+
