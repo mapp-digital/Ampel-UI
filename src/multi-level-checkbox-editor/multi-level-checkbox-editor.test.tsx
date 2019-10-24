@@ -533,54 +533,6 @@ describe('getFilteredNodes', () => {
         ]);
     });
 
-    it('should keep parent if children is a match', () => {
-        const nodes = [
-            {
-                id: '1',
-                label: 'Label 1',
-                value: true,
-                children: [
-                    {
-                        id: '1-1',
-                        label: 'Label 1-1',
-                        value: true,
-                        children: [],
-                    },
-                    {
-                        id: '1-2',
-                        label: 'Label 1-2',
-                        value: true,
-                        children: [],
-                    },
-                ],
-            },
-            {
-                id: '2',
-                label: 'Label 2',
-                value: false,
-                children: [],
-            },
-        ];
-        const searchValue = 'Label 1-2';
-
-        const filteredNodes = getFilteredNodes(nodes, searchValue);
-        expect(filteredNodes).toEqual([
-            {
-                id: '1',
-                label: 'Label 1',
-                value: true,
-                children: [
-                    {
-                        id: '1-2',
-                        label: 'Label 1-2',
-                        value: true,
-                        children: [],
-                    },
-                ],
-            },
-        ]);
-    });
-
     it('should return same results if searchValue is empty', () => {
         const nodes = [
             {
