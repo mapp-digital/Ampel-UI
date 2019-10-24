@@ -19,7 +19,9 @@ interface Props {
     searchPlaceholder?: string;
     infoText?: string;
     noDataText?: string;
+    isInfoTextVisible?: (node: Node, level: number) => boolean;
     onFilterChange?: (value: string) => void;
+    onNodeSelect?: (selectedNodeIds: Array<string>) => void;
 }
 
 interface State {
@@ -27,7 +29,7 @@ interface State {
     searchValue: string;
 }
 
-const copy = <T extends {}>(o: T) => Object.assign({}, o);
+const copy = <T extends {}>(o: T) => ({ ...o });
 
 const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
     return nodes.map(copy).filter(function byLabel(node): any {
@@ -35,9 +37,7 @@ const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
             node.children = node.children!.map(copy).filter(byLabel);
             return Boolean(node.children.length);
         }
-        if (matches(searchValue, node.label)) {
-            return true;
-        }
+        return matches(searchValue, node.label);
     });
 };
 
@@ -91,7 +91,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                         />
                                     </div>
                                 )}
-                                {this.isInfoTextVisible(node, level) && this.getInfoText()}
+                                {this.props.isInfoTextVisible &&
+                                    this.props.isInfoTextVisible(node, level) &&
+                                    this.getInfoText()}
                             </React.Fragment>
                         ))}
                     </div>
@@ -127,7 +129,12 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 }
                 return { selectedNodeIds };
             },
-            () => this.setNodeHighlight(node)
+            () => {
+                this.setNodeHighlight(node);
+                if (this.props.onNodeSelect) {
+                    this.props.onNodeSelect(this.state.selectedNodeIds);
+                }
+            }
         );
     }
 
@@ -197,11 +204,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         );
     }
 
-    private isInfoTextVisible(node: Node, level: number) {
-        const { selectedNodeIds, searchValue } = this.state;
-        return Boolean(searchValue.length) && hasChildren(node) && level === 0 && !Boolean(selectedNodeIds.length);
-    }
-
     private isNodeSelected(node: Node) {
         return this.state.selectedNodeIds.includes(node.id);
     }
@@ -213,7 +215,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     private getInfoText() {
         return (
             this.props.infoText && (
-                <div className="info-box info">
+                <div className="info-box info" data-qa="info-text">
                     <span className="info-box-icon" />
                     {this.props.infoText}
                 </div>

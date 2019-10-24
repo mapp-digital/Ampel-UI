@@ -52,6 +52,46 @@ describe('MultiLevelCheckboxEditor', () => {
         expect(component).toBeTruthy();
     });
 
+    it('should show info text', () => {
+        const id = 'someId';
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const isInfoTextVisible = jest.fn().mockReturnValue(true);
+        const infoText = 'info text';
+
+        const { queryByDataQa } = render(
+            getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, isInfoTextVisible, infoText })
+        );
+        const infoTextNode = queryByDataQa(`info-text`);
+
+        expect(infoTextNode).toBeTruthy();
+    });
+
     it('should render header label', () => {
         const id = 'someId';
         const nodes = [
