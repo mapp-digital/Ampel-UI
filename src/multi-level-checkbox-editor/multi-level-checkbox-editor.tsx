@@ -50,11 +50,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
             searchValue: '',
         };
 
-        this.onFilterChange = this.onFilterChange.bind(this);
-
         this.findNode = this.findNode.bind(this);
         this.selectNode = this.selectNode.bind(this);
         this.setNodeValue = this.setNodeValue.bind(this);
+        this.onFilterChange = this.onFilterChange.bind(this);
         this.setNodeHighlight = this.setNodeHighlight.bind(this);
         this.setValueRecursively = this.setValueRecursively.bind(this);
         this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
