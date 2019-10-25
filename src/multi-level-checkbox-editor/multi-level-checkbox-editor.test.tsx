@@ -1,7 +1,11 @@
 import * as React from 'react';
 
 import { cleanup, render } from '@config/testing';
-import { MultiLevelCheckboxEditor, MultiLevelCheckboxEditorProps } from './multi-level-checkbox-editor';
+import {
+    getFilteredNodes,
+    MultiLevelCheckboxEditor,
+    MultiLevelCheckboxEditorProps,
+} from './multi-level-checkbox-editor';
 import { getAggregateState } from './node-box';
 import { TriStateCheckboxState } from './tri-state-checkbox';
 
@@ -46,6 +50,46 @@ describe('MultiLevelCheckboxEditor', () => {
         const { queryByDataQa } = render(getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes }));
         const component = queryByDataQa(`multi-level-checkbox-editor-${id}`);
         expect(component).toBeTruthy();
+    });
+
+    it('should show info text', () => {
+        const id = 'someId';
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const isInfoTextVisible = jest.fn().mockReturnValue(true);
+        const infoText = 'info text';
+
+        const { queryByDataQa } = render(
+            getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, isInfoTextVisible, infoText })
+        );
+        const infoTextNode = queryByDataQa(`info-text`);
+
+        expect(infoTextNode).toBeTruthy();
     });
 
     it('should render header label', () => {
@@ -205,6 +249,44 @@ describe('MultiLevelCheckboxEditor', () => {
                 ],
             },
         ]);
+    });
+
+    it('should render search input', () => {
+        const id = 'someId';
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchPlaceholder = 'Search';
+        const { queryByDataQa } = render(
+            getMultiLevelCheckboxEditor({ ...defaultProps, id, nodes, searchPlaceholder })
+        );
+
+        const searchComponent = queryByDataQa(`multi-level-checkbox-editor-filter`);
+        expect(searchComponent).toBeTruthy();
     });
 });
 
@@ -369,5 +451,159 @@ describe('getCheckboxState', () => {
 
             expect(checkboxState).toBe(TriStateCheckboxState.INDETERMINATE);
         });
+    });
+});
+
+describe('getFilteredNodes', () => {
+    afterEach(cleanup);
+
+    it('should perform deep search', () => {
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [
+                            {
+                                id: '1-1-1',
+                                label: 'Label 1-1-1',
+                                value: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchValue = '1-1-1';
+
+        const filteredNodes = getFilteredNodes(nodes, searchValue);
+        expect(filteredNodes).toEqual([
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [
+                            {
+                                id: '1-1-1',
+                                label: 'Label 1-1-1',
+                                value: true,
+                                children: [],
+                            },
+                        ],
+                    },
+                ],
+            },
+        ]);
+    });
+
+    it('should keep children if parent is a match', () => {
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchValue = 'Label 1';
+
+        const filteredNodes = getFilteredNodes(nodes, searchValue);
+        expect(filteredNodes).toEqual([
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+        ]);
+    });
+
+    it('should return same results if searchValue is empty', () => {
+        const nodes = [
+            {
+                id: '1',
+                label: 'Label 1',
+                value: true,
+                children: [
+                    {
+                        id: '1-1',
+                        label: 'Label 1-1',
+                        value: true,
+                        children: [],
+                    },
+                    {
+                        id: '1-2',
+                        label: 'Label 1-2',
+                        value: true,
+                        children: [],
+                    },
+                ],
+            },
+            {
+                id: '2',
+                label: 'Label 2',
+                value: false,
+                children: [],
+            },
+        ];
+        const searchValue = '';
+
+        const filteredNodes = getFilteredNodes(nodes, searchValue);
+        expect(filteredNodes).toEqual(nodes);
     });
 });
