@@ -93,12 +93,16 @@ class Dropdown<T extends Item> extends React.Component<Props<T>, State> {
     }
 
     private renderLink(item: T) {
+        const onClick = () => {
+            this.toggleDropdown();
+        };
         return (
             <a
                 href={item.link && item.link.url}
                 target={item.link && item.link.target}
                 data-qa={`dropdown--item-${item.id}`}
                 className="dropdown-item"
+                onClick={onClick}
             >
                 {item.label}
             </a>
