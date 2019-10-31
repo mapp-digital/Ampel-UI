@@ -194,6 +194,31 @@ describe('Dropdown', () => {
         listeners._reset();
     });
 
+    it('should close on item click', () => {
+        const id = 'dropdownId';
+        const items = [
+            {
+                id: 'someId',
+                label: 'Some Label',
+                onClick: jest.fn(),
+            },
+        ];
+
+        const { getByDataQa, queryByDataQa } = render(
+            <div>
+                <Dropdown id={id} items={items} label="" />
+            </div>
+        );
+        const toggle = getByDataQa('dropdown--toggle-' + id);
+        toggle.click();
+
+        const dropdownItem = getByDataQa(`dropdown--item-someId`);
+        dropdownItem.click();
+
+        const optionItems = queryByDataQa('dropdown--items-' + id);
+        expect(optionItems).toBeFalsy();
+    });
+
     it(`should add 'selected' class to element fulfilling the selectedPredicate`, () => {
         const id = 'someId';
         const label = 'Some Label';
