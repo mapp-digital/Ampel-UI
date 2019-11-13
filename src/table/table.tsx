@@ -127,6 +127,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     private paginationPropsEnhancer(paginationProps: any) {
         paginationProps.onFilterChange = this.onFilterChange;
         paginationProps.onPaginate = this.props.onPaginate;
+        paginationProps.searchValue = this.state.searchValue;
         paginationProps.searchPlaceholder = this.props.searchPlaceholder;
         paginationProps.hidePagination = this.props.elastic;
         paginationProps.rowsText = this.props.rowsText;

@@ -1,3 +1,4 @@
+import { SearchInput } from '@ampel-ui/multi-level-checkbox-editor/search-input';
 import * as React from 'react';
 
 import { Option } from '../api/index';
@@ -75,9 +76,9 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
         );
     }
 
-    private changeFilter(side: string, event: React.ChangeEvent<HTMLInputElement>) {
+    private changeFilter(side: string, value: string) {
         const key = `${side}Filter`;
-        const update = this.createUpdate(key, event.target.value);
+        const update = this.createUpdate(key, value);
         this.setState(update);
     }
 
@@ -112,17 +113,15 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private renderOptions(options: Array<Option<T>>, side: string) {
-        const onChange = (event: React.ChangeEvent<HTMLInputElement>) => this.changeFilter(side, event);
+        const onChange = (value: string) => this.changeFilter(side, value);
         return (
             <div className={`two-box-multiselect-select-box`}>
                 <div className="two-box-multiselect-filter-bar">
-                    <span className="two-box-multiselect-filter-icon" />
-                    <input
-                        type="text"
-                        data-qa={`two-box-multiselect--${side}-filter-${this.props.id}`}
-                        onChange={onChange}
-                        className="form-control two-box-multiselect-filter"
-                        placeholder={this.getFilterPlaceholder(side)}
+                    <SearchInput
+                        id={`two-box-multiselect--${side}-filter-${this.props.id}`}
+                        value={this.getFilterValue(side)}
+                        searchPlaceholder={this.getFilterPlaceholder(side)}
+                        onFilterChange={onChange}
                     />
                 </div>
                 <ul className={`two-box-option-items option-items-${side} ${this.props.disabled && 'disabled'}`}>
@@ -139,7 +138,11 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private getFilterPlaceholder(side: string) {
-        return side === LEFT ? this.props.filterPlaceholderLeft : this.props.filterPlaceholderRight;
+        return (side === LEFT ? this.props.filterPlaceholderLeft : this.props.filterPlaceholderRight) || '';
+    }
+
+    private getFilterValue(side: string) {
+        return side === LEFT ? this.state.leftFilter : this.state.rightFilter;
     }
 
     private renderOptionForSide(

@@ -66,6 +66,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 {this.props.searchPlaceholder && (
                     <div className="multi-level-checkbox-editor-filter" data-qa="multi-level-checkbox-editor-filter">
                         <SearchInput
+                            id="multi-level-checkbox-editor--search-bar"
                             searchPlaceholder={this.props.searchPlaceholder}
                             onFilterChange={this.onFilterChange}
                             value={this.state.searchValue}
