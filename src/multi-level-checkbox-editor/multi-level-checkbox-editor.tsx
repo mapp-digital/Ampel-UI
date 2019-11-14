@@ -1,11 +1,10 @@
 import * as React from 'react';
 
 import { matches } from '@ampel-ui/common/search';
+import { SearchInput } from '@ampel-ui/input';
 
 import { BaseNode, walkTree } from '../api/tree';
 import { hasChildren, NodeBox } from './node-box';
-
-import { SearchInput } from './search-input';
 
 const SYNTHETIC_ROOT_ID = '_ROOT';
 

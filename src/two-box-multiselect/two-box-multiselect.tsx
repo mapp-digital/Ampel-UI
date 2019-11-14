@@ -1,5 +1,6 @@
-import { SearchInput } from '@ampel-ui/multi-level-checkbox-editor/search-input';
 import * as React from 'react';
+
+import { SearchInput } from '@ampel-ui/input';
 
 import { Option } from '../api/index';
 import { matches } from '../common/search';

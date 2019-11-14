@@ -1,7 +1,7 @@
-import { SearchInput } from '@ampel-ui/multi-level-checkbox-editor/search-input';
 import * as React from 'react';
 
-import { Select } from '../select';
+import { SearchInput } from '@ampel-ui/input';
+import { Select } from '@ampel-ui/select';
 
 interface PaginationButtonProps {
     id: string;
