@@ -1,6 +1,7 @@
 import * as React from 'react';
 
-import { Select } from '../select';
+import { SearchInput } from '@ampel-ui/input';
+import { Select } from '@ampel-ui/select';
 
 interface PaginationButtonProps {
     id: string;
@@ -110,26 +111,10 @@ const Pagination: React.FunctionComponent<any> = (props) => {
 };
 
 interface SearchBarProps {
+    searchValue: string;
     onFilterChange: (filter: string) => void;
     searchPlaceholder: string;
 }
-
-const SearchBar: React.FunctionComponent<SearchBarProps> = (props) => {
-    // TODO: useCallback ASAP
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => props.onFilterChange(event.target.value);
-    return (
-        <div className="search-bar">
-            <span className="search-bar-icon" />
-            <input
-                type="text"
-                data-qa={`table--search-bar`}
-                onChange={onChange}
-                className="search-bar-filter"
-                placeholder={props.searchPlaceholder}
-            />
-        </div>
-    );
-};
 
 interface TableTopProps extends SearchBarProps {
     hidePagination: boolean;
@@ -138,7 +123,14 @@ interface TableTopProps extends SearchBarProps {
 const TableTop: React.FunctionComponent<TableTopProps> = (props) => {
     return (
         <div className="table-top">
-            <SearchBar onFilterChange={props.onFilterChange} searchPlaceholder={props.searchPlaceholder} />
+            <div className="search-bar">
+                <SearchInput
+                    id="table--search-bar"
+                    value={props.searchValue}
+                    searchPlaceholder={props.searchPlaceholder}
+                    onFilterChange={props.onFilterChange}
+                />
+            </div>
             {!props.hidePagination && <Pagination {...props} />}
         </div>
     );
