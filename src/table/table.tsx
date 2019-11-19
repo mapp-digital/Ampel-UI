@@ -209,20 +209,22 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
         const row = cellProps.original;
         const onClick = () => action.onClick(row);
         const button = (
-            <button
-                key={action.id}
-                type="button"
-                onClick={onClick}
-                data-qa={`table--row-${cellProps.index}-col-_actions--${action.id}`}
-                disabled={typeof action.disabled === 'function' ? action.disabled(row) : action.disabled}
-                className={`action-button ${action.iconClass} ${this.getVisibleClass(action, row)}`}
-            />
+            <div className="action-button-wrapper">
+                <button
+                    key={action.id}
+                    type="button"
+                    onClick={onClick}
+                    data-qa={`table--row-${cellProps.index}-col-_actions--${action.id}`}
+                    disabled={typeof action.disabled === 'function' ? action.disabled(row) : action.disabled}
+                    className={`action-button ${action.iconClass} ${this.getVisibleClass(action, row)}`}
+                />
+            </div>
         );
         return !action.tooltip ? (
             button
         ) : (
             <Tooltip key={action.id} text={action.tooltip} placement="top">
-                <div>{button}</div>
+                {button}
             </Tooltip>
         );
     }
