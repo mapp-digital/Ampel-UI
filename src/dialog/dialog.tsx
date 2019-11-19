@@ -5,11 +5,19 @@ import { onOuterClick } from '@ampel-ui/subscriptions';
 
 const KEY_ESCAPE = 27;
 
+enum DialogLevel {
+    info = 'info',
+    success = 'success',
+    warning = 'warning',
+}
+
 interface Props {
     id: string;
     title: string;
+    level?: DialogLevel;
     content: string | React.ReactNode;
-    btnCancelText: string;
+    // @deprecated
+    btnCancelText?: string;
     btnConfirmText: string;
     onCancel: () => void;
     onConfirm: () => void;
@@ -50,23 +58,25 @@ class Dialog extends React.Component<Props, {}> {
                     data-qa={`dialog`}
                 >
                     <div className="dialog-content">
-                        <div className="dialog-content-header">
-                            <h3 className="dialog-title">{this.props.title}</h3>
-                        </div>
-                        <div className="dialog-content-body">{this.props.content}</div>
-                        <div className="dialog-content-footer">
-                            <Button
-                                id="cancel"
-                                text={this.props.btnCancelText}
-                                className="btn btn-secondary"
-                                onClick={this.props.onCancel}
-                            />
-                            <Button
-                                id="success"
-                                text={this.props.btnConfirmText}
-                                className="btn btn-primary"
-                                onClick={this.props.onConfirm}
-                            />
+                        <Button id="cancel" text={'x'} className={'cancel'} onClick={this.props.onCancel} />
+                        {this.props.level && (
+                            <div className="dialog-content-icon-wrapper" data-qa={`level-${this.props.level}`}>
+                                <i className={`wt-icon wti-info color-${this.props.level}`} />
+                            </div>
+                        )}
+                        <div className="dialog-content-wrapper">
+                            <div className="dialog-content-header">
+                                <h3 className="dialog-title">{this.props.title}</h3>
+                            </div>
+                            <div className="dialog-content-body">{this.props.content}</div>
+                            <div className="dialog-content-footer">
+                                <Button
+                                    id="success"
+                                    text={this.props.btnConfirmText}
+                                    className="btn btn-primary"
+                                    onClick={this.props.onConfirm}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -89,4 +99,4 @@ class Dialog extends React.Component<Props, {}> {
     }
 }
 
-export { Dialog };
+export { Dialog, DialogLevel };
