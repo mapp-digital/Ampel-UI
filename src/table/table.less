@@ -16,6 +16,7 @@
         &[disabled] {
             color: @gray-light;
             cursor: not-allowed;
+            pointer-events: none;
         }
 
         &:hover:not([disabled]) {
@@ -178,17 +179,26 @@
         }
     }
 
-    .action-button {
-        @icon-button-defaults();
-        padding: 0;
-        width: 15px;
-        height: 15px;
+    .action-button-wrapper {
         margin-right: 8px;
+
+        .action-button {
+            @icon-button-defaults();
+            width: 15px;
+            height: 15px;
+            padding: 0;
+        }
 
         &:before {
             display: block;
             width: 15px;
             height: 15px;
+        }
+
+        &--disabled {
+            &:hover {
+                cursor: not-allowed;
+            }
         }
     }
 
