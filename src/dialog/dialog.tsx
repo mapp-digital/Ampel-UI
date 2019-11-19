@@ -5,7 +5,7 @@ import { onOuterClick } from '@ampel-ui/subscriptions';
 
 const KEY_ESCAPE = 27;
 
-enum DialogLevel {
+enum DialogType {
     info = 'info',
     success = 'success',
     warning = 'warning',
@@ -14,7 +14,7 @@ enum DialogLevel {
 interface Props {
     id: string;
     title: string;
-    level?: DialogLevel;
+    level?: DialogType;
     content: string | React.ReactNode;
     // @deprecated
     btnCancelText?: string;
@@ -58,10 +58,12 @@ class Dialog extends React.Component<Props, {}> {
                     data-qa={`dialog`}
                 >
                     <div className="dialog-content">
-                        <Button id="cancel" text={'x'} className={'cancel'} onClick={this.props.onCancel} />
+                        <button id="cancel" className={'cancel'} onClick={this.props.onCancel}>
+                            <span className={`icon icon-close`} />
+                        </button>
                         {this.props.level && (
                             <div className="dialog-content-icon-wrapper" data-qa={`level-${this.props.level}`}>
-                                <i className={`wt-icon wti-info color-${this.props.level}`} />
+                                <span className={`icon icon-${this.props.level} level-${this.props.level}`} />
                             </div>
                         )}
                         <div className="dialog-content-wrapper">
@@ -99,4 +101,4 @@ class Dialog extends React.Component<Props, {}> {
     }
 }
 
-export { Dialog, DialogLevel };
+export { Dialog, DialogType };

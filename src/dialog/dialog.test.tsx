@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cleanup, fireEvent, render } from '@config/testing';
 
-import { Dialog, DialogLevel } from './dialog';
+import { Dialog, DialogType } from './dialog';
 
 describe('Dialog', () => {
     afterEach(cleanup);
@@ -166,7 +166,7 @@ describe('Dialog', () => {
         const id = 'my-dialog';
         const title = 'My dialog';
         const content = 'Message';
-        const level = DialogLevel.info;
+        const level = DialogType.info;
         const btnConfirmText = 'Confirm';
         const onCancel = jest.fn();
         const onConfirm = jest.fn();
