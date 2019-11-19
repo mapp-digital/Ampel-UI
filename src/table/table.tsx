@@ -208,14 +208,15 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     private getActionComponent(action: TableAction<ROW>, cellProps: any) {
         const row = cellProps.original;
         const onClick = () => action.onClick(row);
+        const disabled = typeof action.disabled === 'function' ? action.disabled(row) : action.disabled;
         const button = (
-            <div className="action-button-wrapper">
+            <div className={`action-button-wrapper ${disabled ? 'action-button-wrapper--disabled' : ''}`}>
                 <button
                     key={action.id}
                     type="button"
                     onClick={onClick}
                     data-qa={`table--row-${cellProps.index}-col-_actions--${action.id}`}
-                    disabled={typeof action.disabled === 'function' ? action.disabled(row) : action.disabled}
+                    disabled={disabled}
                     className={`action-button ${action.iconClass} ${this.getVisibleClass(action, row)}`}
                 />
             </div>
