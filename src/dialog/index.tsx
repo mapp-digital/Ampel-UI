@@ -6,3 +6,5 @@ export {
     DialogProvider,
     withDialog,
 } from './dialog-context';
+
+export { DialogType } from './dialog';
