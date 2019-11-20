@@ -162,7 +162,7 @@ describe('Dialog', () => {
         expect(onCancel).not.toHaveBeenCalledTimes(1);
     });
 
-    it('should render the dialog level', () => {
+    it('should render the dialog type', () => {
         const id = 'my-dialog';
         const title = 'My dialog';
         const content = 'Message';
@@ -182,7 +182,7 @@ describe('Dialog', () => {
                 type={type}
             />
         );
-        const dialog = getByDataQa('level-info');
+        const dialog = getByDataQa('type-info');
         expect(dialog.focus).toBeTruthy();
     });
 });

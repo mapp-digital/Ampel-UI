@@ -62,8 +62,8 @@ class Dialog extends React.Component<Props, {}> {
                             <span className={`icon icon-close`} />
                         </button>
                         {this.props.type && (
-                            <div className="dialog-content-icon-wrapper" data-qa={`level-${this.props.type}`}>
-                                <span className={`icon icon-${this.props.type} level-${this.props.type}`} />
+                            <div className="dialog-content-icon-wrapper" data-qa={`type-${this.props.type}`}>
+                                <span className={`icon icon-${this.props.type}`} />
                             </div>
                         )}
                         <div className="dialog-content-wrapper">
