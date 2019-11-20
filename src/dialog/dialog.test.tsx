@@ -33,6 +33,33 @@ describe('Dialog', () => {
         expect(dialog).toBeTruthy();
     });
 
+    it('should invoke onCancel handler', () => {
+        const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const btnCancelText = 'Cancel';
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
+        const { getByText } = render(
+            <Dialog
+                id={id}
+                title={title}
+                content={content}
+                btnCancelText={btnCancelText}
+                btnConfirmText={btnConfirmText}
+                onCancel={onCancel}
+                onConfirm={onConfirm}
+            />
+        );
+
+        const button = getByText('Cancel');
+        button.click();
+
+        expect(onCancel).toHaveBeenCalledTimes(1);
+    });
+
     it('should invoke onConfirm handler', () => {
         const id = 'my-dialog';
         const title = 'My dialog';

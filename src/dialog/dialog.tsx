@@ -16,7 +16,6 @@ interface Props {
     title: string;
     type?: DialogType;
     content: string | React.ReactNode;
-    // @deprecated
     btnCancelText?: string;
     btnConfirmText: string;
     onCancel: () => void;
@@ -72,6 +71,14 @@ class Dialog extends React.Component<Props, {}> {
                             </div>
                             <div className="dialog-content-body">{this.props.content}</div>
                             <div className="dialog-content-footer">
+                                {this.props.btnCancelText && (
+                                    <Button
+                                        id="cancel"
+                                        text={this.props.btnCancelText}
+                                        className="btn btn-secondary"
+                                        onClick={this.props.onCancel}
+                                    />
+                                )}
                                 <Button
                                     id="success"
                                     text={this.props.btnConfirmText}
