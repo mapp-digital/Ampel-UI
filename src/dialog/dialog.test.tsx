@@ -166,7 +166,7 @@ describe('Dialog', () => {
         const id = 'my-dialog';
         const title = 'My dialog';
         const content = 'Message';
-        const level = DialogType.info;
+        const type = DialogType.info;
         const btnConfirmText = 'Confirm';
         const onCancel = jest.fn();
         const onConfirm = jest.fn();
@@ -179,7 +179,7 @@ describe('Dialog', () => {
                 btnConfirmText={btnConfirmText}
                 onCancel={onCancel}
                 onConfirm={onConfirm}
-                level={level}
+                type={type}
             />
         );
         const dialog = getByDataQa('level-info');
