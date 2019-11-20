@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cleanup, fireEvent, render } from '@config/testing';
 
-import { Dialog } from './dialog';
+import { Dialog, DialogType } from './dialog';
 
 describe('Dialog', () => {
     afterEach(cleanup);
@@ -31,33 +31,6 @@ describe('Dialog', () => {
         const dialog = getByDataQa(`dialog`);
 
         expect(dialog).toBeTruthy();
-    });
-
-    it('should invoke onCancel handler', () => {
-        const id = 'my-dialog';
-        const title = 'My dialog';
-        const content = 'Message';
-        const btnCancelText = 'Cancel';
-        const btnConfirmText = 'Confirm';
-        const onCancel = jest.fn();
-        const onConfirm = jest.fn();
-
-        const { getByText } = render(
-            <Dialog
-                id={id}
-                title={title}
-                content={content}
-                btnCancelText={btnCancelText}
-                btnConfirmText={btnConfirmText}
-                onCancel={onCancel}
-                onConfirm={onConfirm}
-            />
-        );
-
-        const button = getByText('Cancel');
-        button.click();
-
-        expect(onCancel).toHaveBeenCalledTimes(1);
     });
 
     it('should invoke onConfirm handler', () => {
@@ -187,5 +160,29 @@ describe('Dialog', () => {
         const dialog = getByDataQa(`dialog`);
         fireEvent.mouseDown(dialog.firstChild as HTMLElement);
         expect(onCancel).not.toHaveBeenCalledTimes(1);
+    });
+
+    it('should render the dialog type', () => {
+        const id = 'my-dialog';
+        const title = 'My dialog';
+        const content = 'Message';
+        const type = DialogType.info;
+        const btnConfirmText = 'Confirm';
+        const onCancel = jest.fn();
+        const onConfirm = jest.fn();
+
+        const { getByDataQa } = render(
+            <Dialog
+                id={id}
+                title={title}
+                content={content}
+                btnConfirmText={btnConfirmText}
+                onCancel={onCancel}
+                onConfirm={onConfirm}
+                type={type}
+            />
+        );
+        const dialog = getByDataQa('type-info');
+        expect(dialog.focus).toBeTruthy();
     });
 });

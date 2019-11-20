@@ -12,27 +12,95 @@
     flex-direction: row;
     background: rgba(255, 255, 255, 0.85);
     z-index: 10;
+
+    .icon {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .icon-close {
+        @close-icon();
+    }
+
+    &-title {
+        font-weight: normal;
+        font-size: 20px;
+        color: @gray-darkest;
+        margin: 0px;
+        word-break: break-all;
+    }
+
     &-content {
         line-height: 1.4;
-        font-size: 12px;
+        font-size: 14px;
         box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
         background: @white;
+        padding: 35px;
+        position: relative;
+
         &-header {
             background-color: @white;
-            padding: 15px 30px;
+            padding: 0px;
             color: @gray-coal;
-            font-size: 14px;
         }
+
         &-body {
             background-color: @white;
-            font-size: 12px;
-            padding: 5px 30px;
+            font-size: 14px;
+            color: @gray-darker;
+            padding: 15px 0px;
         }
+
         &-footer {
             background-color: @white;
             border: none;
-            padding: 20px 30px 25px;
-            text-align: right;
+            padding: 0px;
+            text-align: center;
+        }
+
+        &-wrapper {
+            text-align: left;
+            padding: 0px 30px;
+        }
+
+        &-icon-wrapper {
+            font-size: 35px;
+            position: absolute;
+            left: 0;
+            top: 35px;
+
+            .icon-info {
+                @info-icon();
+                color: @info;
+            }
+
+            .icon-warning {
+                @warning-icon-inv();
+                color: @warning;
+            }
+
+            .icon-success {
+                @success-icon();
+                color: @success;
+            }
+
+            span {
+                position: absolute;
+                top: 0px;
+            }
+        }
+
+        .cancel {
+            position: absolute;
+            top: 27px;
+            right: 10px;
+            border: none;
+            font-size: 22px;
+            padding: 0px;
+            color: @gray-darkest;
+            background: @white;
+            font-weight: 200;
+            cursor: pointer;
         }
     }
 }
@@ -42,11 +110,13 @@
         width: 70vw;
     }
 }
+
 @media (min-width: @screen-md-min) {
     .dialog-content {
         width: 50vw;
     }
 }
+
 @media (min-width: @screen-lg-min) {
     .dialog-content {
         width: 35vw;
