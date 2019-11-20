@@ -1,130 +1,130 @@
 .dialog {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  background: rgba(255, 255, 255, 0.85);
-  z-index: 10;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 10;
 
-  .icon {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .icon-close {
-    @close-icon();
-  }
-
-  &-title {
-    font-weight: normal;
-    font-size: 20px;
-    color: @gray-darkest;
-    margin: 0px;
-    word-break: break-all;
-  }
-
-  &-content {
-    line-height: 1.4;
-    font-size: 14px;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
-    background: @white;
-    padding: 35px;
-    position: relative;
-
-    &-header {
-      background-color: @white;
-      padding: 0px;
-      color: @gray-coal;
+    .icon {
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
-    &-body {
-      background-color: @white;
-      font-size: 14px;
-      color: @gray-darker;
-      padding: 15px 0px;
+    .icon-close {
+        @close-icon();
     }
 
-    &-footer {
-      background-color: @white;
-      border: none;
-      padding: 0px;
-      text-align: center;
+    &-title {
+        font-weight: normal;
+        font-size: 20px;
+        color: @gray-darkest;
+        margin: 0px;
+        word-break: break-all;
     }
 
-    &-wrapper {
-      text-align: left;
-      padding: 0px 30px;
+    &-content {
+        line-height: 1.4;
+        font-size: 14px;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+        background: @white;
+        padding: 35px;
+        position: relative;
+
+        &-header {
+            background-color: @white;
+            padding: 0px;
+            color: @gray-coal;
+        }
+
+        &-body {
+            background-color: @white;
+            font-size: 14px;
+            color: @gray-darker;
+            padding: 15px 0px;
+        }
+
+        &-footer {
+            background-color: @white;
+            border: none;
+            padding: 0px;
+            text-align: center;
+        }
+
+        &-wrapper {
+            text-align: left;
+            padding: 0px 30px;
+        }
+
+        &-icon-wrapper {
+            font-size: 35px;
+            position: absolute;
+            left: 0;
+            top: 35px;
+
+            .icon-info {
+                @info-icon();
+                color: @info;
+            }
+
+            .icon-warning {
+                @warning-icon-inv();
+                color: @warning;
+            }
+
+            .icon-success {
+                @success-icon();
+                color: @success;
+            }
+
+            span {
+                position: absolute;
+                top: 0px;
+            }
+        }
+
+        .cancel {
+            position: absolute;
+            top: 27px;
+            right: 10px;
+            border: none;
+            font-size: 22px;
+            padding: 0px;
+            color: @gray-darkest;
+            background: @white;
+            font-weight: 200;
+            cursor: pointer;
+        }
     }
-
-    &-icon-wrapper {
-      font-size: 35px;
-      position: absolute;
-      left: 0;
-      top: 35px;
-
-      .icon-info {
-        @info-icon();
-        color: @info;
-      }
-
-      .icon-warning {
-        @warning-icon-inv();
-        color: @warning;
-      }
-
-      .icon-success {
-        @success-icon();
-        color: @success;
-      }
-
-      span {
-        position: absolute;
-        top: 0px;
-      }
-    }
-
-    .cancel {
-      position: absolute;
-      top: 27px;
-      right: 10px;
-      border: none;
-      font-size: 22px;
-      padding: 0px;
-      color: @gray-darkest;
-      background: @white;
-      font-weight: 200;
-      cursor: pointer;
-    }
-  }
 }
 
 @media (min-width: @screen-sm-min) {
-  .dialog-content {
-    width: 70vw;
-  }
+    .dialog-content {
+        width: 70vw;
+    }
 }
 
 @media (min-width: @screen-md-min) {
-  .dialog-content {
-    width: 50vw;
-  }
+    .dialog-content {
+        width: 50vw;
+    }
 }
 
 @media (min-width: @screen-lg-min) {
-  .dialog-content {
-    width: 35vw;
-  }
+    .dialog-content {
+        width: 35vw;
+    }
 }
 
 @media (min-width: @screen-xl-min) {
-  .dialog-content {
-    width: 29.2vw;
-  }
+    .dialog-content {
+        width: 29.2vw;
+    }
 }

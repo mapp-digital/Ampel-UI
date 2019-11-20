@@ -14,7 +14,7 @@ enum DialogType {
 interface Props {
     id: string;
     title: string;
-    level?: DialogType;
+    type?: DialogType;
     content: string | React.ReactNode;
     // @deprecated
     btnCancelText?: string;
@@ -61,9 +61,9 @@ class Dialog extends React.Component<Props, {}> {
                         <button id="cancel" className={'cancel'} onClick={this.props.onCancel}>
                             <span className={`icon icon-close`} />
                         </button>
-                        {this.props.level && (
-                            <div className="dialog-content-icon-wrapper" data-qa={`level-${this.props.level}`}>
-                                <span className={`icon icon-${this.props.level} level-${this.props.level}`} />
+                        {this.props.type && (
+                            <div className="dialog-content-icon-wrapper" data-qa={`level-${this.props.type}`}>
+                                <span className={`icon icon-${this.props.type} level-${this.props.type}`} />
                             </div>
                         )}
                         <div className="dialog-content-wrapper">
