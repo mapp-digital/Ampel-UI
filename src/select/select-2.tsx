@@ -39,13 +39,14 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         super(props);
 
         this.state = {
-            isExpanded: false,
             filterValue: '',
+            isExpanded: false,
             options: this.props.options,
         };
 
         this.onFilterChange = this.onFilterChange.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
+        this.handleOptionSelect = this.handleOptionSelect.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
     }
 
@@ -64,13 +65,18 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
                 {this.state.isExpanded && (
                     <SelectList
                         options={this.state.options}
-                        onChange={this.props.onChange}
+                        onChange={this.handleOptionSelect}
                         renderer={this.props.optionsRenderer}
                         value={this.props.value}
                     />
                 )}
             </div>
         );
+    }
+
+    private handleOptionSelect(value: T) {
+        this.props.onChange(value);
+        this.collapseOptionsList();
     }
 
     private toggleOptionsList() {
