@@ -23,11 +23,13 @@ interface Props<T, O extends Option<T>> {
     renderer?: (props: RendererProps<T, O>) => JSX.Element;
 }
 
+const refsReducer = <T extends {}>(refs: OptionsRefs, option: Option<T>, index: number) => {
+    refs[index] = React.createRef();
+    return refs;
+};
+
 class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}> {
-    private optionsRefs: OptionsRefs = this.props.options.reduce((refs, option, index) => {
-        refs[index] = React.createRef();
-        return refs;
-    }, {});
+    private optionsRefs: OptionsRefs = this.props.options.reduce(refsReducer, {});
 
     constructor(props: Props<T, O>) {
         super(props);
