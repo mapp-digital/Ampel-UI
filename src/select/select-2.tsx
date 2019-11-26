@@ -79,10 +79,10 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
                 {this.state.isExpanded && (
                     <div className="select-options-wrapper" data-qa={`select-options-wrapper-${this.props.id}`}>
                         <SelectList
-                            options={this.getFilteredOptions()}
-                            onChange={this.handleOptionSelect}
-                            renderer={this.props.optionsRenderer}
                             value={this.props.value}
+                            onChange={this.handleOptionSelect}
+                            options={this.getFilteredOptions()}
+                            renderer={this.props.optionsRenderer}
                         />
                     </div>
                 )}
@@ -155,14 +155,16 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
             <div
                 role="button"
                 data-qa={`select-toggle--standard-${this.props.id}`}
-                className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
+                className={`select-option-toggle select-option-toggle--standard ${
+                    this.props.disabled ? 'disabled' : ''
+                }`}
                 aria-haspopup="listbox"
                 onClick={this.toggleOptionsIfNotDisabled}
             >
                 <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
                     {label}
                 </span>
-                <span className="arrow" />
+                <span className="select-option-toggle--icon-dropdown" />
             </div>
         );
     }
@@ -172,7 +174,7 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
             <div
                 role="button"
                 data-qa={`select-toggle--search-${this.props.id}`}
-                className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
+                className={`select-option-toggle select-option-toggle--search ${this.props.disabled ? 'disabled' : ''}`}
                 aria-haspopup="listbox"
             >
                 {this.getSearchInput()}
@@ -182,30 +184,34 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
 
     private getSearchInput() {
         return (
-            <div className={`select-search-input`}>
-                <span className="select-search-input--icon-filter" />
+            <>
+                <span className="select-option-toggle--icon-filter" />
                 <input
                     id={this.props.id}
+                    className="text"
                     type="text"
                     onChange={this.onFilterChange}
                     placeholder={this.getLabel() || this.props.placeholder}
                     onClick={this.expandOptionsList}
                     value={this.state.filterValue}
+                    disabled={this.props.disabled}
+                    autoComplete="off"
                 />
                 <button
                     type="button"
-                    className="select-search-input--icon-clear"
+                    className="select-option-toggle--icon-clear"
                     onClick={this.clearSearch}
-                    disabled={!this.state.filterValue.length}
+                    disabled={!this.state.filterValue.length || this.props.disabled}
                     data-qa={`select-search-input--icon-clear-${this.props.id}`}
                 />
                 <button
                     type="button"
-                    className="select-search-input--icon-dropdown"
+                    className="select-option-toggle--icon-dropdown"
                     onClick={this.toggleOptionsIfNotDisabled}
                     data-qa={`select-search-input--icon-dropdown-${this.props.id}`}
+                    disabled={this.props.disabled}
                 />
-            </div>
+            </>
         );
     }
 }

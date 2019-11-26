@@ -61,7 +61,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
     private scrollSelectedItemIntoView() {
         if (!isEmpty(this.props.value)) {
             const selectedItemIndex = this.props.options.findIndex((option) => isEqual(this.props.value, option.value));
-            const selectedItemNode = this.optionsRefs[selectedItemIndex].current;
+            const selectedItemNode = this.optionsRefs[selectedItemIndex] && this.optionsRefs[selectedItemIndex].current;
             if (selectedItemNode) {
                 selectedItemNode.scrollIntoView({
                     block: 'start',
@@ -77,7 +77,9 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
                     const selectedClass = this.isSelected(option) ? ' selected' : '';
                     const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
                     const onClick = () => {
-                        this.props.onChange(option.value);
+                        if (!this.isOptionDisabled(option.value)) {
+                            this.props.onChange(option.value);
+                        }
                     };
                     return (
                         <li

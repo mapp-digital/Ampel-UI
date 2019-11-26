@@ -1,6 +1,13 @@
 @font-size-mid: 12px;
 @font-family: 'Open Sans',Arial,sans-serif;
 
+@icon-commons: {
+    background: transparent;
+    border: 0;
+    color: @gray-darker;
+    cursor: pointer;
+};
+
 .select-component {
     color: @gray-darkest;
     cursor: pointer;
@@ -18,16 +25,13 @@
 
     .disabled {
         color: @gray-dark;
-        cursor: not-allowed;
         background-color: @gray-stone;
+        cursor: not-allowed;
     }
 
     .select-option-toggle {
-        height: 34px;
         width: 100%;
-        padding: 5px 22px 5px 10px;
-        display: block;
-
+        height: 32px;
         border: @default-border;
         background-color: @white;
         user-select: none;
@@ -39,6 +43,12 @@
         text-overflow: ellipsis;
         box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
+        padding: 0 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
         &:hover {
             text-decoration: none;
         }
@@ -48,20 +58,44 @@
         }
 
         .text {
-            vertical-align: middle;
-            line-height: 2em;
+            flex: 1;
         }
 
-        .arrow {
-            @dropdown-icon();
+        &--icon {
+            &-filter {
+                @table-search-bar-icon();
+                font-size: 14px;
+            }
 
-            font-size: 7px;
-            line-height: 34px;
-            padding: 0 8px;
-            background-color: transparent;
-            position: absolute;
-            top: 1px;
-            right: 1px;
+            &-clear {
+                @close-icon();
+                @icon-commons();
+                font-size: 12px;
+                &:disabled {
+                    color: @gray-light;
+                }
+            }
+
+            &-dropdown {
+                @dropdown-icon();
+                @icon-commons();
+                font-size: 14px;
+            }
+        }
+
+        &--search {
+            button {
+                padding: 0;
+                &:not(:last-child) {
+                    margin-right: 8px;
+                }
+            }
+
+            input {
+                border: none;
+                outline: none;
+                height: 100%;
+            }
         }
     }
 
@@ -71,27 +105,6 @@
         left: 0;
         z-index: 1;
         width: 100%;
-
-        .select-filter-bar {
-            display: flex;
-            background-color: @white;
-            border: @default-border;
-            border-top: none;
-            padding: 0 5px 0 0;
-
-            input {
-                padding-left: 10px;
-                border: none;
-                box-shadow: none;
-                outline: none;
-            }
-            .select-filter-icon {
-                @two-box-filter-icon();
-                font-size: 14px;
-                padding-top: 3px;
-                line-height: 30px;
-            }
-        }
 
         .select-option-items {
             width: 100%;
@@ -124,61 +137,6 @@
             .selected {
                 font-weight: bold;
             }
-        }
-    }
-}
-
-.select-search-input {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: @gray-darker;
-
-    width: 100%;
-    background-color: @white;
-
-    &--icon {
-        &-filter {
-            @table-search-bar-icon();
-            font-size: 14px;
-            line-height: 30px;
-            padding: 0 8px;
-        }
-
-        &-clear {
-            @close-icon();
-            font-size: 12px;
-            //line-height: 30px;
-            padding: 0 8px;
-            background: transparent;
-            border: 0;
-            color: @gray-darker;
-            cursor: pointer;
-            &:disabled {
-                color: @gray-light;
-            }
-        }
-
-        &-dropdown {
-            @dropdown-icon();
-            font-size: 12px;
-            //line-height: 30px;
-            padding: 0 8px;
-            background: transparent;
-            border: 0;
-            color: @gray-darker;
-            cursor: pointer;
-        }
-    }
-
-    input {
-        flex: 1;
-        border: none;
-        box-shadow: none;
-        font-size: 12px;
-
-        &:focus {
-            outline: none;
         }
     }
 }

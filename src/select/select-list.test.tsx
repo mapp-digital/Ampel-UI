@@ -77,4 +77,75 @@ describe('SelectList', () => {
 
         expect(listItem.classList.contains('selected')).toBeTruthy();
     });
+
+    it('should invoke `disabledOptionWhen` handler', () => {
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const value = 'one';
+        const onChange = jest.fn();
+        const disabledOptionWhen = jest.fn();
+
+        render(
+            <StringSelectList
+                value={value}
+                options={options}
+                onChange={onChange}
+                disableOptionWhen={disabledOptionWhen}
+            />
+        );
+
+        expect(disabledOptionWhen).toHaveBeenCalled();
+    });
+
+    it('should assign `disabled` class to the disabled item', () => {
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const value = 'one';
+        const label = 'One';
+        const onChange = jest.fn();
+        const disableOptionWhen = (v: string) => v === value;
+
+        const { getByDataQa } = render(
+            <StringSelectList
+                value={value}
+                options={options}
+                onChange={onChange}
+                disableOptionWhen={disableOptionWhen}
+            />
+        );
+        const listItem = getByDataQa(`select--option-${label}`);
+
+        expect(listItem.classList.contains('disabled')).toBeTruthy();
+    });
+
+    it('should not invoke `onChange` handler if option is disabled', () => {
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const value = 'one';
+        const label = 'One';
+        const onChange = jest.fn();
+        const disableOptionWhen = (v: string) => v === value;
+
+        const { getByDataQa } = render(
+            <StringSelectList
+                value={value}
+                options={options}
+                onChange={onChange}
+                disableOptionWhen={disableOptionWhen}
+            />
+        );
+        const listItem = getByDataQa(`select--option-${label}`);
+        listItem.click();
+
+        expect(onChange).not.toHaveBeenCalled();
+    });
 });
