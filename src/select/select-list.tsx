@@ -11,15 +11,17 @@ interface OptionsRefs {
 
 interface RendererProps<T, O> {
     value: T;
-    optionsRefs: OptionsRefs;
     options: Array<O>;
+    optionsRefs: OptionsRefs;
     onChange: (value: T) => void;
+    disableOptionWhen?: (value: T) => boolean;
 }
 
 interface Props<T, O extends Option<T>> {
     value: T;
     options: Array<O>;
     onChange: (value: T) => void;
+    disableOptionWhen?: (value: T) => boolean;
     renderer?: (props: RendererProps<T, O>) => JSX.Element;
 }
 
@@ -40,18 +42,20 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
     }
 
     public render() {
-        return (
-            <div className="select-options-wrapper">
-                {this.props.renderer
-                    ? this.props.renderer({
-                          optionsRefs: this.optionsRefs,
-                          value: this.props.value,
-                          options: this.props.options,
-                          onChange: (value: T) => this.props.onChange(value),
-                      })
-                    : this.renderDefaultList()}
-            </div>
-        );
+        if (this.props.renderer) {
+            return (
+                <>
+                    {this.props.renderer({
+                        value: this.props.value,
+                        options: this.props.options,
+                        optionsRefs: this.optionsRefs,
+                        disableOptionWhen: this.props.disableOptionWhen,
+                        onChange: (value: T) => this.props.onChange(value),
+                    })}
+                </>
+            );
+        }
+        return this.renderDefaultList();
     }
 
     private scrollSelectedItemIntoView() {
@@ -71,6 +75,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
             <ul className="select-option-items" data-qa={`select-list--default`}>
                 {this.props.options.map((option, index) => {
                     const selectedClass = this.isSelected(option) ? ' selected' : '';
+                    const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
                     const onClick = () => {
                         this.props.onChange(option.value);
                     };
@@ -81,7 +86,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
                             role="option"
                             onClick={onClick}
                             data-qa={`select--option-${option.label}`}
-                            className={`item${selectedClass}`}
+                            className={`item${selectedClass}${disabledClass}`}
                             aria-selected={this.isSelected(option)}
                         >
                             {option.label}
@@ -94,6 +99,10 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
 
     private isSelected(option: O) {
         return isEqual(this.props.value, option.value);
+    }
+
+    private isOptionDisabled(value: T) {
+        return this.props.disableOptionWhen && this.props.disableOptionWhen(value);
     }
 }
 

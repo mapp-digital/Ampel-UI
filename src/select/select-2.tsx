@@ -1,9 +1,9 @@
-import { matches } from '@ampel-ui/common/search';
 import * as React from 'react';
+
+import { matches } from '@ampel-ui/common/search';
 
 import { isEqual } from 'lodash';
 
-import { SearchInput } from '@ampel-ui/input';
 import { onOuterClick } from '@ampel-ui/subscriptions';
 
 import { Option } from '../api/index';
@@ -15,16 +15,20 @@ interface Props<T, O extends Option<T>> {
     value: T;
     options: Array<O>;
     onChange: (value: T) => void;
+    className?: string;
     searchable?: boolean;
+    placeholder?: string;
     disabled?: boolean;
+    disableOptionWhen?: (value: T) => boolean;
     optionsRenderer?: (props: RendererProps<T, O>) => JSX.Element;
 }
 
 interface State<T, O> {
     isExpanded: boolean;
     filterValue: string;
-    options: Array<O>;
 }
+
+const KEY_ESCAPE = 27;
 
 class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State<T, O>> {
     private rootNode: HTMLDivElement;
@@ -41,13 +45,16 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         this.state = {
             filterValue: '',
             isExpanded: false,
-            options: this.props.options,
         };
 
+        this.clearSearch = this.clearSearch.bind(this);
+        this.onKeyPressed = this.onKeyPressed.bind(this);
         this.onFilterChange = this.onFilterChange.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
+        this.expandOptionsList = this.expandOptionsList.bind(this);
         this.handleOptionSelect = this.handleOptionSelect.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
+        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
     }
 
     public componentDidMount() {
@@ -60,22 +67,36 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
 
     public render() {
         return (
-            <div ref={this.refHandlers.rootNode} role="button" tabIndex={-1} className="select-component">
+            <div
+                ref={this.refHandlers.rootNode}
+                role="button"
+                tabIndex={-1}
+                className={`select-component ${this.props.className || ''}`}
+                data-qa={`select-component-${this.props.id}`}
+                onKeyDown={this.onKeyPressed}
+            >
                 {this.props.searchable ? this.renderSearchableTrigger() : this.renderStandardTrigger()}
                 {this.state.isExpanded && (
-                    <SelectList
-                        options={this.state.options}
-                        onChange={this.handleOptionSelect}
-                        renderer={this.props.optionsRenderer}
-                        value={this.props.value}
-                    />
+                    <div className="select-options-wrapper" data-qa={`select-options-wrapper-${this.props.id}`}>
+                        <SelectList
+                            options={this.getFilteredOptions()}
+                            onChange={this.handleOptionSelect}
+                            renderer={this.props.optionsRenderer}
+                            value={this.props.value}
+                        />
+                    </div>
                 )}
             </div>
         );
     }
 
+    private getFilteredOptions() {
+        return this.props.options.filter((option) => matches(this.state.filterValue, option.label));
+    }
+
     private handleOptionSelect(value: T) {
         this.props.onChange(value);
+        this.clearSearch();
         this.collapseOptionsList();
     }
 
@@ -85,18 +106,36 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         }));
     }
 
+    private toggleOptionsIfNotDisabled() {
+        if (!this.props.disabled) {
+            this.toggleOptionsList();
+        }
+    }
+
     private collapseOptionsList() {
         this.setState({
             isExpanded: false,
         });
     }
 
-    private onFilterChange(filterValue: string) {
-        const filteredOptions = this.props.options.filter((option) => matches(filterValue, option.label));
+    private expandOptionsList() {
+        if (!this.props.disabled) {
+            this.setState({
+                isExpanded: true,
+            });
+        }
+    }
+
+    private onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
         this.setState({
-            filterValue,
-            options: filteredOptions,
+            filterValue: event.target.value,
         });
+    }
+
+    private onKeyPressed(event: React.KeyboardEvent) {
+        if (event.keyCode === KEY_ESCAPE) {
+            this.collapseOptionsList();
+        }
     }
 
     private getLabel() {
@@ -104,15 +143,21 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         return selectedOption && selectedOption.label;
     }
 
+    private clearSearch() {
+        this.setState({
+            filterValue: '',
+        });
+    }
+
     private renderStandardTrigger() {
-        const label = this.getLabel();
+        const label = this.getLabel() || this.props.placeholder;
         return (
             <div
                 role="button"
-                data-qa={`select--toggle-${this.props.id}`}
+                data-qa={`select-toggle--standard-${this.props.id}`}
                 className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
                 aria-haspopup="listbox"
-                onClick={this.toggleOptionsList}
+                onClick={this.toggleOptionsIfNotDisabled}
             >
                 <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
                     {label}
@@ -123,20 +168,42 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
     }
 
     private renderSearchableTrigger() {
-        const label = this.getLabel();
         return (
             <div
                 role="button"
-                data-qa={`select--toggle-${this.props.id}`}
+                data-qa={`select-toggle--search-${this.props.id}`}
                 className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
                 aria-haspopup="listbox"
-                onClick={this.toggleOptionsList}
             >
-                <SearchInput
-                    id="search-input"
+                {this.getSearchInput()}
+            </div>
+        );
+    }
+
+    private getSearchInput() {
+        return (
+            <div className={`select-search-input`}>
+                <span className="select-search-input--icon-filter" />
+                <input
+                    id={this.props.id}
+                    type="text"
+                    onChange={this.onFilterChange}
+                    placeholder={this.getLabel() || this.props.placeholder}
+                    onClick={this.expandOptionsList}
                     value={this.state.filterValue}
-                    searchPlaceholder={label || 'Search...'}
-                    onFilterChange={this.onFilterChange}
+                />
+                <button
+                    type="button"
+                    className="select-search-input--icon-clear"
+                    onClick={this.clearSearch}
+                    disabled={!this.state.filterValue.length}
+                    data-qa={`select-search-input--icon-clear-${this.props.id}`}
+                />
+                <button
+                    type="button"
+                    className="select-search-input--icon-dropdown"
+                    onClick={this.toggleOptionsIfNotDisabled}
+                    data-qa={`select-search-input--icon-dropdown-${this.props.id}`}
                 />
             </div>
         );
