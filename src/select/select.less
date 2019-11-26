@@ -2,15 +2,13 @@
 @font-family: 'Open Sans',Arial,sans-serif;
 
 @icon-commons: {
-    background: transparent;
     border: 0;
     color: @gray-darker;
-    cursor: pointer;
+    background: transparent;
 };
 
 .select-component {
     color: @gray-darkest;
-    cursor: pointer;
     position: relative;
     font-size: @font-size-mid;
     font-family: @font-family;
@@ -24,9 +22,14 @@
     }
 
     .disabled {
-        color: @gray-dark;
-        background-color: @gray-stone;
-        cursor: not-allowed;
+        .text {
+            color: @gray-light;
+        }
+        input {
+            &::placeholder {
+                color: @gray-light;
+            }
+        }
     }
 
     .select-option-toggle {
@@ -71,6 +74,7 @@
                 @close-icon();
                 @icon-commons();
                 font-size: 12px;
+                cursor: pointer;
                 &:disabled {
                     color: @gray-light;
                 }
@@ -80,6 +84,7 @@
                 @dropdown-icon();
                 @icon-commons();
                 font-size: 14px;
+                cursor: pointer;
             }
         }
 
@@ -95,7 +100,12 @@
                 border: none;
                 outline: none;
                 height: 100%;
+                font-size: 12px;
             }
+        }
+
+        &--standard {
+            cursor: pointer;
         }
     }
 
@@ -118,6 +128,7 @@
             list-style-type: none;
             box-shadow: none;
             overflow: auto;
+            cursor: pointer;
 
             .active {
                 background-color: @info-light;
