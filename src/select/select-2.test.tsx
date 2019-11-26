@@ -21,6 +21,10 @@ const hijackEventListeners = () => {
     return listeners;
 };
 
+const changeValue = (node: HTMLElement, value: string) => {
+    fireEvent.change(node, { target: { value } });
+};
+
 const StringSelect = Select2 as new () => Select2<string, Option<string>>;
 
 describe('Select2', () => {
@@ -145,5 +149,49 @@ describe('Select2', () => {
         expect(selectOptionsWrapper).toBeFalsy();
 
         listeners._reset();
+    });
+
+    it('should NOT expand select if disabled', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const disabled = true;
+
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} disabled={disabled} />
+        );
+
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+        standardSelectToggle.click();
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeFalsy();
+    });
+
+    it('should clear search input value upon clicking X', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const searchable = true;
+
+        const { getByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} searchable={searchable} />
+        );
+
+        const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
+        changeValue(searchInput, 'abc');
+
+        const clearSearch = getByDataQa(`select-option-toggle--clear-${id}`);
+        clearSearch.click();
+
+        expect(searchInput.value).toBe('');
     });
 });

@@ -33,11 +33,6 @@ const KEY_ESCAPE = 27;
 class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State<T, O>> {
     private rootNode: HTMLDivElement;
     private dispose: () => void;
-    private refHandlers = {
-        rootNode: (ref: HTMLDivElement) => {
-            this.rootNode = ref;
-        },
-    };
 
     constructor(props: Props<T, O>) {
         super(props);
@@ -47,14 +42,14 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
             isExpanded: false,
         };
 
-        this.clearSearch = this.clearSearch.bind(this);
+        this.setRootNode = this.setRootNode.bind(this);
         this.onKeyPressed = this.onKeyPressed.bind(this);
         this.onFilterChange = this.onFilterChange.bind(this);
+        this.clearFilterValue = this.clearFilterValue.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.expandOptionsList = this.expandOptionsList.bind(this);
         this.handleOptionSelect = this.handleOptionSelect.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
-        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
     }
 
     public componentDidMount() {
@@ -68,7 +63,7 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
     public render() {
         return (
             <div
-                ref={this.refHandlers.rootNode}
+                ref={this.setRootNode}
                 role="button"
                 tabIndex={-1}
                 className={`select-component ${this.props.className || ''}`}
@@ -96,19 +91,15 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
 
     private handleOptionSelect(value: T) {
         this.props.onChange(value);
-        this.clearSearch();
+        this.clearFilterValue();
         this.collapseOptionsList();
     }
 
     private toggleOptionsList() {
-        this.setState((prevState) => ({
-            isExpanded: !prevState.isExpanded,
-        }));
-    }
-
-    private toggleOptionsIfNotDisabled() {
         if (!this.props.disabled) {
-            this.toggleOptionsList();
+            this.setState((prevState) => ({
+                isExpanded: !prevState.isExpanded,
+            }));
         }
     }
 
@@ -126,12 +117,6 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         }
     }
 
-    private onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
-        this.setState({
-            filterValue: event.target.value,
-        });
-    }
-
     private onKeyPressed(event: React.KeyboardEvent) {
         if (event.keyCode === KEY_ESCAPE) {
             this.collapseOptionsList();
@@ -143,10 +128,20 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
         return selectedOption && selectedOption.label;
     }
 
-    private clearSearch() {
+    private clearFilterValue() {
         this.setState({
             filterValue: '',
         });
+    }
+
+    private onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            filterValue: event.target.value,
+        });
+    }
+
+    private setRootNode(node: HTMLDivElement) {
+        this.rootNode = node;
     }
 
     private renderStandardTrigger() {
@@ -159,7 +154,7 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
                     this.props.disabled ? 'disabled' : ''
                 }`}
                 aria-haspopup="listbox"
-                onClick={this.toggleOptionsIfNotDisabled}
+                onClick={this.toggleOptionsList}
             >
                 <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
                     {label}
@@ -188,27 +183,28 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
                 <span className="select-option-toggle--icon-filter" />
                 <input
                     id={this.props.id}
-                    className="text"
                     type="text"
+                    className="text"
+                    autoComplete="off"
                     onChange={this.onFilterChange}
-                    placeholder={this.getLabel() || this.props.placeholder}
-                    onClick={this.expandOptionsList}
                     value={this.state.filterValue}
                     disabled={this.props.disabled}
-                    autoComplete="off"
+                    onClick={this.expandOptionsList}
+                    placeholder={this.getLabel() || this.props.placeholder}
+                    data-qa={`select-option-toggle--input-${this.props.id}`}
                 />
                 <button
                     type="button"
                     className="select-option-toggle--icon-clear"
-                    onClick={this.clearSearch}
+                    onClick={this.clearFilterValue}
                     disabled={!this.state.filterValue.length || this.props.disabled}
-                    data-qa={`select-search-input--icon-clear-${this.props.id}`}
+                    data-qa={`select-option-toggle--clear-${this.props.id}`}
                 />
                 <button
                     type="button"
                     className="select-option-toggle--icon-dropdown"
-                    onClick={this.toggleOptionsIfNotDisabled}
-                    data-qa={`select-search-input--icon-dropdown-${this.props.id}`}
+                    onClick={this.toggleOptionsList}
+                    data-qa={`select-option-toggle--dropdown-${this.props.id}`}
                     disabled={this.props.disabled}
                 />
             </>

@@ -50,7 +50,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
                         options: this.props.options,
                         optionsRefs: this.optionsRefs,
                         disableOptionWhen: this.props.disableOptionWhen,
-                        onChange: (value: T) => this.props.onChange(value),
+                        onChange: this.props.onChange,
                     })}
                 </>
             );
