@@ -1,247 +1,11 @@
+import { fireEvent } from 'dom-testing-library';
 import * as React from 'react';
 
-import { cleanup, fireEvent, render } from '../../config/testing';
+import { Option } from '@ampel-ui/api';
 
-import { Option, StringSelect } from './index';
+import { Select } from './select';
 
-const changeValue = (node: HTMLElement, value: string) => {
-    fireEvent.change(node, { target: { value } });
-};
-
-afterEach(cleanup);
-describe('Select', () => {
-    it('should show the configured placeholder if no value given', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [];
-        const value = undefined;
-        const onChange = jest.fn();
-        const placeholder = 'Please select ...';
-
-        const { getByDataQa } = render(
-            <StringSelect id={id} value={value} options={options} onChange={onChange} placeholder={placeholder} />
-        );
-        const selectToggleText = getByDataQa('select--toggle-text-' + id);
-
-        expect(selectToggleText.textContent).toEqual(placeholder);
-    });
-
-    it('should show nothing if no value or placeholder given', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [];
-        const value = undefined;
-        const onChange = jest.fn();
-
-        const { getByDataQa } = render(<StringSelect id={id} value={value} options={options} onChange={onChange} />);
-        const selectToggleText = getByDataQa('select--toggle-text-' + id);
-
-        expect(selectToggleText.textContent).toEqual('');
-    });
-
-    it('should invoke the changeHandler when option is selected', () => {
-        const id = 'someId';
-        const label = 'Egon';
-        const value = 'egon';
-        const options: Array<Option<string>> = [{ label, value }, { label: 'Peter', value: '_Pete01' }];
-        const noValue = undefined;
-        const onChange = jest.fn();
-
-        const { getByDataQa } = render(<StringSelect id={id} value={noValue} options={options} onChange={onChange} />);
-
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const desiredOption = getByDataQa('select--option-' + label);
-        desiredOption.click();
-
-        expect(onChange).toHaveBeenNthCalledWith(1, value);
-    });
-
-    it('should not invoke the changeHandler when initial option is selected', () => {
-        const id = 'someId';
-        const label = 'Egon';
-        const value = 'egon';
-        const options: Array<Option<string>> = [{ label, value }, { label: 'Peter', value: '_Pete01' }];
-        const onChange = jest.fn();
-
-        const { getByDataQa } = render(<StringSelect id={id} value={value} options={options} onChange={onChange} />);
-
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const desiredOption = getByDataQa('select--option-' + label);
-        desiredOption.click();
-
-        expect(onChange).not.toHaveBeenCalled();
-    });
-
-    it('should not invoke the changeHandler when initial option is selected', () => {
-        const id = 'someId';
-        const initialOptionLabel = 'Egon';
-        const value = 'egon';
-        const options: Array<Option<string>> = [
-            { label: initialOptionLabel, value },
-            { label: 'Peter', value: '_Pete01' },
-        ];
-        const onChange = jest.fn();
-        const { getByDataQa } = render(<StringSelect id={id} value={value} options={options} onChange={onChange} />);
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const desiredOption = getByDataQa('select--option-' + initialOptionLabel);
-        desiredOption.click();
-
-        expect(onChange).not.toHaveBeenCalled();
-    });
-
-    it('should close on escape key pressed', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
-        const { getByDataQa, queryByDataQa } = render(
-            <StringSelect id={id} value={'egon'} options={options} onChange={jest.fn()} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        fireEvent.keyDown(toggle, { keyCode: 27 });
-
-        const optionItems = queryByDataQa('select--option-items-' + id);
-        expect(optionItems).toBeFalsy();
-    });
-
-    it('should not close on other key pressed', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
-        const { getByDataQa } = render(<StringSelect id={id} value={'egon'} options={options} onChange={jest.fn()} />);
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        fireEvent.keyDown(toggle, { keyCode: 13 });
-
-        const optionItems = getByDataQa('select--option-items-' + id);
-        expect(optionItems).toBeTruthy();
-    });
-
-    it('should close on outer click', () => {
-        const listeners = hijackEventListeners();
-        const id = 'someId';
-        const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
-        const { getByDataQa, queryByDataQa } = render(
-            <div>
-                <div data-qa="outer">outer</div>
-                <StringSelect id={id} value={'egon'} options={options} onChange={jest.fn()} />
-            </div>
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const outer = getByDataQa('outer');
-        listeners.mousedown({ target: outer });
-
-        const optionItems = queryByDataQa('select--option-items-' + id);
-        expect(optionItems).toBeFalsy();
-        listeners._reset();
-    });
-
-    it('should render filter correctly', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [];
-        const { getByDataQa } = render(
-            <StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const searchInput = getByDataQa('select--filter-' + id);
-        expect(searchInput).toBeTruthy();
-    });
-
-    it('should filter items correctly', () => {
-        const id = 'someId';
-        const options: Array<Option<string>> = [{ label: 'John', value: 'john' }, { label: 'Arya', value: 'arya' }];
-        const { getByDataQa } = render(
-            <StringSelect searchable={true} id={id} options={options} onChange={jest.fn()} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const searchInput = getByDataQa('select--filter-' + id) as HTMLInputElement;
-        changeValue(searchInput, 'bc');
-
-        const optionItems = getByDataQa('select--option-items-' + id);
-        expect(optionItems.children.length).toBe(0);
-
-        changeValue(searchInput, 'jo');
-        expect(optionItems.children.length).toBe(1);
-
-        changeValue(searchInput, 'jos');
-        expect(optionItems.children.length).toBe(0);
-    });
-
-    it('should have disabled class when disabled', () => {
-        const id = 'someId';
-        const disabled = true;
-        const { getByDataQa } = render(<StringSelect id={id} disabled={disabled} options={[]} onChange={jest.fn()} />);
-        const toggle = getByDataQa('select--toggle-' + id);
-        expect(toggle.classList.contains('disabled')).toBeTruthy();
-    });
-
-    it('should NOT have disabled class when NOT disabled', () => {
-        const id = 'someId';
-        const disabled = false;
-        const { getByDataQa } = render(<StringSelect id={id} disabled={disabled} options={[]} onChange={jest.fn()} />);
-        const toggle = getByDataQa('select--toggle-' + id);
-        expect(toggle.classList.contains('disabled')).toBeFalsy();
-    });
-
-    it('should not expand options when disabled', () => {
-        const id = 'someId';
-        const disabled = true;
-        const options: Array<Option<string>> = [{ label: 'Egon', value: 'egon' }];
-        const { getByDataQa, queryByDataQa } = render(
-            <StringSelect id={id} disabled={disabled} options={options} onChange={jest.fn()} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const optionItems = queryByDataQa('select--option-items-' + id);
-        expect(optionItems).toBeFalsy();
-    });
-
-    it('should have disabled class on item when disabled', () => {
-        const id = 'someId';
-        const itemLabel = 'Egon';
-        const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
-        const disableOptionWhen = jest.fn().mockReturnValue(true);
-        const onChange = jest.fn();
-        const { getByDataQa } = render(
-            <StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const itemElement = getByDataQa('select--option-' + itemLabel);
-
-        expect(itemElement.classList.contains('disabled')).toBeTruthy();
-    });
-
-    it('should not invoke onChange when disabled item is clicked', () => {
-        const id = 'someId';
-        const itemLabel = 'Egon';
-        const options: Array<Option<string>> = [{ label: itemLabel, value: 'egon' }];
-        const disableOptionWhen = jest.fn().mockReturnValue(true);
-        const onChange = jest.fn();
-        const { getByDataQa } = render(
-            <StringSelect id={id} disableOptionWhen={disableOptionWhen} options={options} onChange={onChange} />
-        );
-        const toggle = getByDataQa('select--toggle-' + id);
-        toggle.click();
-
-        const itemElement = getByDataQa('select--option-' + itemLabel);
-        itemElement.click();
-
-        expect(onChange).not.toHaveBeenCalled();
-    });
-});
+import { cleanup, render } from '@config/testing';
 
 const hijackEventListeners = () => {
     const initialAddEventListener = document.addEventListener;
@@ -256,3 +20,178 @@ const hijackEventListeners = () => {
 
     return listeners;
 };
+
+const changeValue = (node: HTMLElement, value: string) => {
+    fireEvent.change(node, { target: { value } });
+};
+
+const StringSelect = Select as new () => Select<string, Option<string>>;
+
+describe('Select2', () => {
+    afterEach(cleanup);
+
+    it('should exist', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+
+        const { getByDataQa } = render(<StringSelect id={id} options={options} onChange={onChange} value={''} />);
+        const select = getByDataQa(`select-component-${id}`);
+
+        expect(select).toBeTruthy();
+    });
+
+    it('should render standar select toggle', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+
+        const { getByDataQa } = render(<StringSelect id={id} options={options} onChange={onChange} value={''} />);
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+
+        expect(standardSelectToggle).toBeTruthy();
+    });
+
+    it('should render searchable select toggle', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const searchable = true;
+
+        const { getByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} searchable={searchable} />
+        );
+        const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
+
+        expect(searchableSelectToggle).toBeTruthy();
+    });
+
+    it('should close on escape key pressed', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} />
+        );
+
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+        standardSelectToggle.click();
+
+        fireEvent.keyDown(standardSelectToggle, { keyCode: 27 });
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeFalsy();
+    });
+
+    it('should NOT close on other key press', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} />
+        );
+
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+        standardSelectToggle.click();
+
+        fireEvent.keyDown(standardSelectToggle, { keyCode: 13 });
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeTruthy();
+    });
+
+    it('should close on outer click', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const listeners = hijackEventListeners();
+
+        const { getByDataQa, queryByDataQa } = render(
+            <div>
+                <div data-qa="outer">outer</div>
+                <StringSelect id={id} options={options} onChange={onChange} value={''} />
+            </div>
+        );
+
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+        standardSelectToggle.click();
+
+        const outer = getByDataQa('outer');
+        listeners.mousedown({ target: outer });
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeFalsy();
+
+        listeners._reset();
+    });
+
+    it('should NOT expand select if disabled', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const disabled = true;
+
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} disabled={disabled} />
+        );
+
+        const standardSelectToggle = getByDataQa(`select-toggle--standard-${id}`);
+        standardSelectToggle.click();
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeFalsy();
+    });
+
+    it('should clear search input value upon clicking X', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const searchable = true;
+
+        const { getByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} searchable={searchable} />
+        );
+
+        const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
+        changeValue(searchInput, 'abc');
+
+        const clearSearch = getByDataQa(`select-option-toggle--clear-${id}`);
+        clearSearch.click();
+
+        expect(searchInput.value).toBe('');
+    });
+});

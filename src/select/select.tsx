@@ -1,58 +1,59 @@
-import { isEqual } from 'lodash';
-
 import * as React from 'react';
 
-import { Option } from '../api/index';
-import { matches } from '../common/search';
-import { onOuterClick } from '../subscriptions';
+import { matches } from '@ampel-ui/common/search';
 
-interface Props<T> {
+import { isEqual } from 'lodash';
+
+import { onOuterClick } from '@ampel-ui/subscriptions';
+
+import { Option } from '../api/index';
+
+import { RendererProps, SelectList } from './select-list';
+
+interface Props<T, O extends Option<T>> {
     id: string;
-    value?: T;
-    options: Array<Option<T>>;
+    value: T;
+    options: Array<O>;
     onChange: (value: T) => void;
-    disabled?: boolean;
     className?: string;
     searchable?: boolean;
     placeholder?: string;
+    disabled?: boolean;
     disableOptionWhen?: (value: T) => boolean;
-    searchPlaceholder?: string;
+    optionsRenderer?: (props: RendererProps<T, O>) => JSX.Element;
 }
 
-interface State<T> {
-    expanded: boolean;
-    options: Array<Option<T>>;
+interface State<T, O> {
+    isExpanded: boolean;
+    filterValue: string;
 }
 
 const KEY_ESCAPE = 27;
 
-class Select<T> extends React.Component<Props<T>, State<T>> {
-    private node: any;
+class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<T, O>> {
+    private rootNode: HTMLDivElement;
     private dispose: () => void;
-    private readonly searchInputRef: React.RefObject<HTMLInputElement>;
 
-    constructor(props: Props<T>) {
+    constructor(props: Props<T, O>) {
         super(props);
 
         this.state = {
-            expanded: false,
-            options: this.props.options,
+            filterValue: '',
+            isExpanded: false,
         };
 
-        this.searchInputRef = React.createRef();
-
-        this.setNode = this.setNode.bind(this);
+        this.setRootNode = this.setRootNode.bind(this);
         this.onKeyPressed = this.onKeyPressed.bind(this);
-        this.filterOptions = this.filterOptions.bind(this);
-        this.isOptionDisabled = this.isOptionDisabled.bind(this);
-        this.handleOptionClick = this.handleOptionClick.bind(this);
+        this.onFilterChange = this.onFilterChange.bind(this);
+        this.clearFilterValue = this.clearFilterValue.bind(this);
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
+        this.expandOptionsList = this.expandOptionsList.bind(this);
+        this.handleOptionSelect = this.handleOptionSelect.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
-        this.toggleOptionsIfNotDisabled = this.toggleOptionsIfNotDisabled.bind(this);
     }
 
     public componentDidMount() {
-        this.dispose = onOuterClick(this.node, this.collapseOptionsList);
+        this.dispose = onOuterClick(this.rootNode, this.collapseOptionsList);
     }
 
     public componentWillUnmount() {
@@ -60,83 +61,61 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
     }
 
     public render() {
-        const label = this.getLabel();
+        const options = this.getFilteredOptions();
         return (
             <div
-                ref={this.setNode}
+                ref={this.setRootNode}
                 role="button"
                 tabIndex={-1}
+                className={`select-component ${this.props.className || ''}`}
+                data-qa={`select-component-${this.props.id}`}
                 onKeyDown={this.onKeyPressed}
-                className="select-component"
             >
-                <a
-                    role="button"
-                    onClick={this.toggleOptionsIfNotDisabled}
-                    data-qa={`select--toggle-${this.props.id}`}
-                    className={`select-option-toggle ${this.props.disabled ? 'disabled' : ''}`}
-                    aria-haspopup="listbox"
-                >
-                    <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
-                        {label}
-                    </span>
-                    <span className="arrow" />
-                </a>
-                {this.state.expanded && this.getOptionsList()}
+                {this.props.searchable ? this.renderSearchableTrigger() : this.renderStandardTrigger()}
+                {this.state.isExpanded && Boolean(options.length) && (
+                    <div className="select-options-wrapper" data-qa={`select-options-wrapper-${this.props.id}`}>
+                        <SelectList
+                            value={this.props.value}
+                            onChange={this.handleOptionSelect}
+                            options={options}
+                            renderer={this.props.optionsRenderer}
+                        />
+                    </div>
+                )}
             </div>
         );
     }
 
-    private getOptionsList() {
-        return (
-            <div className="select-options-wrapper">
-                {this.getFilter()}
-                <ul className="select-option-items" data-qa={`select--option-items-${this.props.id}`}>
-                    {this.state.options.map((option, index) => {
-                        const selectedClass = this.isSelected(option) ? ' selected' : '';
-                        const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
-                        return (
-                            <li
-                                key={index}
-                                role="option"
-                                onClick={this.handleOptionClick.bind(this, option.value)}
-                                data-qa={`select--option-${option.label}`}
-                                className={`item${selectedClass}${disabledClass}`}
-                                aria-selected={this.isSelected(option)}
-                            >
-                                {option.label}
-                            </li>
-                        );
-                    })}
-                </ul>
-            </div>
-        );
+    private getFilteredOptions() {
+        return this.props.options.filter((option) => matches(this.state.filterValue, option.label));
     }
 
-    private getFilter() {
-        return (
-            this.props.searchable && (
-                <div className="select-filter-bar">
-                    <input
-                        type="text"
-                        data-qa={`select--filter-${this.props.id}`}
-                        className="form-control"
-                        placeholder={this.props.searchPlaceholder || 'search'}
-                        onChange={this.filterOptions}
-                        ref={this.searchInputRef}
-                    />
-                    <span className="select-filter-icon" />
-                </div>
-            )
-        );
+    private handleOptionSelect(value: T) {
+        this.props.onChange(value);
+        this.clearFilterValue();
+        this.collapseOptionsList();
     }
 
-    private getLabel() {
-        const selectedOption = this.props.options.find((option) => isEqual(option.value, this.props.value));
-        return (selectedOption && selectedOption.label) || this.props.placeholder;
+    private toggleOptionsList() {
+        if (!this.props.disabled) {
+            this.setState((prevState) => ({
+                isExpanded: !prevState.isExpanded,
+            }));
+        }
     }
 
-    private setNode(node: any) {
-        this.node = node;
+    private collapseOptionsList() {
+        this.setState({
+            isExpanded: false,
+        });
+    }
+
+    private expandOptionsList() {
+        if (!this.props.disabled) {
+            this.setState({
+                isExpanded: true,
+            });
+        }
     }
 
     private onKeyPressed(event: React.KeyboardEvent) {
@@ -145,64 +124,96 @@ class Select<T> extends React.Component<Props<T>, State<T>> {
         }
     }
 
-    private collapseOptionsList() {
-        if (this.state.expanded) {
-            this.toggleOptionsList();
-        }
+    private getLabel() {
+        const selectedOption = this.props.options.find((option) => isEqual(option.value, this.props.value));
+        return selectedOption && selectedOption.label;
     }
 
-    private handleOptionClick(value: T) {
-        this.toggleOptionsList();
-        const isOptionEnabled = !this.isOptionDisabled(value);
-        const valueChanged = value !== this.props.value;
-        if (isOptionEnabled && valueChanged) {
-            this.props.onChange(value);
-        }
+    private clearFilterValue() {
+        this.setState({
+            filterValue: '',
+        });
     }
 
-    private isOptionDisabled(value: T) {
-        return this.props.disableOptionWhen && this.props.disableOptionWhen(value);
+    private onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+        this.setState({
+            filterValue: event.target.value,
+        });
     }
 
-    private toggleOptionsIfNotDisabled() {
-        if (!this.props.disabled) {
-            this.toggleOptionsList();
-        }
+    private setRootNode(node: HTMLDivElement) {
+        this.rootNode = node;
     }
 
-    private toggleOptionsList() {
-        this.setState(
-            (prevState) => {
-                return {
-                    expanded: !prevState.expanded,
-                    options: this.props.options,
-                };
-            },
-            () => {
-                this.focusSearchInput();
-            }
+    private renderStandardTrigger() {
+        const label = this.getLabel() || this.props.placeholder;
+        return (
+            <div
+                role="button"
+                data-qa={`select-toggle--standard-${this.props.id}`}
+                className={`select-option-toggle select-option-toggle--standard ${
+                    this.props.disabled ? 'disabled' : ''
+                }`}
+                aria-haspopup="listbox"
+                onClick={this.toggleOptionsList}
+            >
+                <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
+                    {label}
+                </span>
+                <span className="select-option-toggle--icon-dropdown" />
+            </div>
         );
     }
 
-    private focusSearchInput() {
-        if (this.props.searchable && this.searchInputRef.current) {
-            this.searchInputRef.current.focus();
-        }
+    private renderSearchableTrigger() {
+        return (
+            <div
+                role="button"
+                data-qa={`select-toggle--search-${this.props.id}`}
+                className={`select-option-toggle select-option-toggle--search ${this.props.disabled ? 'disabled' : ''}`}
+                aria-haspopup="listbox"
+            >
+                {this.getSearchInput()}
+            </div>
+        );
     }
 
-    private isSelected(option: Option<T>) {
-        return isEqual(this.props.value, option.value);
-    }
-
-    private filterOptions(event: React.ChangeEvent<HTMLInputElement>) {
-        const filteredOptions = this.props.options.filter((option) => matches(event.target.value, option.label));
-        this.setState({
-            options: filteredOptions,
-        });
+    private getSearchInput() {
+        return (
+            <>
+                <span className="select-option-toggle--icon-filter" />
+                <input
+                    id={this.props.id}
+                    type="text"
+                    className="text"
+                    autoComplete="off"
+                    onChange={this.onFilterChange}
+                    value={this.state.filterValue}
+                    disabled={this.props.disabled}
+                    onClick={this.expandOptionsList}
+                    placeholder={this.getLabel() || this.props.placeholder}
+                    data-qa={`select-option-toggle--input-${this.props.id}`}
+                />
+                <button
+                    type="button"
+                    className="select-option-toggle--icon-clear"
+                    onClick={this.clearFilterValue}
+                    disabled={!this.state.filterValue.length || this.props.disabled}
+                    data-qa={`select-option-toggle--clear-${this.props.id}`}
+                />
+                <button
+                    type="button"
+                    className="select-option-toggle--icon-dropdown"
+                    onClick={this.toggleOptionsList}
+                    data-qa={`select-option-toggle--dropdown-${this.props.id}`}
+                    disabled={this.props.disabled}
+                />
+            </>
+        );
     }
 }
 
-const StringSelect = Select as new () => Select<string>;
-const NumberSelect = Select as new () => Select<number>;
+const StringSelect = Select as new () => Select<string, Option<string>>;
+const NumberSelect = Select as new () => Select<number, Option<number>>;
 
 export { Select, StringSelect, NumberSelect };
