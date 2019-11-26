@@ -61,6 +61,7 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
     }
 
     public render() {
+        const options = this.getFilteredOptions();
         return (
             <div
                 ref={this.setRootNode}
@@ -71,12 +72,12 @@ class Select2<T, O extends Option<T>> extends React.Component<Props<T, O>, State
                 onKeyDown={this.onKeyPressed}
             >
                 {this.props.searchable ? this.renderSearchableTrigger() : this.renderStandardTrigger()}
-                {this.state.isExpanded && (
+                {this.state.isExpanded && Boolean(options.length) && (
                     <div className="select-options-wrapper" data-qa={`select-options-wrapper-${this.props.id}`}>
                         <SelectList
                             value={this.props.value}
                             onChange={this.handleOptionSelect}
-                            options={this.getFilteredOptions()}
+                            options={options}
                             renderer={this.props.optionsRenderer}
                         />
                     </div>
