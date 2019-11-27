@@ -12,7 +12,7 @@ import { RendererProps, SelectList } from './select-list';
 
 interface Props<T, O extends Option<T>> {
     id: string;
-    value: T;
+    value?: T;
     options: Array<O>;
     onChange: (value: T) => void;
     className?: string;
@@ -79,6 +79,7 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
                             onChange={this.handleOptionSelect}
                             options={options}
                             renderer={this.props.optionsRenderer}
+                            disableOptionWhen={this.props.disableOptionWhen}
                         />
                     </div>
                 )}

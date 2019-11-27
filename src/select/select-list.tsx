@@ -10,7 +10,7 @@ interface OptionsRefs {
 }
 
 interface RendererProps<T, O> {
-    value: T;
+    value?: T;
     options: Array<O>;
     optionsRefs: OptionsRefs;
     onChange: (value: T) => void;
@@ -18,7 +18,7 @@ interface RendererProps<T, O> {
 }
 
 interface Props<T, O extends Option<T>> {
-    value: T;
+    value?: T;
     options: Array<O>;
     onChange: (value: T) => void;
     disableOptionWhen?: (value: T) => boolean;
