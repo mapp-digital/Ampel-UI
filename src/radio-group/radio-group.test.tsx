@@ -4,7 +4,10 @@ import { cleanup, render } from '@config/testing';
 
 import { RadioGroup } from './';
 
-const options = [{ label: 'Yes', value: 'yes' }, { label: 'No', value: 'no' }];
+const options = [
+    { label: 'Yes', value: 'yes' },
+    { label: 'No', value: 'no' },
+];
 
 describe('RadioGroup', () => {
     afterEach(cleanup);

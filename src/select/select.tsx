@@ -66,7 +66,6 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
             <div
                 ref={this.setRootNode}
                 role="button"
-                tabIndex={-1}
                 className={`select-component ${this.props.className || ''}`}
                 data-qa={`select-component-${this.props.id}`}
                 onKeyDown={this.onKeyPressed}
@@ -130,6 +129,11 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
         return selectedOption && selectedOption.label;
     }
 
+    private getSearchTogglePlaceholder() {
+        const defaultPlaceholder = this.getLabel() || this.props.placeholder;
+        return this.state.isExpanded ? '' : defaultPlaceholder;
+    }
+
     private clearFilterValue() {
         this.setState({
             filterValue: '',
@@ -147,7 +151,7 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
     }
 
     private renderStandardTrigger() {
-        const label = this.getLabel() || this.props.placeholder;
+        const label = this.getLabel();
         return (
             <div
                 role="button"
@@ -158,8 +162,11 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
                 aria-haspopup="listbox"
                 onClick={this.toggleOptionsList}
             >
-                <span className="text" data-qa={`select--toggle-text-${this.props.id}`}>
-                    {label}
+                <span
+                    className={`text ${!label && this.props.placeholder ? 'text-placeholder' : ''} `}
+                    data-qa={`select-toggle--standard-text-${this.props.id}`}
+                >
+                    {label || this.props.placeholder}
                 </span>
                 <span className="select-option-toggle--icon-dropdown" />
             </div>
@@ -180,19 +187,20 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
     }
 
     private getSearchInput() {
+        const label = this.getLabel();
         return (
             <>
                 <span className="select-option-toggle--icon-filter" />
                 <input
                     id={this.props.id}
                     type="text"
-                    className="text"
+                    className={`text ${this.state.isExpanded || !label ? 'text-faded-out' : ''}`}
                     autoComplete="off"
                     onChange={this.onFilterChange}
                     value={this.state.filterValue}
                     disabled={this.props.disabled}
                     onClick={this.expandOptionsList}
-                    placeholder={this.getLabel() || this.props.placeholder}
+                    placeholder={this.getSearchTogglePlaceholder()}
                     data-qa={`select-option-toggle--input-${this.props.id}`}
                 />
                 <button

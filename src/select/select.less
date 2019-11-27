@@ -49,17 +49,27 @@
             text-decoration: none;
         }
 
-        &:not(.disabled):hover span.arrow {
-            color: @info;
-        }
-
         .text {
             flex: 1;
+            &::placeholder {
+                color: @gray-darkest;
+            }
+            &-faded-out {
+                &::placeholder {
+                    color: @gray-darker;
+                }
+            }
+            &:disabled {
+                &::placeholder {
+                    color: @gray-light;
+                }
+            }
         }
 
         &--icon {
             &-filter {
                 @table-search-bar-icon();
+                @icon-commons();
                 font-size: 14px;
             }
 

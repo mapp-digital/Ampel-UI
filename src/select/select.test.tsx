@@ -7,6 +7,9 @@ import { Select } from './select';
 
 import { cleanup, render } from '@config/testing';
 
+// `scrollIntoView` is not implemented in jsdom
+window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
 const hijackEventListeners = () => {
     const initialAddEventListener = document.addEventListener;
     const listeners: any = {};
@@ -27,7 +30,7 @@ const changeValue = (node: HTMLElement, value: string) => {
 
 const StringSelect = Select as new () => Select<string, Option<string>>;
 
-describe('Select2', () => {
+describe('Select', () => {
     afterEach(cleanup);
 
     it('should exist', () => {
@@ -193,5 +196,68 @@ describe('Select2', () => {
         clearSearch.click();
 
         expect(searchInput.value).toBe('');
+    });
+
+    it('should render correct placeholder for standard toggle', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const placeholder = 'Placeholder';
+
+        const { getByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={''} placeholder={placeholder} />
+        );
+        const toggle = getByDataQa(`select-toggle--standard-text-${id}`);
+
+        expect(toggle.textContent).toEqual(placeholder);
+    });
+
+    it('should use selected option label as placeholder', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const placeholder = 'Placeholder';
+        const value = 'one';
+        const label = 'One';
+
+        const { getByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={value} placeholder={placeholder} />
+        );
+        const toggle = getByDataQa(`select-toggle--standard-text-${id}`);
+
+        expect(toggle.textContent).toEqual(label);
+    });
+
+    it('should NOT close searchable select on input field click', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const searchable = true;
+        const value = 'one';
+
+        const { getByDataQa, queryByDataQa } = render(
+            <StringSelect id={id} options={options} onChange={onChange} value={value} searchable={searchable} />
+        );
+
+        const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
+        searchableSelectToggle.click();
+
+        const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
+        searchInput.click();
+
+        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+        expect(selectOptionsWrapper).toBeTruthy();
     });
 });
