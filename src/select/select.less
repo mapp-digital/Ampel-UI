@@ -51,19 +51,6 @@
 
         .text {
             flex: 1;
-            &::placeholder {
-                color: @gray-darkest;
-            }
-            &-faded-out {
-                &::placeholder {
-                    color: @gray-darker;
-                }
-            }
-            &:disabled {
-                &::placeholder {
-                    color: @gray-light;
-                }
-            }
         }
 
         &--icon {
@@ -99,16 +86,39 @@
                 }
             }
 
+            &.has-faded-placeholder {
+                &:not(.disabled) {
+                    input {
+                        &::placeholder {
+                            color: @gray-darker;
+                        }
+                    }
+                }
+            }
+
             input {
                 border: none;
                 outline: none;
                 height: 100%;
                 font-size: 12px;
+                &::placeholder {
+                    color: @gray-darkest;
+                }
+                &:disabled {
+                    &::placeholder {
+                        color: @gray-light;
+                    }
+                }
             }
         }
 
         &--standard {
             cursor: pointer;
+            &.has-placeholder {
+                &:not(.disabled) {
+                    color: @gray-darker;
+                }
+            }
         }
     }
 
