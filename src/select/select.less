@@ -138,10 +138,15 @@
             border: @default-border;
             border-top: none;
             background: @white;
-            list-style-type: none;
             box-shadow: none;
             overflow: auto;
             cursor: pointer;
+
+            ul {
+                margin: 0;
+                padding: 0;
+                list-style-type: none;
+            }
 
             .active {
                 background-color: @info-light;
