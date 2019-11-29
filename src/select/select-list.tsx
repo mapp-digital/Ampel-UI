@@ -20,10 +20,6 @@ interface Props<T, O extends Option<T>> {
 }
 
 class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}> {
-    constructor(props: Props<T, O>) {
-        super(props);
-    }
-
     public render() {
         return (
             <div className="select-option-items">
