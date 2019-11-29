@@ -16,7 +16,7 @@ interface Props<T, O extends Option<T>> {
     options: Array<O>;
     onChange: (value: T) => void;
     disableOptionWhen?: (value: T) => boolean;
-    renderer?: (props: RendererProps<T, O>) => JSX.Element;
+    renderer?: (props: RendererProps<T, O>) => React.ReactNode;
 }
 
 class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}> {

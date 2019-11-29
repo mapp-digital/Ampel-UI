@@ -20,7 +20,7 @@ interface Props<T, O extends Option<T>> {
     placeholder?: string;
     disabled?: boolean;
     disableOptionWhen?: (value: T) => boolean;
-    optionsRenderer?: (props: RendererProps<T, O>) => JSX.Element;
+    optionsRenderer?: (props: RendererProps<T, O>) => React.ReactNode;
 }
 
 interface State<T, O> {
