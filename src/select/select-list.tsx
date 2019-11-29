@@ -43,7 +43,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
         return (
             <ul data-qa={`select-list--default`}>
                 {this.props.options.map((option, index) => {
-                    const selectedClass = this.isSelected(option) ? ' selected' : '';
+                    const selectedClass = this.isOptionSelected(option) ? ' selected' : '';
                     const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
                     const onClick = () => {
                         if (!this.isOptionDisabled(option.value)) {
@@ -57,7 +57,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
                             onClick={onClick}
                             data-qa={`select--option-${option.label}`}
                             className={`item${selectedClass}${disabledClass}`}
-                            aria-selected={this.isSelected(option)}
+                            aria-selected={this.isOptionSelected(option)}
                         >
                             {option.label}
                         </li>
@@ -67,7 +67,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
         );
     }
 
-    private isSelected(option: O) {
+    private isOptionSelected(option: O) {
         return isEqual(this.props.value, option.value);
     }
 
@@ -76,4 +76,4 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
     }
 }
 
-export { SelectList, RendererProps, Props as SelectListProps };
+export { SelectList, RendererProps };
