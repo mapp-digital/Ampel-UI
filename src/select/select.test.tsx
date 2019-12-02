@@ -7,9 +7,6 @@ import { Select } from './select';
 
 import { cleanup, render } from '@config/testing';
 
-// `scrollIntoView` is not implemented in jsdom
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 const hijackEventListeners = () => {
     const initialAddEventListener = document.addEventListener;
     const listeners: any = {};
@@ -48,7 +45,7 @@ describe('Select', () => {
         expect(select).toBeTruthy();
     });
 
-    it('should render standar select toggle', () => {
+    it('should render standard select toggle', () => {
         const id = 'my-select';
         const options = [
             { label: 'One', value: 'one' },
@@ -79,6 +76,31 @@ describe('Select', () => {
         const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
 
         expect(searchableSelectToggle).toBeTruthy();
+    });
+
+    it('should invoke `filterBy` function', () => {
+        const id = 'my-select';
+        const options = [
+            { label: 'One', value: 'one' },
+            { label: 'Two', value: 'two' },
+            { label: 'Three', value: 'three' },
+        ];
+        const onChange = jest.fn();
+        const searchable = true;
+        const filterBy = jest.fn();
+
+        render(
+            <StringSelect
+                id={id}
+                options={options}
+                onChange={onChange}
+                value={''}
+                searchable={searchable}
+                filterBy={filterBy}
+            />
+        );
+
+        expect(filterBy).toHaveBeenCalled();
     });
 
     it('should close on escape key pressed', () => {

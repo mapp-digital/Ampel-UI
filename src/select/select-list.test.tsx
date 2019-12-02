@@ -8,9 +8,6 @@ import { cleanup, render } from '@config/testing';
 
 const StringSelectList = SelectList as new () => SelectList<string, Option<string>>;
 
-// `scrollIntoView` is not implemented in jsdom
-window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
 describe('SelectList', () => {
     afterEach(cleanup);
 

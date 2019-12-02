@@ -20,6 +20,7 @@ interface Props<T, O extends Option<T>> {
     placeholder?: string;
     disabled?: boolean;
     disableOptionWhen?: (value: T) => boolean;
+    filterBy?: (option: O, filterValue: string) => boolean;
     renderOptions?: (props: RendererProps<T, O>) => React.ReactNode;
 }
 
@@ -87,7 +88,12 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
     }
 
     private getFilteredOptions() {
-        return this.props.options.filter((option) => matches(this.state.filterValue, option.label));
+        return this.props.options.filter((option) => {
+            if (this.props.filterBy) {
+                return this.props.filterBy(option, this.state.filterValue);
+            }
+            return matches(this.state.filterValue, option.label);
+        });
     }
 
     private handleOptionSelect(value: T) {

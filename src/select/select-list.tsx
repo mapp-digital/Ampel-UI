@@ -37,7 +37,7 @@ class SelectList<T, O extends Option<T>> extends React.Component<Props<T, O>, {}
 
     private renderDefaultList() {
         return (
-            <ul data-qa={`select-list--default`}>
+            <ul className="default-select-list" data-qa={`select-list--default`}>
                 {this.props.options.map((option, index) => {
                     const selectedClass = this.isOptionSelected(option) ? ' selected' : '';
                     const disabledClass = this.isOptionDisabled(option.value) ? ' disabled' : '';
