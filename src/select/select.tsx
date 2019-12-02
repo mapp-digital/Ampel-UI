@@ -20,7 +20,7 @@ interface Props<T, O extends Option<T>> {
     placeholder?: string;
     disabled?: boolean;
     disableOptionWhen?: (value: T) => boolean;
-    optionsRenderer?: (props: RendererProps<T, O>) => React.ReactNode;
+    renderOptions?: (props: RendererProps<T, O>) => React.ReactNode;
 }
 
 interface State {
@@ -77,7 +77,7 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
                             value={this.props.value}
                             onChange={this.handleOptionSelect}
                             options={options}
-                            renderer={this.props.optionsRenderer}
+                            renderer={this.props.renderOptions}
                             disableOptionWhen={this.props.disableOptionWhen}
                         />
                     </div>
