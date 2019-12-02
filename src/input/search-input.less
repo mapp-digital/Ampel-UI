@@ -1,12 +1,14 @@
 .search-input {
     display: flex;
-    justify-content: space-between;
-    color: @gray-darker;
     align-items: center;
+    justify-content: space-between;
+
     width: 100%;
     height: 100%;
-    background-color: @white;
     padding: 0 10px;
+
+    background-color: @white;
+    color: @gray-darker;
 
     .search-input-icon {
         &-filter {
@@ -16,8 +18,8 @@
 
         &-clear {
             @close-icon();
+            padding-right: 0;
             font-size: 12px;
-            line-height: 30px;
             background: transparent;
             border: 0;
             color: @gray-darker;
@@ -33,7 +35,6 @@
         border: none;
         box-shadow: none;
         font-size: 12px;
-        height: 100%;
 
         &::placeholder {
             color: @gray-darkest;
