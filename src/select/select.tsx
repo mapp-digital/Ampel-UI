@@ -23,14 +23,14 @@ interface Props<T, O extends Option<T>> {
     optionsRenderer?: (props: RendererProps<T, O>) => React.ReactNode;
 }
 
-interface State<T, O> {
+interface State {
     isExpanded: boolean;
     filterValue: string;
 }
 
 const KEY_ESCAPE = 27;
 
-class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<T, O>> {
+class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T, O>, State> {
     private rootNode: HTMLDivElement;
     private dispose: () => void;
 
@@ -221,7 +221,4 @@ class Select<T, O extends Option<T>> extends React.Component<Props<T, O>, State<
     }
 }
 
-const StringSelect = Select as new () => Select<string, Option<string>>;
-const NumberSelect = Select as new () => Select<number, Option<number>>;
-
-export { Select, StringSelect, NumberSelect };
+export { Select };

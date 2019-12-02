@@ -1,3 +1,3 @@
-export { Select, StringSelect, NumberSelect } from './select';
+export { Select } from './select';
 export { Option } from '../api/index';
 export { RendererProps } from './select-list';
