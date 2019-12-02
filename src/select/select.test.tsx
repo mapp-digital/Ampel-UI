@@ -1,11 +1,10 @@
-import { fireEvent } from 'dom-testing-library';
 import * as React from 'react';
 
 import { Option } from '@ampel-ui/api';
 
 import { Select } from './select';
 
-import { cleanup, render } from '@config/testing';
+import { cleanup, fireEvent, render } from '@config/testing';
 
 const hijackEventListeners = () => {
     const initialAddEventListener = document.addEventListener;
@@ -21,9 +20,9 @@ const hijackEventListeners = () => {
     return listeners;
 };
 
-const changeValue = (node: HTMLElement, value: string) => {
-    fireEvent.change(node, { target: { value } });
-};
+// const changeValue = (node: HTMLElement, value: string) => {
+//     fireEvent.change(node, { target: { value } });
+// };
 
 const StringSelect = Select as new () => Select<string, Option<string>>;
 
@@ -197,29 +196,6 @@ describe('Select', () => {
         expect(selectOptionsWrapper).toBeFalsy();
     });
 
-    it('should clear search input value upon clicking X', () => {
-        const id = 'my-select';
-        const options = [
-            { label: 'One', value: 'one' },
-            { label: 'Two', value: 'two' },
-            { label: 'Three', value: 'three' },
-        ];
-        const onChange = jest.fn();
-        const searchable = true;
-
-        const { getByDataQa } = render(
-            <StringSelect id={id} options={options} onChange={onChange} value={''} searchable={searchable} />
-        );
-
-        const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
-        changeValue(searchInput, 'abc');
-
-        const clearSearch = getByDataQa(`select-option-toggle--clear-${id}`);
-        clearSearch.click();
-
-        expect(searchInput.value).toBe('');
-    });
-
     it('should render correct placeholder for standard toggle', () => {
         const id = 'my-select';
         const options = [
@@ -258,28 +234,28 @@ describe('Select', () => {
         expect(toggle.textContent).toEqual(label);
     });
 
-    it('should NOT close searchable select on input field click', () => {
-        const id = 'my-select';
-        const options = [
-            { label: 'One', value: 'one' },
-            { label: 'Two', value: 'two' },
-            { label: 'Three', value: 'three' },
-        ];
-        const onChange = jest.fn();
-        const searchable = true;
-        const value = 'one';
-
-        const { getByDataQa, queryByDataQa } = render(
-            <StringSelect id={id} options={options} onChange={onChange} value={value} searchable={searchable} />
-        );
-
-        const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
-        searchableSelectToggle.click();
-
-        const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
-        searchInput.click();
-
-        const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
-        expect(selectOptionsWrapper).toBeTruthy();
-    });
+    // it('should NOT close searchable select on input field click', () => {
+    //     const id = 'my-select';
+    //     const options = [
+    //         { label: 'One', value: 'one' },
+    //         { label: 'Two', value: 'two' },
+    //         { label: 'Three', value: 'three' },
+    //     ];
+    //     const onChange = jest.fn();
+    //     const searchable = true;
+    //     const value = 'one';
+    //
+    //     const { getByDataQa, queryByDataQa } = render(
+    //         <StringSelect id={id} options={options} onChange={onChange} value={value} searchable={searchable} />
+    //     );
+    //
+    //     const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
+    //     searchableSelectToggle.click();
+    //
+    //     const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
+    //     searchInput.click();
+    //
+    //     const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
+    //     expect(selectOptionsWrapper).toBeTruthy();
+    // });
 });

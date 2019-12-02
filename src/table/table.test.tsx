@@ -173,7 +173,7 @@ describe('Table', () => {
         const { queryByDataQa } = render(
             <Table id={'someId'} data={[]} columns={[]} ofText="" pageText="" rowsText="" />
         );
-        const searchBar = queryByDataQa(`table--search-bar`);
+        const searchBar = queryByDataQa(`search-input-table--search-bar`);
         expect(searchBar).toBeTruthy();
     });
 
@@ -200,7 +200,7 @@ describe('Table', () => {
         const { getByDataQa } = render(
             <Table id={id} data={data} columns={columns} ofText="" pageText="" rowsText="" />
         );
-        const searchBar = getByDataQa(`table--search-bar`);
+        const searchBar = getByDataQa(`search-input-table--search-bar`);
         fireEvent.change(searchBar, { target: { value: '2' } });
 
         const cell = getByDataQa(`table--row-0-col-name`);

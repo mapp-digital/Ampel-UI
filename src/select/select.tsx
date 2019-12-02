@@ -1,3 +1,4 @@
+import { SearchInput } from '@ampel-ui/input';
 import * as React from 'react';
 
 import { matches } from '@ampel-ui/common/search';
@@ -136,7 +137,7 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
     }
 
     private getSearchTogglePlaceholder() {
-        const defaultPlaceholder = this.getLabel() || this.props.placeholder;
+        const defaultPlaceholder = this.getLabel() || this.props.placeholder || '';
         return this.state.isExpanded ? '' : defaultPlaceholder;
     }
 
@@ -146,9 +147,9 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
         });
     }
 
-    private onFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
+    private onFilterChange(value: string) {
         this.setState({
-            filterValue: event.target.value,
+            filterValue: value,
         });
     }
 
@@ -195,26 +196,16 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
     private getSearchInput() {
         return (
             <>
-                <span className="select-option-toggle--icon-filter" />
-                <input
+                <SearchInput
                     id={this.props.id}
-                    type="text"
-                    className={`text`}
-                    autoComplete="off"
-                    onChange={this.onFilterChange}
                     value={this.state.filterValue}
-                    disabled={this.props.disabled}
+                    className="text"
                     onClick={this.expandOptionsList}
-                    placeholder={this.getSearchTogglePlaceholder()}
-                    data-qa={`select-option-toggle--input-${this.props.id}`}
+                    onFilterChange={this.onFilterChange}
+                    disabled={this.props.disabled}
+                    searchPlaceholder={this.getSearchTogglePlaceholder()}
                 />
-                <button
-                    type="button"
-                    className="select-option-toggle--icon-clear"
-                    onClick={this.clearFilterValue}
-                    disabled={!this.state.filterValue.length || this.props.disabled}
-                    data-qa={`select-option-toggle--clear-${this.props.id}`}
-                />
+
                 <button
                     type="button"
                     className="select-option-toggle--icon-dropdown"

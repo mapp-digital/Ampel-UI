@@ -79,6 +79,8 @@
         }
 
         &--search {
+            padding-left: 0;
+
             button {
                 padding: 0;
                 &:not(:last-child) {
@@ -88,25 +90,10 @@
 
             &.has-faded-placeholder {
                 &:not(.disabled) {
-                    input {
+                    .text {
                         &::placeholder {
                             color: @gray-darker;
                         }
-                    }
-                }
-            }
-
-            input {
-                border: none;
-                outline: none;
-                height: 100%;
-                font-size: 12px;
-                &::placeholder {
-                    color: @gray-darkest;
-                }
-                &:disabled {
-                    &::placeholder {
-                        color: @gray-light;
                     }
                 }
             }
