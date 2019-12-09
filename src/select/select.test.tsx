@@ -20,10 +20,6 @@ const hijackEventListeners = () => {
     return listeners;
 };
 
-// const changeValue = (node: HTMLElement, value: string) => {
-//     fireEvent.change(node, { target: { value } });
-// };
-
 const StringSelect = Select as new () => Select<string, Option<string>>;
 
 describe('Select', () => {
@@ -233,29 +229,4 @@ describe('Select', () => {
 
         expect(toggle.textContent).toEqual(label);
     });
-
-    // it('should NOT close searchable select on input field click', () => {
-    //     const id = 'my-select';
-    //     const options = [
-    //         { label: 'One', value: 'one' },
-    //         { label: 'Two', value: 'two' },
-    //         { label: 'Three', value: 'three' },
-    //     ];
-    //     const onChange = jest.fn();
-    //     const searchable = true;
-    //     const value = 'one';
-    //
-    //     const { getByDataQa, queryByDataQa } = render(
-    //         <StringSelect id={id} options={options} onChange={onChange} value={value} searchable={searchable} />
-    //     );
-    //
-    //     const searchableSelectToggle = getByDataQa(`select-toggle--search-${id}`);
-    //     searchableSelectToggle.click();
-    //
-    //     const searchInput = getByDataQa(`select-option-toggle--input-${id}`) as HTMLInputElement;
-    //     searchInput.click();
-    //
-    //     const selectOptionsWrapper = queryByDataQa(`select-options-wrapper-${id}`);
-    //     expect(selectOptionsWrapper).toBeTruthy();
-    // });
 });

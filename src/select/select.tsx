@@ -51,11 +51,12 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
         this.toggleOptionsList = this.toggleOptionsList.bind(this);
         this.expandOptionsList = this.expandOptionsList.bind(this);
         this.handleOptionSelect = this.handleOptionSelect.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
         this.collapseOptionsList = this.collapseOptionsList.bind(this);
     }
 
     public componentDidMount() {
-        this.dispose = onOuterClick(this.rootNode, this.collapseOptionsList);
+        this.dispose = onOuterClick(this.rootNode, this.handleClickOutside);
     }
 
     public componentWillUnmount() {
@@ -101,6 +102,13 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
         this.props.onChange(value);
         this.clearFilterValue();
         this.collapseOptionsList();
+    }
+
+    private handleClickOutside() {
+        if (this.state.isExpanded) {
+            this.collapseOptionsList();
+            this.clearFilterValue();
+        }
     }
 
     private toggleOptionsList() {
