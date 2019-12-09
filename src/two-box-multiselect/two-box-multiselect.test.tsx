@@ -713,7 +713,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const leftOptionsFilter = getByDataQa(`two-box-multiselect--left-filter-${id}`);
+        const leftOptionsFilter = getByDataQa(`search-input-two-box-multiselect--left-filter-${id}`);
         changeValue(leftOptionsFilter, 'no label like this');
 
         const absentLeftItem = queryByDataQa(`two-box-multiselect--left-item-${label}`);
@@ -742,7 +742,7 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const rightOptionsFilter = getByDataQa(`two-box-multiselect--right-filter-${id}`);
+        const rightOptionsFilter = getByDataQa(`search-input-two-box-multiselect--right-filter-${id}`);
         changeValue(rightOptionsFilter, 'no label like this');
 
         const absentRightItem = queryByDataQa(`two-box-multiselect--right-item-${label}`);
@@ -767,8 +767,12 @@ describe('TwoBoxMultiselect', () => {
             />
         );
 
-        const leftOptionsFilter = getByDataQa(`two-box-multiselect--left-filter-${id}`) as HTMLInputElement;
-        const rightOptionsFilter = getByDataQa(`two-box-multiselect--right-filter-${id}`) as HTMLInputElement;
+        const leftOptionsFilter = getByDataQa(
+            `search-input-two-box-multiselect--left-filter-${id}`
+        ) as HTMLInputElement;
+        const rightOptionsFilter = getByDataQa(
+            `search-input-two-box-multiselect--right-filter-${id}`
+        ) as HTMLInputElement;
 
         expect(leftOptionsFilter.placeholder).toEqual(filterPlaceholderLeft);
         expect(rightOptionsFilter.placeholder).toEqual(filterPlaceholderRight);

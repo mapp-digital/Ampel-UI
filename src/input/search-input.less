@@ -1,24 +1,25 @@
 .search-input {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    color: @gray-darker;
 
     width: 100%;
+    height: 100%;
+    padding: 0 10px;
+
     background-color: @white;
+    color: @gray-darker;
 
     .search-input-icon {
         &-filter {
             @table-search-bar-icon();
             font-size: 14px;
-            line-height: 30px;
-            padding: 0 8px;
         }
 
         &-clear {
             @close-icon();
+            padding-right: 0;
             font-size: 12px;
-            line-height: 30px;
-            padding: 0 8px;
             background: transparent;
             border: 0;
             color: @gray-darker;
@@ -34,6 +35,16 @@
         border: none;
         box-shadow: none;
         font-size: 12px;
+
+        &::placeholder {
+            color: @gray-darkest;
+        }
+
+        &:disabled {
+            &::placeholder {
+                color: @gray-light;
+            }
+        }
 
         &:focus {
             outline: none;
