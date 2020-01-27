@@ -21,11 +21,13 @@
         cursor: pointer;
 
         &:hover {
-            color: @gray-darkest;
+            .node-label {
+                color: @primary-color;
+            }
         }
 
         &.highlighted {
-            color: @success;
+            color: @primary-color;
             font-weight: bold;
         }
     }

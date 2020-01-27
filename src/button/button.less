@@ -8,7 +8,7 @@
     line-height: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: background-color 300ms ease-out;
+    transition: all 300ms ease-out;
     white-space: nowrap;
     outline: none;
     box-shadow: none;
@@ -24,25 +24,29 @@
 
 .btn-primary {
     .btn();
-    background-color: @primary-color-dark;
+    background: @primary-color;
     color: @white;
 
     &:hover {
-        background-color: @primary-color-darker;
-        transition: background-color 300ms ease-out;
+        background-color: @primary-color-variant;
+        border: 1px solid @primary-color;
     }
 
     &[disabled] {
         background-color: @info-lighter;
         color: @gray-light;
         border: 1px solid @info-lighter;
-        transition: background-color 300ms ease-out;
     }
 }
 
 .btn-secondary {
     .btn();
     background-color: @white;
-    border-color: @info-dark;
-    color: @info-dark;
+    border-color: @primary-color;
+    color: @primary-color;
+
+    &:hover {
+        border: 1px solid @primary-color-variant;
+        color: @primary-color-variant;
+    }
 }
