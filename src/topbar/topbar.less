@@ -41,26 +41,14 @@
                 left: 10px;
                 z-index: 1;
                 border-radius: 50%;
-                background-color: @success;
+                background-color: @primary-color;
                 padding: 2px 5px;
                 border: 1px solid @gray-coal;
                 color: @white;
             }
 
             &.selected {
-                color: @success;
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    left: 14%;
-                    bottom: -2px;
-                    width: 0;
-                    height: 0;
-                    border-left: 7px solid transparent;
-                    border-right: 7px solid transparent;
-                    border-bottom: 7px solid @gray-stone;
-                }
+                box-shadow: inset 0 -4px 0 0 @primary-color;
             }
         }
     }
