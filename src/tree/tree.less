@@ -21,14 +21,30 @@
         cursor: pointer;
 
         &:hover {
-            .node-label {
+            .node-label, .node-icon {
                 color: @primary-color;
             }
         }
 
         &.highlighted {
-            color: @primary-color;
             font-weight: bold;
+
+            .node-content {
+                .node-label {
+                    color: @gray-darkest;
+                }
+                .node-icon {
+                    color: @primary-color-darker;
+                }
+            }
+
+            &.leaf {
+                .node-content {
+                    .node-label, .node-icon {
+                        color: @primary-color-darker;
+                    }
+                }
+            }
         }
     }
 

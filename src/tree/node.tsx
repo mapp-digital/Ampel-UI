@@ -17,6 +17,7 @@ interface Props {
 const EXPANDED_CLASS = 'expanded';
 const COLLAPSED_CLASS = 'collapsed';
 const NO_CHILD_CLASS = 'no-child';
+const LEAF_CLASS = 'leaf';
 const HIGHLIGHTED_CLASS = 'highlighted';
 const LEVEL_CLASS_PREFIX = 'level-';
 
@@ -35,10 +36,11 @@ class Node extends React.Component<Props, {}> {
                 role="listitem"
                 onClick={this.handleClick}
                 data-qa={`node-${this.props.node.id}`}
-                className={`node ${this.getHightlightedCLass()} ${LEVEL_CLASS_PREFIX + this.getLevel()}`}
+                className={`node ${this.getHightlightedCLass()} ${this.getLeafClass()} ${LEVEL_CLASS_PREFIX +
+                    this.getLevel()}`}
             >
                 <div className="node-content">
-                    <span className={this.getClasses()} data-qa={`node--icon-${this.props.node.id}`} />
+                    <span className={`node-icon ${this.getClasses()}`} data-qa={`node--icon-${this.props.node.id}`} />
                     <span className="node-label">{this.props.node.label}</span>
                     {this.isChildrenVisible() && <ul className="nodes">{this.getChildNodes()}</ul>}
                 </div>
@@ -48,6 +50,10 @@ class Node extends React.Component<Props, {}> {
 
     private getHightlightedCLass() {
         return this.isHighlighted() ? HIGHLIGHTED_CLASS : '';
+    }
+
+    private getLeafClass() {
+        return !this.props.node.children ? LEAF_CLASS : '';
     }
 
     private getChildNodes() {
