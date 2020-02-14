@@ -59,7 +59,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.setValueRecursively = this.setValueRecursively.bind(this);
         this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
     }
-    public componentDidMount() {}
     public render() {
         const nodes = this.getNodes();
         return (
@@ -104,7 +103,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     this.getInfoText()}
                             </React.Fragment>
                         ))}
-                        {this.props.maxBoxCount && this.props.levelHeaderLabels.length < this.props.maxBoxCount ? (
+                        {this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount ? (
                             <div className={'empty-nodebox'}>
                                 <p>{this.props.emptyBoxText}</p>
                             </div>
