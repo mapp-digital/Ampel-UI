@@ -83,7 +83,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                 {hasChildren(node) && (
                                     <div
                                         style={{
-                                            width: `${100 / this.props.levelHeaderLabels.length}%`,
+                                            width: this.props.maxBoxCount
+                                                ? ''
+                                                : `${100 / this.props.levelHeaderLabels.length}%`,
                                         }}
                                         className={this.props.maxBoxCount ? 'arrange-type-box' : ''}
                                     >
