@@ -83,10 +83,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                 {hasChildren(node) && (
                                     <div
                                         style={{
-                                            width: this.props.maxBoxCount
-                                                ? '300px'
-                                                : `${100 / this.props.levelHeaderLabels.length}%`,
+                                            width: `${100 / this.props.levelHeaderLabels.length}%`,
                                         }}
+                                        className={this.props.maxBoxCount ? 'arrange-type-box' : ''}
                                     >
                                         <NodeBox
                                             id={`${level}`}
@@ -103,9 +102,9 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     this.getInfoText()}
                             </React.Fragment>
                         ))}
-                        {this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount ? (
+                        {this.isEmptyBox() ? (
                             <div className={'empty-nodebox'}>
-                                <p>{this.props.emptyBoxText}</p>
+                                <p className={'empty-nodebox-content'}>{this.props.emptyBoxText}</p>
                             </div>
                         ) : null}
                     </div>
@@ -114,6 +113,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 )}
             </>
         );
+    }
+
+    private isEmptyBox() {
+        return this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount;
     }
 
     private getNodes() {
