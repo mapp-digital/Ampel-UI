@@ -102,7 +102,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     this.getInfoText()}
                             </React.Fragment>
                         ))}
-                        {this.isEmptyBox() ? (
+                        {this.checkIfSelectedNodeReachedLimit() ? (
                             <div className={'empty-nodebox'}>
                                 <p className={'empty-nodebox-content'}>{this.props.emptyBoxText}</p>
                             </div>
@@ -115,7 +115,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         );
     }
 
-    private isEmptyBox() {
+    private checkIfSelectedNodeReachedLimit() {
         return this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount;
     }
 
