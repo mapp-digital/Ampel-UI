@@ -21,6 +21,8 @@ interface Props {
     isInfoTextVisible?: (node: Node, level: number) => boolean;
     onFilterChange?: (value: string) => void;
     onNodeSelect?: (selectedNodeIds: Array<string>) => void;
+    maxBoxCount?: number;
+    emptyBoxText?: string;
 }
 
 interface State {
@@ -57,7 +59,6 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.setValueRecursively = this.setValueRecursively.bind(this);
         this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
     }
-
     public render() {
         const nodes = this.getNodes();
         return (
@@ -80,7 +81,14 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                         {nodes.map((node, level) => (
                             <React.Fragment key={node.id}>
                                 {hasChildren(node) && (
-                                    <div style={{ width: `${100 / this.props.levelHeaderLabels.length}%` }}>
+                                    <div
+                                        style={{
+                                            width: this.props.maxBoxCount
+                                                ? ''
+                                                : `${100 / this.props.levelHeaderLabels.length}%`,
+                                        }}
+                                        className={this.props.maxBoxCount ? 'arrange-type-box' : ''}
+                                    >
                                         <NodeBox
                                             id={`${level}`}
                                             node={node}
@@ -96,12 +104,21 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                     this.getInfoText()}
                             </React.Fragment>
                         ))}
+                        {this.checkIfSelectedNodeReachedLimit() ? (
+                            <div className={'empty-nodebox'}>
+                                <p className={'empty-nodebox-content'}>{this.props.emptyBoxText}</p>
+                            </div>
+                        ) : null}
                     </div>
                 ) : (
                     this.getNoDataText()
                 )}
             </>
         );
+    }
+
+    private checkIfSelectedNodeReachedLimit() {
+        return this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount;
     }
 
     private getNodes() {
