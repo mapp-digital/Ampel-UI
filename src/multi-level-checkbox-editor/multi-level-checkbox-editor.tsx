@@ -96,7 +96,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                             onNodeClick={this.selectNode.bind(this, level)}
                                             setNodeValue={this.setNodeValue}
                                             levelHeaderLabel={this.props.levelHeaderLabels[level]}
-                                            checkBoxHeader={this.state.searchValue != null}
+                                            checkBoxHeader={this.state.searchValue.length > 0}
                                         />
                                     </div>
                                 )}
