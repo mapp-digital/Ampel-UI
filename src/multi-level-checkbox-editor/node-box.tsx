@@ -11,6 +11,7 @@ interface Props {
     onNodeClick: (node: Node) => void;
     setNodeValue: (node: Node, value: boolean) => void;
     levelHeaderLabel: string;
+    checkBoxHeader?: boolean;
 }
 
 const hasChildren = (node: Node) => Boolean(node.children && node.children.length);
@@ -71,6 +72,7 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                     value={isNodeChecked(props.node)}
                     onChange={props.onSelectAll.bind(null, props.node)}
                     label={props.levelHeaderLabel}
+                    disabled={props.checkBoxHeader}
                 />
             </div>
         </div>
