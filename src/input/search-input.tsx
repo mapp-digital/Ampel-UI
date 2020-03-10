@@ -22,7 +22,7 @@ const SearchInput: React.FunctionComponent<Props> = (props) => {
         }
     };
     const clearSearch = () => {
-        if (props.value.length && props.trackSearchEvent && props.trackEventName) {
+        if (props.value.length > 0 && props.trackSearchEvent && props.trackEventName) {
             props.trackSearchEvent(props.trackEventName);
         }
         if (!props.disabled) {
