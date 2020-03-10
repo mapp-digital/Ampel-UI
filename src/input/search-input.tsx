@@ -11,6 +11,8 @@ interface Props {
     autoComplete?: Autocomplete;
     onFilterChange: (filter: string) => void;
     onClick?: (event: React.MouseEvent) => void;
+    trackSearchEvent?: (eventName: string) => void;
+    trackEventName?: string;
 }
 
 const SearchInput: React.FunctionComponent<Props> = (props) => {
@@ -20,6 +22,9 @@ const SearchInput: React.FunctionComponent<Props> = (props) => {
         }
     };
     const clearSearch = () => {
+        if (props.value.length && props.trackSearchEvent && props.trackEventName) {
+            props.trackSearchEvent(props.trackEventName);
+        }
         if (!props.disabled) {
             props.onFilterChange('');
         }

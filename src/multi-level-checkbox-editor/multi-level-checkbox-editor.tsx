@@ -23,6 +23,8 @@ interface Props {
     onNodeSelect?: (selectedNodeIds: Array<string>) => void;
     maxBoxCount?: number;
     emptyBoxText?: string;
+    trackSearchEvent?: (eventName: string) => void;
+    trackEventName?: string;
 }
 
 interface State {
@@ -70,6 +72,8 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                             searchPlaceholder={this.props.searchPlaceholder}
                             onFilterChange={this.onFilterChange}
                             value={this.state.searchValue}
+                            trackSearchEvent={this.props.trackSearchEvent}
+                            trackEventName={this.props.trackEventName}
                         />
                     </div>
                 )}
