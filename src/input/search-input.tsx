@@ -11,6 +11,7 @@ interface Props {
     autoComplete?: Autocomplete;
     onFilterChange: (filter: string) => void;
     onClick?: (event: React.MouseEvent) => void;
+    onSearchCleared?: (searchValue: string) => void;
 }
 
 const SearchInput: React.FunctionComponent<Props> = (props) => {
@@ -22,6 +23,9 @@ const SearchInput: React.FunctionComponent<Props> = (props) => {
     const clearSearch = () => {
         if (!props.disabled) {
             props.onFilterChange('');
+        }
+        if (props.onSearchCleared) {
+            props.onSearchCleared(props.value);
         }
     };
     return (
