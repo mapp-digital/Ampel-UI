@@ -23,7 +23,7 @@ interface Props {
     onNodeSelect?: (selectedNodeIds: Array<string>) => void;
     maxBoxCount?: number;
     emptyBoxText?: string;
-    onSearchCleared?: () => void;
+    onSearchCleared?: (searchValue: string) => void;
 }
 
 interface State {
