@@ -24,6 +24,7 @@ interface Props {
     maxBoxCount?: number;
     emptyBoxText?: string;
     onSearchCleared?: (searchValue: string) => void;
+    postFixId?: string;
 }
 
 interface State {
@@ -92,7 +93,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                         className={this.props.maxBoxCount ? 'arrange-type-box' : ''}
                                     >
                                         <NodeBox
-                                            id={`${level}`}
+                                            id={this.props.postFixId ? `${level}` + this.props.postFixId : `${level}`}
                                             node={node}
                                             onSelectAll={this.setNodeValue}
                                             onNodeClick={this.selectNode.bind(this, level)}
