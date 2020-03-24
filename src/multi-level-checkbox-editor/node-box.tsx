@@ -84,7 +84,9 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                         role="listitem"
                         data-qa={`node-${node.label}`}
                         onClick={props.onNodeClick.bind(null, node)}
-                        className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''}`}
+                        className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''} ${
+                            hasChildren(node) ? '' : 'no-child-node'
+                        }`}
                     >
                         <div>
                             <TriStateCheckbox
