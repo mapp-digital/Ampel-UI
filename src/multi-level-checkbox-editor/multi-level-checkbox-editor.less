@@ -80,13 +80,9 @@
           cursor: default;
         }
 
-        div {
+        & > div {
           display: flex;
           align-items: center;
-
-          label {
-            margin-bottom: 0;
-          }
         }
 
         .child-node-count {
@@ -97,6 +93,15 @@
           min-width: 55px;
           padding: 5px;
           border-radius: 10%;
+        }
+
+        .node-label {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .node-label > div + div {
+          margin-top: 3px;
         }
       }
     }
