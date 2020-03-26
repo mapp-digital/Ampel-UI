@@ -88,7 +88,7 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                             hasChildren(node) ? '' : 'no-child-node'
                         }`}
                     >
-                        <div>
+                        <div className={'node-checkbox-selection'}>
                             <TriStateCheckbox
                                 id={`node-${node.id}`}
                                 value={getNodeState(node)}
