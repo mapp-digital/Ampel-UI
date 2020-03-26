@@ -96,7 +96,15 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                             />
                             <div className={'node-label'}>
                                 {node.label.split('\n').map((label) => (
-                                    <div>{label}</div>
+                                    <div>
+                                        {label.includes('\u2063—') &&
+                                            label
+                                                .split('\u2063—')
+                                                .map((labelWithaccountName, index) => (
+                                                    <div className={`node-label-${index}`}>{labelWithaccountName}</div>
+                                                ))}
+                                        {!label.includes('\u2063—') && label}
+                                    </div>
                                 ))}
                             </div>
                         </div>
