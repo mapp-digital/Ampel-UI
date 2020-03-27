@@ -32,7 +32,7 @@ module.exports = {
     },
     module: {
         rules: [
-            { test: /\.tsx?$/, loader: 'awesome-typescript-loader'},
+            { test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
             {
                 test: /\.less$/,
                 use: [
@@ -80,9 +80,8 @@ module.exports = {
         'classnames': 'classNames',
         'lodash': 'lodash',
         'yup': 'yup',
-        'rc-tooltip': 'rc-tooltip',
+        'react-popper-tooltip': 'react-popper-tooltip',
         'rc-slider': 'rc-slider',
         'immutability-helper': 'immutability-helper'
-
     }
 };
