@@ -4,13 +4,18 @@
 @tooltip-arrow-color: @tooltip-bg;
 
 @tooltip-arrow-background-after: @tooltip-bg;
-@tooltip-arrow-background-before: @gray-mid-light;
+@tooltip-arrow-background-before: @gray-mid;
+
+@tooltip-arrow-double-width: 24px;
+@tooltip-arrow-width: 12px;
+@tooltip-arrow-half-width: 6px;
+@tooltip-arrow-height: 16px;
 
 .tooltip-container {
     background-color: @tooltip-bg;
     border-radius: 0px;
     font-size: @font-size-base;
-    padding: 10px 16px;
+    padding: 10px @tooltip-arrow-height;
     border: 1px solid @gray-mid;
     box-shadow: 0 2px 4px @gray-mid;
     display: flex;
@@ -20,25 +25,29 @@
 }
 
 .tooltip-container-top {
-    margin-bottom: 1rem;
+    margin-bottom: @tooltip-arrow-height;
 }
 
 .tooltip-container-bottom {
-    margin-top: 1rem;
+    margin-top: @tooltip-arrow-height;
 }
 
 .tooltip-container-left {
-    margin-right: 1.5rem;
+    margin-right: @tooltip-arrow-width;
+}
+
+.tooltip-container-right {
+    margin-left: @tooltip-arrow-width;
 }
 
 .tooltip-arrow-top,
 .tooltip-arrow-bottom {
-    margin-left: -1.5rem;
+    margin-left: -(@tooltip-arrow-double-width);
 }
 
 .tooltip-arrow-right,
 .tooltip-arrow-left {
-    margin-top: -0.4rem;
+    margin-top: -(@tooltip-arrow-width);
 }
 
 .tooltip-arrow {
@@ -67,79 +76,83 @@
 }
 
 .tooltip-arrow[data-placement*='bottom'] {
-    height: 1rem;
+    height: @tooltip-arrow-height;
     left: 0;
     margin-top: -1rem;
     top: 0;
-    width: 1rem;
+    width: 0px;
 }
 
 .tooltip-arrow[data-placement*='bottom']::before {
     border-color: transparent transparent @tooltip-arrow-background-before transparent;
-    border-width: 0 1rem 1rem 1rem;
+    border-width: 0 @tooltip-arrow-width @tooltip-arrow-height @tooltip-arrow-width;
     position: absolute;
 }
 
 .tooltip-arrow[data-placement*='bottom']::after {
     border-color: transparent transparent @tooltip-arrow-background-after transparent;
-    border-width: 0 1rem 1rem 1rem;
+    border-width: 0 @tooltip-arrow-width @tooltip-arrow-height @tooltip-arrow-width;
     top: 1px;
 }
 
 .tooltip-arrow[data-placement*='top'] {
     bottom: 0;
-    height: 1rem;
+    height: @tooltip-arrow-height;
     left: 0;
     margin-bottom: -1rem;
-    width: 1rem;
+    width: 0;
 }
 
 .tooltip-arrow[data-placement*='top']::before {
     border-color: @tooltip-arrow-background-before transparent transparent transparent;
-    border-width: 1rem 1rem 0 1rem;
+    border-width: @tooltip-arrow-height @tooltip-arrow-width 0 @tooltip-arrow-width;
     position: absolute;
     top: 1px;
 }
 
 .tooltip-arrow[data-placement*='top']::after {
     border-color: @tooltip-bg transparent transparent transparent;
-    border-width: 1rem 1rem 0 1rem;
+    border-width: @tooltip-arrow-height @tooltip-arrow-width 0 @tooltip-arrow-width;
+}
+
+.tooltip-arrow[data-placement*='right'],
+.tooltip-arrow[data-placement*='left'] {
+    height: @tooltip-arrow-width;
+    width: @tooltip-arrow-half-width;
 }
 
 .tooltip-arrow[data-placement*='right'] {
-    height: 1rem;
+    margin-left: -(@tooltip-arrow-height);
     left: 0;
-    margin-left: -0.8rem;
-    width: 1rem;
 }
 
 .tooltip-arrow[data-placement*='right']::before {
     border-color: transparent @tooltip-arrow-background-before transparent transparent;
-    border-width: 0.8rem 0.8rem 0.8rem 0;
+    border-width: @tooltip-arrow-width @tooltip-arrow-height @tooltip-arrow-width 0;
     position: absolute;
 }
 
 .tooltip-arrow[data-placement*='right']::after {
     border-color: transparent @tooltip-arrow-background-after transparent transparent;
-    border-width: 0.8rem 0.8rem 0.8rem 0;
+    border-width: @tooltip-arrow-width @tooltip-arrow-height @tooltip-arrow-width 0;
     left: 1px;
 }
 
 .tooltip-arrow[data-placement*='left'] {
-    height: 1rem;
-    margin-right: -0.8rem;
+    margin-right: -(@tooltip-arrow-height);
     right: 0;
-    width: 1rem;
 }
 
 .tooltip-arrow[data-placement*='left']::before {
     border-color: transparent transparent transparent @tooltip-arrow-background-before;
-    border-width: 0.8rem 0 0.8rem 0.8rem;
+    border-width: @tooltip-arrow-width 0 @tooltip-arrow-width @tooltip-arrow-height;
     position: absolute;
-    right: 1px;
+    right: 0px;
 }
 
 .tooltip-arrow[data-placement*='left']::after {
     border-color: transparent transparent transparent @tooltip-arrow-background-after;
-    border-width: 0.8rem 0 0.8rem 0.8rem;
+    border-width: @tooltip-arrow-width 0 @tooltip-arrow-width @tooltip-arrow-height;
+    position: absolute;
+    right: 1px;
 }
