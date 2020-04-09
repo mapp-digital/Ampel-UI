@@ -53,7 +53,7 @@ const TooltipCom = ({ children, tooltip, hideArrow, ...props }: TooltipTriggerAn
             <span
                 {...getTriggerProps({
                     ref: triggerRef,
-                    className: 'trigger',
+                    className: 'tooltip-trigger',
                 })}
             >
                 {children}
