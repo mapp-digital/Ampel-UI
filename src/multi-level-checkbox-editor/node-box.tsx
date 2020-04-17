@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+import { NodeLabel } from '@ampel-ui/multi-level-checkbox-editor/node-label';
+import { Tooltip } from '@ampel-ui/tooltip';
 import { Checkbox } from '../checkbox';
 import { Node } from './multi-level-checkbox-editor';
 import { TriStateCheckbox, TriStateCheckboxState } from './tri-state-checkbox';
@@ -61,7 +63,12 @@ const countSelectedChildren = (node: Node) => {
 const isNodeChecked = (node: Node) => {
     return hasChildren(node) && countSelectedChildren(node) === node.children!.length;
 };
-
+const getInfo = (info: string) => {
+    if (!info) {
+        return '';
+    }
+    return info ? '' : `— ${info}`;
+};
 const NodeBox: React.FunctionComponent<Props> = (props) => (
     <div className="node-box" data-qa={`container-${props.levelHeaderLabel}`}>
         <span className="icon" />
@@ -79,29 +86,58 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
         <ul className="node-list">
             {hasChildren(props.node) &&
                 props.node.children!.map((node) => (
-                    <li
-                        key={node.id}
-                        role="listitem"
-                        data-qa={`node-${node.label}`}
-                        onClick={props.onNodeClick.bind(null, node)}
-                        className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''} ${
-                            hasChildren(node) ? '' : 'no-child-node'
-                        }`}
-                    >
-                        <div>
-                            <TriStateCheckbox
-                                id={`node-${node.id}`}
-                                value={getNodeState(node)}
-                                onChange={props.setNodeValue.bind(null, node)}
-                            />
-                            {node.label}
-                        </div>
-                        {hasChildren(node) ? (
-                            <span className="child-node-count" data-qa={`node-label-${node.id}`}>{`${countCheckedNodes(
-                                node
-                            )} / ${countAllNodes(node)}`}</span>
-                        ) : null}
-                    </li>
+                    <div>
+                        <li
+                            key={node.id}
+                            role="listitem"
+                            data-qa={`node-${node.label}`}
+                            onClick={props.onNodeClick.bind(null, node)}
+                            className={`node-list-item ${node.isHighlighted ? 'highlighted' : ''} ${
+                                hasChildren(node) ? '' : 'no-child-node'
+                            }`}
+                        >
+                            <div>
+                                <TriStateCheckbox
+                                    id={`node-${node.id}`}
+                                    value={getNodeState(node)}
+                                    onChange={props.setNodeValue.bind(null, node)}
+                                />
+                                <NodeLabel label={node.label} labelInformation={node.labelInformation} />
+                            </div>
+                            {hasChildren(node) ? (
+                                <span
+                                    className="child-node-count"
+                                    data-qa={`node-label-${node.id}`}
+                                >{`${countCheckedNodes(node)} / ${countAllNodes(node)}`}</span>
+                            ) : null}
+                        </li>
+                        {node.labelInformation && node.labelInformation.labels.length > 1 && (
+                            <div className={'node-tooltip-note'}>
+                                <div className={'note-info'}>
+                                    <div className={'label-information-note'}>
+                                        <div>{node.labelInformation.note}</div>
+                                    </div>
+                                </div>
+
+                                <div className={'node-tooltip'}>
+                                    <Tooltip
+                                        placement="left"
+                                        text={
+                                            <div className={'node-tooltip-container-box'}>
+                                                {node.labelInformation.labels
+                                                    .map((label, index) => {
+                                                        return `${label.text + getInfo(label.info)}`;
+                                                    })
+                                                    .join(', ')}
+                                            </div>
+                                        }
+                                    >
+                                        <i className={'icon-info-tooltip'} />
+                                    </Tooltip>
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 ))}
         </ul>
     </div>

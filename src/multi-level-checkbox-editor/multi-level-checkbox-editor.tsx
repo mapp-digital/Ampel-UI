@@ -100,6 +100,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                             setNodeValue={this.setNodeValue}
                                             levelHeaderLabel={this.props.levelHeaderLabels[level]}
                                             disableHeaderCheckbox={this.state.searchValue.length > 0}
+                                            key={node.id}
                                         />
                                     </div>
                                 )}

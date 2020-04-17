@@ -62,13 +62,12 @@
       border: @default-border;
       list-style-type: none;
       background: @white;
-
       .node-list-item {
         @node-padding();
 
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
         position: relative;
         cursor: pointer;
         white-space: pre-line;
@@ -82,7 +81,7 @@
 
         div {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
 
           label {
             margin-bottom: 0;
@@ -98,6 +97,55 @@
           padding: 5px;
           border-radius: 10%;
         }
+
+        .node-label {
+          display: flex;
+          flex-direction: column;
+          align-items: normal;
+          margin-left: 6px;
+          padding-top: 5px;
+
+          .node-label-1 {
+            color: @gray-dark;
+          }
+
+          &.info {
+            color: @info-deep;
+
+            .info-icon {
+              @info-icon-inv();
+            }
+          }
+        }
+
+        .node-label > div + div {
+          margin-top: 8px;;
+        }
+      }
+
+      .node-tooltip-note {
+        display: flex;
+        flex-direction: row;
+
+        .node-tooltip {
+          width: 24px;
+          height: 24px;
+          margin-right: 12px;
+        }
+
+        .icon-info-tooltip {
+          @info-icon-inv();
+          color: @info-deep;
+        }
+      }
+
+      .icon-info-tooltip:before {
+        font-size: 14px;
+      }
+
+      .note-info {
+        margin-left: 54px;
+        flex-grow: 1;
       }
     }
   }
@@ -160,4 +208,11 @@
 
 .arrange-type-box {
   width: 300px;
+}
+
+.node-tooltip-container-box {
+  max-width: 208px;
+  color: @gray-darkest;
+  font-size: 14px;
+  padding: 8px 16px 8px 16px;
 }

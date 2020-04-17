@@ -6,7 +6,7 @@ import { TooltipArg, Trigger } from 'react-popper-tooltip/dist/types';
 import PopperJS from 'popper.js';
 
 interface Props {
-    text?: string;
+    text?: any;
     placement?: string;
 }
 
