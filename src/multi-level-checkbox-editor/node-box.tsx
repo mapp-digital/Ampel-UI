@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { NodeLabel } from '@ampel-ui/multi-level-checkbox-editor/node-label';
-import { Tooltip } from '@ampel-ui/tooltip';
+import { NodeToolTip } from '@ampel-ui/multi-level-checkbox-editor/node-tooltip';
 import { Checkbox } from '../checkbox';
 import { Node } from './multi-level-checkbox-editor';
 import { TriStateCheckbox, TriStateCheckboxState } from './tri-state-checkbox';
@@ -105,39 +105,7 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                                 >{`${countCheckedNodes(node)} / ${countAllNodes(node)}`}</span>
                             ) : null}
                         </li>
-                        {node.labelInformation && node.labelInformation.labels.length > 1 && (
-                            <div className={'node-tooltip-note'}>
-                                <div className={'note-info'}>
-                                    <div className={'label-information-note'}>
-                                        <div>{node.labelInformation.note}</div>
-                                    </div>
-                                </div>
-
-                                <div className={'node-tooltip'}>
-                                    <Tooltip
-                                        placement="left"
-                                        text={
-                                            <div className={'node-tooltip-container-box'}>
-                                                {node.labelInformation.labels
-                                                    .map((label, index) => {
-                                                        return (
-                                                            <span key={index}>
-                                                                ${label.text}
-                                                                <span className={'higlighted-text'}>
-                                                                    ${label.info ? `- ${label.info}` : ''}
-                                                                </span>
-                                                            </span>
-                                                        );
-                                                    })
-                                                    .join(', ')}
-                                            </div>
-                                        }
-                                    >
-                                        <i className={'icon-info-tooltip'} />
-                                    </Tooltip>
-                                </div>
-                            </div>
-                        )}
+                        <NodeToolTip node={node} />
                     </div>
                 ))}
         </ul>
