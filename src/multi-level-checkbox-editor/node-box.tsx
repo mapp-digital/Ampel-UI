@@ -63,12 +63,6 @@ const countSelectedChildren = (node: Node) => {
 const isNodeChecked = (node: Node) => {
     return hasChildren(node) && countSelectedChildren(node) === node.children!.length;
 };
-const getInfo = (info: string) => {
-    if (!info) {
-        return '';
-    }
-    return info ? '' : `— ${info}`;
-};
 const NodeBox: React.FunctionComponent<Props> = (props) => (
     <div className="node-box" data-qa={`container-${props.levelHeaderLabel}`}>
         <span className="icon" />
@@ -126,7 +120,14 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                                             <div className={'node-tooltip-container-box'}>
                                                 {node.labelInformation.labels
                                                     .map((label, index) => {
-                                                        return `${label.text + getInfo(label.info)}`;
+                                                        return (
+                                                            <span key={index}>
+                                                                ${label.text}
+                                                                <span className={'higlighted-text'}>
+                                                                    ${label.info ? `- ${label.info}` : ''}
+                                                                </span>
+                                                            </span>
+                                                        );
                                                     })
                                                     .join(', ')}
                                             </div>

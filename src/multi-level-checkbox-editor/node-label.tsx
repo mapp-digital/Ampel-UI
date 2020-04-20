@@ -18,25 +18,19 @@ interface Props {
 const NodeLabel: React.FunctionComponent<Props> = (props) => (
     <div className={'node-label'}>
         {props.labelInformation &&
-            props.labelInformation.labels.map((label, index) => {
-                if (index > 1) {
-                    return '';
-                }
+            props.labelInformation.labels.length > 0 &&
+            props.labelInformation.labels.slice(0, 2).map((label, index) => {
                 return (
                     <div key={index}>
-                        <div className={`node-label-${index}`}>{`${label.text + getInfo(label.info)}`}</div>
+                        <div className={`node-label-${index}`}>
+                            {label.text}
+                            <span className={'higlighted-text'}>{label.info ? `- ${label.info}` : ''}</span>
+                        </div>
                     </div>
                 );
             })}
 
-        {props.label && props.label}
+        {props.label}
     </div>
 );
-
-const getInfo = (info: string) => {
-    if (!info) {
-        return '';
-    }
-    return info ? '' : `— ${info}`;
-};
 export { NodeLabel, LabelInformation };
