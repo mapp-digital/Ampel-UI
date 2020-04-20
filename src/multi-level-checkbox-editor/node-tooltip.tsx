@@ -25,14 +25,7 @@ const NodeToolTip: React.FunctionComponent<Props> = (props) => (
                                 <div className={'node-tooltip-container-box'}>
                                     {props.node.labelInformation.labels
                                         .map((label, index) => {
-                                            return (
-                                                <span key={index}>
-                                                    ${label.text}
-                                                    <span className={'higlighted-text'}>
-                                                        ${label.info ? `- ${label.info}` : ''}
-                                                    </span>
-                                                </span>
-                                            );
+                                            return `${label.text}${label.info ? `- ${label.info}` : ''}`;
                                         })
                                         .join(', ')}
                                 </div>

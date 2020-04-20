@@ -3,9 +3,9 @@ import * as React from 'react';
 import { matches } from '@ampel-ui/common/search';
 import { SearchInput } from '@ampel-ui/input';
 
-import { LabelInformation } from '@ampel-ui/multi-level-checkbox-editor/node-label';
 import { BaseNode, walkTree } from '../api/tree';
 import { hasChildren, NodeBox } from './node-box';
+import { LabelInformation } from './node-label';
 
 const SYNTHETIC_ROOT_ID = '_ROOT';
 
