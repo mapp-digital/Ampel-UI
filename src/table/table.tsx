@@ -189,11 +189,11 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     };
 
     private getActionsColumn(columnActions: ColumnActions<ROW>) {
-        const actionButtonWidthPx = 30;
+        const actionButtonWidthPx = 40;
         return {
             id: '_actions',
             sortable: false,
-            width: Math.max(100, columnActions.actions.length * actionButtonWidthPx),
+            width: Math.max(120, columnActions.actions.length * actionButtonWidthPx),
             Header: () => <div className="actions-header">{columnActions.Header}</div>,
             Cell: (props: any) => {
                 return (
