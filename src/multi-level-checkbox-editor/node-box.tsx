@@ -96,7 +96,7 @@ const NodeBox: React.FunctionComponent<Props> = (props) => (
                                     value={getNodeState(node)}
                                     onChange={props.setNodeValue.bind(null, node)}
                                 />
-                                <NodeLabel label={node.label} labelInformation={node.labelInformation} />
+                                <NodeLabel node={node} />
                             </div>
                             {hasChildren(node) ? (
                                 <span

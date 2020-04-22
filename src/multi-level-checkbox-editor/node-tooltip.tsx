@@ -21,7 +21,7 @@ const NodeToolTip: React.FunctionComponent<Props> = (props) => (
                     <div className={'node-tooltip'}>
                         <Tooltip
                             placement="left"
-                            text={
+                            content={
                                 <div className={'node-tooltip-container-box'}>
                                     {props.node.labelInformation.labels
                                         .map((label, index) => {
