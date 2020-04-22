@@ -1,5 +1,3 @@
-import { LabelInformation } from '../multi-level-checkbox-editor/node-label';
-
 interface BaseNode<T extends BaseNode<T, V>, V> {
     id: string;
     label: string;
@@ -7,7 +5,6 @@ interface BaseNode<T extends BaseNode<T, V>, V> {
     classes?: string;
     children?: Array<BaseNode<T, V>>;
     isHighlighted?: boolean;
-    labelInformation?: LabelInformation;
 }
 
 type NodeMapper<T extends BaseNode<T, V>, V> = (node: BaseNode<T, V>) => BaseNode<T, V>;
