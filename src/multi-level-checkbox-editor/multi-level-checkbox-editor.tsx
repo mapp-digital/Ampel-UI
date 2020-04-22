@@ -5,10 +5,13 @@ import { SearchInput } from '@ampel-ui/input';
 
 import { BaseNode, walkTree } from '../api/tree';
 import { hasChildren, NodeBox } from './node-box';
+import { LabelInformation } from './node-label';
 
 const SYNTHETIC_ROOT_ID = '_ROOT';
 
-interface Node extends BaseNode<Node, boolean> {}
+interface Node extends BaseNode<Node, boolean> {
+    labelInformation?: LabelInformation;
+}
 
 interface Props {
     id: string;
@@ -100,6 +103,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                                             setNodeValue={this.setNodeValue}
                                             levelHeaderLabel={this.props.levelHeaderLabels[level]}
                                             disableHeaderCheckbox={this.state.searchValue.length > 0}
+                                            key={node.id}
                                         />
                                     </div>
                                 )}

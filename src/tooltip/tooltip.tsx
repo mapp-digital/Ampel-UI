@@ -4,14 +4,17 @@ import TooltipTrigger from 'react-popper-tooltip';
 import { TooltipArg, Trigger } from 'react-popper-tooltip/dist/types';
 
 import PopperJS from 'popper.js';
+import { ReactNode } from 'react';
 
 interface Props {
+    // @deprecated
     text?: string;
+    content?: string | ReactNode;
     placement?: string;
 }
 
 interface ArrowProps {
-    tooltip?: string;
+    tooltip?: string | ReactNode;
     hideArrow?: boolean;
 }
 
@@ -62,10 +65,14 @@ const TooltipCom = ({ children, tooltip, hideArrow, ...props }: TooltipTriggerAn
     </TooltipTrigger>
 );
 const Tooltip: React.FunctionComponent<Props> = (props) => {
-    return !props.text ? (
+    return !props.text && !props.content ? (
         <>{props.children}</>
     ) : (
-        <TooltipCom placement={(props.placement || 'top') as PopperJS.Placement} trigger={'hover'} tooltip={props.text}>
+        <TooltipCom
+            placement={(props.placement || 'top') as PopperJS.Placement}
+            trigger={'hover'}
+            tooltip={props.text ? props.text : props.content}
+        >
             {props.children}
         </TooltipCom>
     );
