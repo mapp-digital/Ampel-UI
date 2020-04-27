@@ -13,10 +13,11 @@ interface LabelInformation {
 
 interface Props {
     node: Node;
+    hasChildern: boolean;
 }
 
 const NodeLabel: React.FunctionComponent<Props> = (props) => (
-    <div className={'node-label'}>
+    <div className={`node-label ${props.hasChildern ? 'label-width' : ''}`}>
         {props.node.labelInformation &&
             props.node.labelInformation.labels.length > 0 &&
             props.node.labelInformation.labels.slice(0, 2).map((label, index) => {
@@ -24,7 +25,7 @@ const NodeLabel: React.FunctionComponent<Props> = (props) => (
                     <div key={index}>
                         <div className={`node-label-${index}`}>
                             {label.text}
-                            <span className={'higlighted-text'}>{label.info ? `- ${label.info}` : ''}</span>
+                            <span className={'higlighted-text'}>{label.info ? ` – ${label.info}` : ''}</span>
                         </div>
                     </div>
                 );
