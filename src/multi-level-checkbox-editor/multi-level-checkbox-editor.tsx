@@ -43,7 +43,17 @@ const getFilteredNodes = (nodes: Array<Node>, searchValue: string) => {
             node.children = node.children!.map(copy).filter(byLabel);
             return Boolean(node.children.length);
         }
-        return matches(searchValue, node.label);
+        if (node.label) {
+            return matches(searchValue, node.label);
+        }
+        if (node.labelInformation && node.labelInformation.labels.length > 0) {
+            const labelInfo = node.labelInformation.labels
+                .map((label, index) => {
+                    return `${label.text}${label.info ? `- ${label.info}` : ''}`;
+                })
+                .join(', ');
+            return matches(searchValue, labelInfo);
+        }
     });
 };
 
@@ -250,7 +260,8 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     private getNoDataText() {
         return (
-            this.props.noDataText && (
+            this.props.noDataText &&
+            this.state.searchValue && (
                 <span className="info-box warning">
                     <span className="info-box-icon" />
                     {this.props.noDataText}

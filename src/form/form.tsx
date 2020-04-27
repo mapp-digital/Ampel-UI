@@ -141,6 +141,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         this.computeValidState = this.computeValidState.bind(this);
         this.getFieldViolations = this.getFieldViolations.bind(this);
         this.setViolationsFromProps = this.setViolationsFromProps.bind(this);
+        this.getExpandedGroupIds = this.getExpandedGroupIds.bind(this);
 
         this.debouncedSetViolations = debounce(this.setViolations, this.validationOptions.delayMillis);
     }
@@ -289,6 +290,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             getBlurHandler: this.getBlurHandler,
             getValueSetter: this.getValueSetter,
             getFieldViolations: this.getFieldViolations,
+            getExpandedGroupIds: this.getExpandedGroupIds,
         };
         return sectionFactory(sectionContext);
     }
@@ -314,6 +316,9 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private getFieldViolations(fieldId: string): Array<ConstraintViolation> {
         return (this.state.violations && this.state.violations[fieldId]) || [];
+    }
+    private getExpandedGroupIds(): Array<string> {
+        return this.state.expandedGroupsIds || [];
     }
 
     private validate(fieldId: string, value: any): Promise<Array<ConstraintViolation>> {
