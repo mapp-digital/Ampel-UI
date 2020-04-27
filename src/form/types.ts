@@ -29,6 +29,7 @@ interface SectionContext {
     getValueSetter: (fieldId: string) => (value: any) => void;
     getBlurHandler: (fieldId: string) => BlurHandler;
     getFieldViolations: (fieldId: string) => Array<ConstraintViolation>;
+    getExpandedGroupIds?: () => Array<string>;
 }
 
 interface Constraints<FIELD, FORM> {
