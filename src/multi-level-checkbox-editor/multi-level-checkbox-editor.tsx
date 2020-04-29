@@ -28,6 +28,7 @@ interface Props {
     emptyBoxText?: string;
     onSearchCleared?: (searchValue: string) => void;
     postFixId?: string;
+    noResultText?: string;
 }
 
 interface State {
@@ -78,7 +79,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         const nodes = this.getNodes();
         return (
             <>
-                {this.props.searchPlaceholder && (
+                {this.props.searchPlaceholder && (nodes.length > 0 || this.state.searchValue) && (
                     <div className="multi-level-checkbox-editor-filter" data-qa="multi-level-checkbox-editor-filter">
                         <SearchInput
                             id="multi-level-checkbox-editor--search-bar"
@@ -259,6 +260,15 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     private getNoDataText() {
+        if (this.props.noResultText && !this.state.searchValue) {
+            return (
+                <span className="info-box warning">
+                    <span className="info-box-icon" />
+                    {this.props.noResultText}
+                </span>
+            );
+        }
+
         return (
             this.props.noDataText &&
             this.state.searchValue && (
