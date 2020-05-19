@@ -67,7 +67,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.state = {
             selectedNodeIds: [],
             searchValue: '',
-            nodes: [],
+            nodes: this.props.nodes,
         };
 
         this.findNode = this.findNode.bind(this);
@@ -258,12 +258,12 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.setState(
             {
                 searchValue,
-                nodes: this.getNodes(),
             },
             () => {
                 if (this.props.onFilterChange) {
                     this.props.onFilterChange(this.state.searchValue);
                 }
+                this.setState({ nodes: this.getNodes() });
             }
         );
     }
