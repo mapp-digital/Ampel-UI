@@ -94,14 +94,15 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 return _.omit(node, ['isHighlighted', 'value']);
             })
         );
-        if (!_.isEqual(previousNodes, currentNodes)) {
-            this.setState({ selectedNodeIds: [] });
-        }
-        if (prevProps.nodes !== this.props.nodes) {
-            this.setState({ nodes: this.getNodes() });
+        const isChangeInResponse = !_.isEqual(previousNodes, currentNodes);
+        if (isChangeInResponse) {
+            this.setState({ selectedNodeIds: [] }, () => {
+                this.initialiseNodes(prevProps);
+            });
+        } else {
+            this.initialiseNodes(prevProps);
         }
     }
-
     public render() {
         const nodes = this.state.nodes;
         return (
@@ -165,6 +166,12 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
 
     private checkIfSelectedNodeReachedLimit() {
         return this.props.maxBoxCount && this.state.selectedNodeIds.length + 1 < this.props.maxBoxCount;
+    }
+
+    private initialiseNodes(prevProps: Readonly<Props>) {
+        if (prevProps.nodes !== this.props.nodes) {
+            this.setState({ nodes: this.getNodes() });
+        }
     }
 
     private getNodes() {
