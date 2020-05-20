@@ -3,6 +3,7 @@ import * as React from 'react';
 import { matches } from '@ampel-ui/common/search';
 import { SearchInput } from '@ampel-ui/input';
 
+import _ from 'lodash';
 import { BaseNode, walkTree } from '../api/tree';
 import { hasChildren, NodeBox } from './node-box';
 import { LabelInformation } from './node-label';
@@ -34,6 +35,7 @@ interface Props {
 interface State {
     selectedNodeIds: Array<string>;
     searchValue: string;
+    nodes: Array<Node>;
 }
 
 const copy = <T extends {}>(o: T) => ({ ...o });
@@ -65,6 +67,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.state = {
             selectedNodeIds: [],
             searchValue: '',
+            nodes: this.props.nodes,
         };
 
         this.findNode = this.findNode.bind(this);
@@ -75,8 +78,32 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
         this.setValueRecursively = this.setValueRecursively.bind(this);
         this.setHighlightRecursively = this.setHighlightRecursively.bind(this);
     }
+
+    public componentDidMount(): void {
+        this.setState({ nodes: this.getNodes() });
+    }
+
+    public componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        const previousNodes = prevProps.nodes.slice().map(
+            walkTree((node) => {
+                return _.omit(node, ['isHighlighted', 'value']);
+            })
+        );
+        const currentNodes = this.props.nodes.slice().map(
+            walkTree((node) => {
+                return _.omit(node, ['isHighlighted', 'value']);
+            })
+        );
+        if (!_.isEqual(previousNodes, currentNodes)) {
+            this.setState({ selectedNodeIds: [] });
+        }
+        if (prevProps.nodes !== this.props.nodes) {
+            this.setState({ nodes: this.getNodes() });
+        }
+    }
+
     public render() {
-        const nodes = this.getNodes();
+        const nodes = this.state.nodes;
         return (
             <>
                 {this.props.searchPlaceholder && (nodes.length > 0 || this.state.searchValue) && (
@@ -236,6 +263,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 if (this.props.onFilterChange) {
                     this.props.onFilterChange(this.state.searchValue);
                 }
+                this.setState({ nodes: this.getNodes() });
             }
         );
     }
