@@ -94,6 +94,7 @@ interface Props<MODEL> {
     cancelButtonText: string;
     violations?: ConstraintViolations;
     validationSchema?: any;
+    expandedGroupIds?: Array<string>;
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
     additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
@@ -126,7 +127,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             violations: this.props.violations || {},
             initialModel: this.props.model,
             isSubmitting: false,
-            expandedGroupsIds: [this.props.children[0].id],
+            expandedGroupsIds: this.getInitiallyExpandedGroupIds(),
         };
 
         this.validationOptions = Object.assign(this.props.validationOptions || {}, getValidationOptionsDefaults());
@@ -202,6 +203,10 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         if (!isEqual(this.state.initialModel, prevState.initialModel)) {
             this.computeDirtyState();
         }
+    }
+
+    private getInitiallyExpandedGroupIds() {
+        return this.props.expandedGroupIds || [this.props.children[0].id];
     }
 
     private resetForm() {

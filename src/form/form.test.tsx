@@ -260,6 +260,37 @@ describe('FormGroup', () => {
         expect(secondGroupElement).toBeFalsy();
     });
 
+    it('should have both formGroups expanded initially', () => {
+        const firstGroupContent = 'firstGroupContent';
+        const secondGroupContent = 'secondGroupContent';
+        const expandedTargetGroupIdA = 'groupA';
+        const expandedTargetGroupIdB = 'groupB';
+        const { queryByText } = render(
+            <Form
+                model={{ fieldA: 'fieldA', fieldB: 'fieldB' }}
+                onSubmit={jest.fn()}
+                submitButtonText="Submit"
+                cancelButtonText="Cancel"
+                expandedGroupIds={[expandedTargetGroupIdA, expandedTargetGroupIdB]}
+            >
+                {[
+                    getGroupWithRenderElement(expandedTargetGroupIdA, () => (
+                        <span key="key1">{firstGroupContent}</span>
+                    )),
+                    getGroupWithRenderElement(expandedTargetGroupIdB, () => (
+                        <span key="key2">{secondGroupContent}</span>
+                    )),
+                ]}
+            </Form>
+        );
+
+        const firstGroupElement = queryByText(firstGroupContent);
+        const secondGroupElement = queryByText(secondGroupContent);
+
+        expect(firstGroupElement).toBeTruthy();
+        expect(secondGroupElement).toBeTruthy();
+    });
+
     it(`should add class 'group-unchanged' when form is not dirty`, () => {
         const groupId = 'groupA';
         const { getByDataQa } = render(
