@@ -15,6 +15,7 @@ interface Props<T> {
     filterPlaceholderLeft?: string;
     filterPlaceholderRight?: string;
     disabled?: boolean;
+    disableSortyByLabel?: boolean;
 }
 
 interface State<T> {
@@ -237,7 +238,12 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
         const notSelectedOptions = this.props.options
             .filter(this.isNotSelected)
             .filter((option) => matches(this.state.leftFilter, option.label))
-            .sort((value1, value2) => value1.label.localeCompare(value2.label));
+            .sort((value1, value2) => {
+                if (this.props.disableSortyByLabel) {
+                    return 0;
+                }
+                return value1.label.localeCompare(value2.label);
+            });
         return this.renderOptions(notSelectedOptions, LEFT);
     }
 
@@ -245,7 +251,12 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
         const selectedOptions = this.props.options
             .filter(this.isSelected)
             .filter((option) => matches(this.state.rightFilter, option.label))
-            .sort((value1, value2) => value1.label.localeCompare(value2.label));
+            .sort((value1, value2) => {
+                if (this.props.disableSortyByLabel) {
+                    return 0;
+                }
+                return value1.label.localeCompare(value2.label);
+            });
         return this.renderOptions(selectedOptions, RIGHT);
     }
 
