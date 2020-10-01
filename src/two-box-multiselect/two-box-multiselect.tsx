@@ -236,14 +236,16 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     private renderLeftBox() {
         const notSelectedOptions = this.props.options
             .filter(this.isNotSelected)
-            .filter((option) => matches(this.state.leftFilter, option.label));
+            .filter((option) => matches(this.state.leftFilter, option.label))
+            .sort((value1, value2) => value1.label.localeCompare(value2.label));
         return this.renderOptions(notSelectedOptions, LEFT);
     }
 
     private renderRightBox() {
         const selectedOptions = this.props.options
             .filter(this.isSelected)
-            .filter((option) => matches(this.state.rightFilter, option.label));
+            .filter((option) => matches(this.state.rightFilter, option.label))
+            .sort((value1, value2) => value1.label.localeCompare(value2.label));
         return this.renderOptions(selectedOptions, RIGHT);
     }
 
