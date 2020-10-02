@@ -15,6 +15,7 @@ interface Props<T> {
     filterPlaceholderLeft?: string;
     filterPlaceholderRight?: string;
     disabled?: boolean;
+    sortLabelBy?: (left: Option<T>, right: Option<T>) => number;
 }
 
 interface State<T> {
@@ -47,6 +48,7 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
         this.removeHighlighted = this.removeHighlighted.bind(this);
         this.toggleHighlighted = this.toggleHighlighted.bind(this);
         this.renderOptionForSide = this.renderOptionForSide.bind(this);
+        this.comparator = this.comparator.bind(this);
     }
 
     public render() {
@@ -236,14 +238,16 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     private renderLeftBox() {
         const notSelectedOptions = this.props.options
             .filter(this.isNotSelected)
-            .filter((option) => matches(this.state.leftFilter, option.label));
+            .filter((option) => matches(this.state.leftFilter, option.label))
+            .sort(this.comparator);
         return this.renderOptions(notSelectedOptions, LEFT);
     }
 
     private renderRightBox() {
         const selectedOptions = this.props.options
             .filter(this.isSelected)
-            .filter((option) => matches(this.state.rightFilter, option.label));
+            .filter((option) => matches(this.state.rightFilter, option.label))
+            .sort(this.comparator);
         return this.renderOptions(selectedOptions, RIGHT);
     }
 
@@ -280,6 +284,13 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
 
     private getHighlightedCollection(side: string, state: State<T>) {
         return side === LEFT ? state.leftHighlighted : state.rightHighlighted;
+    }
+
+    private comparator(value1: Option<T>, value2: Option<T>) {
+        return (
+            (this.props.sortLabelBy && this.props.sortLabelBy(value1, value2)) ||
+            value1.label.localeCompare(value2.label)
+        );
     }
 }
 
