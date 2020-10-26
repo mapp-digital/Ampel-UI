@@ -295,7 +295,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     private getNoDataText() {
-        if (this.props.noResultText && !this.state.searchValue) {
+        if (this.props.noResultText && this.state.nodes.length > 0 && !this.state.searchValue) {
             return (
                 <span className="info-box warning">
                     <span className="info-box-icon" />
