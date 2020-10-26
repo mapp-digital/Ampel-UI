@@ -295,7 +295,7 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
     }
 
     private getNoDataText() {
-        if (this.props.noResultText && this.state.nodes.length > 0 && !this.state.searchValue) {
+        if (this.validateSearchValue()) {
             return (
                 <span className="info-box warning">
                     <span className="info-box-icon" />
@@ -313,6 +313,10 @@ class MultiLevelCheckboxEditor extends React.Component<Props, State> {
                 </span>
             )
         );
+    }
+
+    private validateSearchValue() {
+        return this.props.noResultText && this.state.nodes.length > 0 && !this.state.searchValue;
     }
 
     private findNode(nodeId: string): Node {
