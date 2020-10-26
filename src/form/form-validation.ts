@@ -69,8 +69,15 @@ const createFieldValidators = <FIELD, MODEL>(violationFactory: ViolationFactory,
             if (field.type === FieldType.INTEGER) {
                 constraintValidators.push(createIntegerValidator(violationFactory.bind(null, severity)));
             }
-            if (constraintForSeverity.required) {
-                constraintValidators.push(createRequiredValidator(violationFactory.bind(null, severity), field.type));
+            if (constraintForSeverity.required && field.type === FieldType.STRING) {
+                constraintValidators.push(
+                    createRequiredStringValidator(violationFactory.bind(null, severity), field.type)
+                );
+            }
+            if (constraintForSeverity.required && field.type !== FieldType.STRING) {
+                constraintValidators.push(
+                    createRequiredMixedValidator(violationFactory.bind(null, severity), field.type)
+                );
             }
             if (constraintForSeverity.min) {
                 constraintValidators.push(
@@ -128,7 +135,20 @@ const hasViolations = (violations: ConstraintViolations | undefined, fieldId: st
     );
 };
 
-const createRequiredValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
+const createRequiredMixedValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
+    const requiredValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
+        const typeString = getYupTypeConstraintKey(fieldType);
+        return Yup[typeString]()
+            .required()
+            .isValid(value)
+            .then((isValid: boolean) => {
+                return isValid ? null : violationFactory(`${FORM_VIOLATION_PREFIX}.required`, null);
+            });
+    };
+    return requiredValidator;
+};
+
+const createRequiredStringValidator = <FIELD, MODEL>(violationFactory: ViolationFactoryBound, fieldType: FieldType) => {
     const requiredValidator: ConstraintValidator<FIELD, MODEL> = (value) => {
         const typeString = getYupTypeConstraintKey(fieldType);
         return Yup[typeString]()
