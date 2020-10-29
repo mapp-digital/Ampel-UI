@@ -15,7 +15,7 @@ interface Props {
     autoFocus?: boolean;
     passwordVisible?: boolean;
     enablePasswordToggle?: boolean;
-    onPasswordToggle?: (event: React.MouseEvent<HTMLDivElement>) => void;
+    onPasswordToggle?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const PasswordInput: React.FunctionComponent<Props> = (props) => {
@@ -46,9 +46,9 @@ const PasswordInput: React.FunctionComponent<Props> = (props) => {
                 autoFocus={props.autoFocus}
             />
             {props.enablePasswordToggle && (
-                <span
-                    className={`password-toggle ${props.passwordVisible ? 'hide' : 'show'}`}
-                    role="button"
+                <button
+                    className={`password-toggle btn btn-secondary ${props.passwordVisible ? 'hide' : 'show'}`}
+                    type="button"
                     onClick={props.onPasswordToggle}
                     data-qa={`password--toggle`}
                 />
