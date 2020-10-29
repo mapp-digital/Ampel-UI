@@ -14,7 +14,7 @@ interface Props {
     onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void;
     onMouseLeave?: (event: React.MouseEvent<HTMLDivElement>) => void;
     autoFocus?: boolean;
-    passwordVisible?: boolean;
+    passwordInitiallyVisible?: boolean;
     enablePasswordToggle?: boolean;
     onPasswordToggle?: (value: boolean) => void;
 }
@@ -31,7 +31,7 @@ class PasswordInput extends React.Component<Props, State> {
         const value = isNil(props.value) ? '' : props.value;
         this.state = {
             value,
-            passwordVisible: Boolean(props.passwordVisible),
+            passwordVisible: Boolean(props.passwordInitiallyVisible),
         };
         this.onChange = this.onChange.bind(this);
         this.onPasswordToggle = this.onPasswordToggle.bind(this);
