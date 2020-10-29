@@ -1,11 +1,12 @@
+import { Tooltip } from '@ampel-ui/tooltip';
 import * as React from 'react';
-
-// import { INode } from './inode';
 
 import { BaseNode } from '../api/tree';
 
 interface INode extends BaseNode<INode, never> {
     isExpanded?: boolean;
+    disabled?: boolean;
+    disabledMessage?: string;
 }
 
 interface Props {
@@ -18,6 +19,7 @@ const EXPANDED_CLASS = 'expanded';
 const COLLAPSED_CLASS = 'collapsed';
 const NO_CHILD_CLASS = 'no-child';
 const LEAF_CLASS = 'leaf';
+const DISABLED_CLASS = 'disabled';
 const HIGHLIGHTED_CLASS = 'highlighted';
 const LEVEL_CLASS_PREFIX = 'level-';
 
@@ -31,20 +33,35 @@ class Node extends React.Component<Props, {}> {
     }
 
     public render() {
+        const { node } = this.props;
         return (
             <li
                 role="listitem"
                 onClick={this.handleClick}
-                data-qa={`node-${this.props.node.id}`}
+                data-qa={`node-${node.id}`}
                 className={`node ${this.getHightlightedCLass()} ${this.getLeafClass()} ${LEVEL_CLASS_PREFIX +
-                    this.getLevel()}`}
+                    this.getLevel()} ${this.getDisabledClass()}`}
             >
                 <div className="node-content">
-                    <span className={`node-icon ${this.getClasses()}`} data-qa={`node--icon-${this.props.node.id}`} />
-                    <span className="node-label">{this.props.node.label}</span>
-                    {this.isChildrenVisible() && <ul className="nodes">{this.getChildNodes()}</ul>}
+                    {node.disabled && node.disabledMessage ? (
+                        <Tooltip text={node.disabledMessage} placement="right">
+                            {this.getNodeContent()}
+                        </Tooltip>
+                    ) : (
+                        this.getNodeContent()
+                    )}
                 </div>
             </li>
+        );
+    }
+
+    private getNodeContent() {
+        return (
+            <>
+                <span className={`node-icon ${this.getClasses()}`} data-qa={`node--icon-${this.props.node.id}`} />
+                <span className="node-label">{this.props.node.label}</span>
+                {this.isChildrenVisible() && <ul className="nodes">{this.getChildNodes()}</ul>}
+            </>
         );
     }
 
@@ -54,6 +71,10 @@ class Node extends React.Component<Props, {}> {
 
     private getLeafClass() {
         return !this.props.node.children ? LEAF_CLASS : '';
+    }
+
+    private getDisabledClass() {
+        return this.props.node.disabled ? DISABLED_CLASS : '';
     }
 
     private getChildNodes() {
@@ -88,7 +109,7 @@ class Node extends React.Component<Props, {}> {
 
     private handleClick(event: React.SyntheticEvent) {
         event.stopPropagation();
-        if (this.props.onNodeClick) {
+        if (!this.props.node.disabled && this.props.onNodeClick) {
             this.props.onNodeClick(this.props.node);
         }
     }

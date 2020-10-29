@@ -42,6 +42,22 @@
                 }
             }
         }
+
+        &.disabled {
+            color : @gray-dark;
+            cursor: not-allowed;
+
+            &:hover {
+                .node-label {
+                    color : @gray-dark;
+                    padding-right: 10px;
+                }
+
+                .node-icon {
+                    color : @gray-dark;
+                }
+            }
+        }
     }
 
     .node-content {
