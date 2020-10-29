@@ -40,7 +40,7 @@ class PasswordInput extends React.Component<Props, State> {
     public render() {
         return (
             <div
-                className={`password-input-component ${
+                className={`password-input-component input-component ${
                     this.props.enablePasswordToggle ? 'password-toggle-visible' : ''
                 }`}
                 onMouseEnter={this.props.onMouseEnter}
