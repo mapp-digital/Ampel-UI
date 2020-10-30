@@ -1,4 +1,4 @@
-import { debounce, flatMapDeep, get, has, isEqual, set, template } from 'lodash';
+import { debounce, flatMapDeep, get, has, isEqual, isFunction, set, template } from 'lodash';
 import * as React from 'react';
 
 import { ConstraintViolations, ModelWithMeta, modelWithViolations, ViolationSeverity } from '../api';
@@ -88,6 +88,7 @@ interface FormButtonProps {
 interface Props<MODEL> {
     model: MODEL;
     onCancel?: () => void;
+    onUpdate?: (model: MODEL) => void;
     children: Array<Group>;
     onSubmit: (values: ModelWithMeta<MODEL>) => Promise<ModelWithMeta<MODEL> | void>;
     submitButtonText: string;
@@ -192,6 +193,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     public componentDidUpdate(prevProps: Props<MODEL>, prevState: State<MODEL>) {
         if (!isEqual(this.state.model, prevState.model)) {
             this.computeDirtyState();
+            this.onUpdate();
         }
         if (!isEqual(this.state.violations, prevState.violations)) {
             this.computeValidState();
@@ -340,6 +342,12 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     private computeValidState() {
         const isValid = this.isValid();
         return this.setStateAsync({ isValid });
+    }
+
+    private onUpdate() {
+        if (isFunction(this.props.onUpdate)) {
+            this.props.onUpdate(this.parseModel());
+        }
     }
 
     private isValid() {
