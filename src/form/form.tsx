@@ -1,4 +1,4 @@
-import { debounce, flatMapDeep, get, has, isEqual, isFunction, set, template } from 'lodash';
+import { debounce, flatMapDeep, get, has, isEqual, isFunction, set, template, throttle } from 'lodash';
 import * as React from 'react';
 
 import { ConstraintViolations, ModelWithMeta, modelWithViolations, ViolationSeverity } from '../api';
@@ -134,6 +134,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         this.validationOptions = Object.assign(this.props.validationOptions || {}, getValidationOptionsDefaults());
 
         this.onSubmit = this.onSubmit.bind(this);
+        this.onUpdate = throttle(this.onUpdate.bind(this), 500);
         this.getValue = this.getValue.bind(this);
         this.resetForm = this.resetForm.bind(this);
         this.onGroupClick = this.onGroupClick.bind(this);
