@@ -1,4 +1,4 @@
-import { isFunction, isNil } from 'lodash';
+import { isFunction } from 'lodash';
 import * as React from 'react';
 
 interface Props {
@@ -20,17 +20,13 @@ interface Props {
 }
 
 interface State {
-    value: string;
     passwordVisible: boolean;
 }
 
 class PasswordInput extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
-
-        const value = isNil(props.value) ? '' : props.value;
         this.state = {
-            value,
             passwordVisible: Boolean(props.passwordInitiallyVisible),
         };
         this.onChange = this.onChange.bind(this);
@@ -54,7 +50,7 @@ class PasswordInput extends React.Component<Props, State> {
                 <input
                     id={this.props.id}
                     type={this.state.passwordVisible ? 'text' : 'password'}
-                    value={this.state.value}
+                    value={this.props.value}
                     onBlur={this.props.onBlur}
                     onChange={this.onChange}
                     data-qa={`password-input--component-${this.props.id}`}
@@ -83,7 +79,6 @@ class PasswordInput extends React.Component<Props, State> {
 
     private onChange(event: React.ChangeEvent<HTMLInputElement>) {
         const value = event.target.value;
-        this.setState({ value });
         this.props.onChange(value);
     }
 
