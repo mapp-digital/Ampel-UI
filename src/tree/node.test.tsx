@@ -1,4 +1,4 @@
-import { COLLAPSED_CLASS, EXPANDED_CLASS, NO_CHILD_CLASS, Node } from './node';
+import { COLLAPSED_CLASS, EXPANDED_CLASS, NO_CHILD_CLASS, DISABLED_CLASS, Node } from './node';
 
 import * as React from 'react';
 
@@ -56,5 +56,50 @@ describe('Node', () => {
         expect(iconElement.classList.contains(NO_CHILD_CLASS)).toBeFalsy();
         expect(iconElement.classList.contains(EXPANDED_CLASS)).toBeFalsy();
         expect(iconElement.classList.contains(COLLAPSED_CLASS)).toBeFalsy();
+        expect(iconElement.classList.contains(DISABLED_CLASS)).toBeFalsy();
+    });
+
+    it('should contain disabled class if disabled', () => {
+        const id = '1';
+        const node = {
+            id,
+            label: '1',
+            disabled: true,
+        };
+
+        const { getByDataQa } = render(<Node node={node} />);
+        const disabledElement = getByDataQa('node-' + id);
+
+        expect(disabledElement.classList.contains('disabled'));
+    });
+
+    it('should render content even it is disabled', () => {
+        const id = '1';
+        const node = {
+            id,
+            label: '1',
+            disabled: true,
+        };
+
+        const { getByDataQa } = render(<Node node={node} />);
+        const disabledElement = getByDataQa('node-' + id);
+        expect(disabledElement.textContent).toEqual('1');
+    });
+
+    it('should show tooltip if disabledMessage provided', () => {
+        const id = '1';
+        const node = {
+            id,
+            label: '1',
+            disabled: true,
+            disabledMessage: 'Sample tooltip message',
+        };
+
+        const { getByDataQa } = render(<Node node={node} />);
+        const disabledElement = getByDataQa('node-' + id);
+        const tooltipElement = disabledElement.getElementsByClassName('tooltip-trigger')[0];
+
+        expect(disabledElement.textContent).toEqual('1');
+        expect(tooltipElement).toBeTruthy();
     });
 });
