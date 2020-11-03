@@ -131,4 +131,13 @@ class Node extends React.Component<Props, {}> {
     }
 }
 
-export { Node, INode, EXPANDED_CLASS, COLLAPSED_CLASS, NO_CHILD_CLASS, HIGHLIGHTED_CLASS, LEVEL_CLASS_PREFIX };
+export {
+    Node,
+    INode,
+    EXPANDED_CLASS,
+    COLLAPSED_CLASS,
+    NO_CHILD_CLASS,
+    HIGHLIGHTED_CLASS,
+    LEVEL_CLASS_PREFIX,
+    DISABLED_CLASS,
+};
