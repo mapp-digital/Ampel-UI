@@ -1,0 +1,39 @@
+.message-box {
+    @icon-inner-circle-width: 16px;
+    @icon-outer-circle-width: 12px;
+
+    padding: 20px;
+    background-color: @white;
+    box-shadow: 0 0 10px @gray-dark;
+
+    &.info {
+        .icon {
+            @info-icon();
+            border: @icon-outer-circle-width solid @purple-light;
+            font-size: 17px;
+            color: @purple;
+            background-color: @purple-light;
+        }
+    }
+
+    .message-box-content {
+        display: flex;
+
+        .icon-wrapper {
+            .icon {
+                width: @icon-inner-circle-width;
+                height: @icon-inner-circle-width;
+                border-radius: 50%;
+            }
+        }
+
+        .message-wrapper {
+            margin-left: 20px;
+
+            .message-box-headline {
+                margin-bottom: 10px;
+                font-size: 18px;
+            }
+        }
+    }
+}
