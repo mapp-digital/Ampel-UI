@@ -9,6 +9,7 @@ export * from './dialog';
 export * from './form';
 export * from './input';
 export * from './label';
+export * from './message-box';
 export * from './multi-level-checkbox-editor';
 export * from './notification';
 export * from './options-slider';

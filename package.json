@@ -6,7 +6,7 @@
   "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "webpack -p --optimize-minimize",
-    "test": "jest --config jestconfig.json",
+    "test": "jest --config jestconfig.json --coverage",
     "test:watch": "jest --watch --config jestconfig.json",
     "prepublish": "rm -rf ./dist && npm run build",
     "lint": "tslint-config-prettier-check ./tslint.json",
