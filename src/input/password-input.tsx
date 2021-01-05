@@ -17,6 +17,7 @@ interface Props {
     passwordInitiallyVisible?: boolean;
     enablePasswordToggle?: boolean;
     onPasswordToggle?: (value: boolean) => void;
+    disableAutoComplete?: boolean;
 }
 
 interface State {
@@ -58,6 +59,7 @@ class PasswordInput extends React.Component<Props, State> {
                     placeholder={this.props.placeholder}
                     disabled={this.props.disabled}
                     autoFocus={this.props.autoFocus}
+                    autoComplete={this.props.disableAutoComplete ? 'new-password' : 'on'}
                 />
                 {this.props.enablePasswordToggle && (
                     <button
