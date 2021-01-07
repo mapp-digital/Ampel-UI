@@ -39,7 +39,7 @@ const Input: React.FunctionComponent<Props> = (props) => {
                 placeholder={props.placeholder}
                 disabled={props.disabled}
                 autoFocus={props.autoFocus}
-                autoComplete={props.disableAutoComplete ? 'off' : 'on'}
+                autoComplete={props.disableAutoComplete ? 'new-password' : 'on'}
             />
             {props.append && (
                 <span className="input-append" data-qa="input--append">

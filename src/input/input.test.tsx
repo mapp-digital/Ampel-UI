@@ -91,6 +91,6 @@ describe('Input', () => {
 
         const input = getByDataQa('input--element-' + id) as HTMLInputElement;
 
-        expect(input.autocomplete).toEqual('off');
+        expect(input.autocomplete).toEqual('new-password');
     });
 });
