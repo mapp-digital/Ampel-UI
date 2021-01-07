@@ -4,11 +4,6 @@ import { cleanup, render } from '@config/testing';
 
 import { PasswordInput } from './password-input';
 
-function getAttributeValue(element: HTMLElement, attributeName: String) {
-    const attribute = Array.from(element.attributes).find((attr) => attr.name === attributeName);
-    return attribute?.value;
-}
-
 describe('PasswordInput', () => {
     afterEach(cleanup);
 
@@ -28,9 +23,9 @@ describe('PasswordInput', () => {
         const onChange = jest.fn();
 
         const { getByDataQa } = render(<PasswordInput id={id} value={value} onChange={onChange} />);
-        const passwordInput = getByDataQa(`password-input--component-${id}`);
-        expect(getAttributeValue(passwordInput, 'type')).toEqual('password');
-        expect(getAttributeValue(passwordInput, 'autocomplete')).toEqual('on');
+        const passwordInput = getByDataQa(`password-input--component-${id}`) as HTMLInputElement;
+        expect(passwordInput.type).toEqual('password');
+        expect(passwordInput.autocomplete).toEqual('on');
     });
 
     it('should disable auto-complete feature', () => {
@@ -41,8 +36,7 @@ describe('PasswordInput', () => {
         const { getByDataQa } = render(
             <PasswordInput id={id} value={value} onChange={onChange} disableAutoComplete={true} />
         );
-        const passwordInput = getByDataQa(`password-input--component-${id}`);
-        const attributeValue = getAttributeValue(passwordInput, 'autocomplete');
-        expect(attributeValue).toEqual('new-password');
+        const passwordInput = getByDataQa(`password-input--component-${id}`) as HTMLInputElement;
+        expect(passwordInput.autocomplete).toEqual('new-password');
     });
 });

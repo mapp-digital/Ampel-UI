@@ -13,6 +13,7 @@ interface Props {
     onMouseEnter?: (event: React.MouseEvent<HTMLDivElement>) => void;
     onMouseLeave?: (event: React.MouseEvent<HTMLDivElement>) => void;
     autoFocus?: boolean;
+    disableAutoComplete?: boolean;
 }
 
 const Input: React.FunctionComponent<Props> = (props) => {
@@ -38,6 +39,7 @@ const Input: React.FunctionComponent<Props> = (props) => {
                 placeholder={props.placeholder}
                 disabled={props.disabled}
                 autoFocus={props.autoFocus}
+                autoComplete={props.disableAutoComplete ? 'off' : 'on'}
             />
             {props.append && (
                 <span className="input-append" data-qa="input--append">
