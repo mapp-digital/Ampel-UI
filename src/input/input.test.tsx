@@ -73,4 +73,24 @@ describe('Input', () => {
 
         expect(input.placeholder).toEqual(placeholder);
     });
+
+    it('should enable autocomplete as the default behavior', () => {
+        const id = 'theInput';
+        const { getByDataQa } = render(<Input id={id} value="someInputValue" onChange={jest.fn()} />);
+
+        const input = getByDataQa('input--element-' + id) as HTMLInputElement;
+
+        expect(input.autocomplete).toEqual('on');
+    });
+
+    it('should diable autocomplete', () => {
+        const id = 'theInput';
+        const { getByDataQa } = render(
+            <Input id={id} value="someInputValue" onChange={jest.fn()} disableAutoComplete={true} />
+        );
+
+        const input = getByDataQa('input--element-' + id) as HTMLInputElement;
+
+        expect(input.autocomplete).toEqual('new-password');
+    });
 });
