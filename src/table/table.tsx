@@ -10,7 +10,7 @@ import { PaginateEvent, TableTop } from './table-top';
 interface TableAction<T> {
     id: string;
     hidden?: boolean | ((row: T) => boolean);
-    qa?: string | ((row: T, index: number) => string);
+    renderQaTag?: string | ((row: T, index: number) => string);
     onClick: (row: T) => void;
     tooltip?: string;
     disabled?: boolean | ((row: T) => boolean);
@@ -239,7 +239,8 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     }
 
     private getActionQaTagValue(action: TableAction<ROW>, row: any, index: number): string {
-        const qaTagValue = typeof action.qa === 'function' ? action.qa(row, index) : action.qa;
+        const qaTagValue =
+            typeof action.renderQaTag === 'function' ? action.renderQaTag(row, index) : action.renderQaTag;
         return qaTagValue ? qaTagValue : `table--row-${index}-col-_actions--${action.id}`;
     }
 
