@@ -10,6 +10,7 @@ import { PaginateEvent, TableTop } from './table-top';
 interface TableAction<T> {
     id: string;
     hidden?: boolean | ((row: T) => boolean);
+    renderQaTag?: string | ((row: T, index: number) => string);
     onClick: (row: T) => void;
     tooltip?: string;
     disabled?: boolean | ((row: T) => boolean);
@@ -217,7 +218,7 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
                 <button
                     type="button"
                     onClick={onClick}
-                    data-qa={`table--row-${cellProps.index}-col-_actions--${action.id}`}
+                    data-qa={this.getActionQaTagValue(action, row, cellProps.index)}
                     disabled={disabled}
                     className={`action-button ${action.iconClass} ${this.getVisibleClass(action, row)}`}
                 />
@@ -235,6 +236,12 @@ class Table<ROW> extends React.Component<Props<ROW>, State> {
     private getVisibleClass(action: TableAction<ROW>, row: any): string {
         const hidden = typeof action.hidden === 'function' ? action.hidden(row) : action.hidden;
         return hidden ? 'invisible' : '';
+    }
+
+    private getActionQaTagValue(action: TableAction<ROW>, row: any, index: number): string {
+        const qaTagValue =
+            typeof action.renderQaTag === 'function' ? action.renderQaTag(row, index) : action.renderQaTag;
+        return qaTagValue ? qaTagValue : `table--row-${index}-col-_actions--${action.id}`;
     }
 
     private getSortingRules(): Array<any> {
