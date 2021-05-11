@@ -25,7 +25,7 @@ interface State {
     radius: number;
 }
 
-class TextareaNew extends React.Component<Props, State> {
+class Textarea extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -71,7 +71,7 @@ class TextareaNew extends React.Component<Props, State> {
                             style={{ strokeDasharray: this.state.strokeDasharray }}
                         />
                         <text
-                            className={`character-limit-box ${this.state.stroke}`}
+                            className={this.state.stroke}
                             x="50%"
                             y="50%"
                             text-anchor="middle"
@@ -132,4 +132,4 @@ class TextareaNew extends React.Component<Props, State> {
     }
 }
 
-export { TextareaNew };
+export { Textarea };
