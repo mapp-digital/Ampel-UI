@@ -62,7 +62,7 @@ describe('Textarea', () => {
         const id = 'my-txtarea';
         const value = 'Textarea content';
         const onChange = jest.fn();
-        const rows = 10;
+        const rows = 9;
 
         const { getByDataQa } = render(<Textarea id={id} value={value} onChange={onChange} rows={rows} />);
 

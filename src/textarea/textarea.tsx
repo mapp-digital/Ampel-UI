@@ -30,7 +30,7 @@ class Textarea extends React.Component<Props, State> {
         super(props);
         this.state = {
             expanded: false,
-            rows: 3,
+            rows: this.props.rows ? this.props.rows : 3,
             minRows: 3,
             maxRows: 10,
             value: '',
