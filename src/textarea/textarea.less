@@ -1,7 +1,9 @@
 .textarea-component {
     display: flex;
-    .text-design {
+
+    textarea {
         height: auto;
+
         &:focus {
             outline: none;
             box-shadow: 0 0 1px fade(@info, 50%);
@@ -41,7 +43,7 @@
     .normal-text {
         stroke: @gray-darker
     }
-    
+
     .character-limited::-webkit-scrollbar {
         width: 0.3em;
         cursor: pointer;
