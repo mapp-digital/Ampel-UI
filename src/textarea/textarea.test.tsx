@@ -97,7 +97,7 @@ describe('Textarea', () => {
         expect(textarea.disabled).toBeTruthy();
     });
 
-    it('should be disabled', () => {
+    it('check for character limit circle', () => {
         const id = 'my-txtarea';
         const value = 'Textarea content';
         const onChange = jest.fn();
