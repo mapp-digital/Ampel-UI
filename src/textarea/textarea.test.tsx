@@ -96,4 +96,17 @@ describe('Textarea', () => {
 
         expect(textarea.disabled).toBeTruthy();
     });
+
+    it('should be disabled', () => {
+        const id = 'my-txtarea';
+        const value = 'Textarea content';
+        const onChange = jest.fn();
+
+        const { getByDataQa } = render(
+            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+        );
+        const characterLimitArea = getByDataQa(`character-limit-circle`) as HTMLTextAreaElement;
+
+        expect(characterLimitArea).toBeTruthy();
+    });
 });

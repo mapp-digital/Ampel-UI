@@ -14,7 +14,7 @@ class CharacterLimitChecker extends React.Component<Props, State> {
 
     render() {
         return (
-            <svg className={'character-limit-circle'}>
+            <svg id="character-limit-circle" data-qa={`character-limit-circle`} className={'character-limit-circle'}>
                 <circle id="gray" cx={this.CO_ORDINATE} cy={this.CO_ORDINATE} r={this.props.radius} />
                 <circle
                     id="colored"
