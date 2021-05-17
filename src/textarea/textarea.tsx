@@ -37,7 +37,7 @@ class Textarea extends React.Component<Props, State> {
         this.state = {
             rows: this.props.rows ? this.props.rows : this.DEFAULT_ROW_COUNT,
             value: '',
-            limit: 255,
+            limit: 255 - this.props.value.length,
             stroke: '',
             strokeDasharray: '',
             outputText: '',

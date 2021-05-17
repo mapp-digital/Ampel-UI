@@ -109,4 +109,34 @@ describe('Textarea', () => {
 
         expect(characterLimitArea).toBeTruthy();
     });
+    it('check if character limit is exceeded', () => {
+        const id = 'my-txtarea';
+        const value =
+            'ddddddddddddddddddddddddddddddddddddddddd' +
+            'dddddddddddddddddddddddddddddddddddddddddddddddddddddd' +
+            'dddddddddddddddddddddddddddddddddddddddddddddddddddddd ' +
+            'ddddddddddddddddddddddddddddddddddddddddd' +
+            'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd';
+        const onChange = jest.fn();
+        const { getByDataQa } = render(
+            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+        );
+        const characterLimitArea = getByDataQa(`character-limit-text`) as HTMLElement;
+        expect(parseInt(characterLimitArea.innerHTML.trim()) < 0).toBe(true);
+    });
+    it('check stroke percentage', () => {
+        const id = 'my-txtarea';
+        const value = 'Textarea content';
+        const onChange = jest.fn();
+        onChange.mockReturnValue({ target: { rows: 4, value } });
+        const { getByDataQa } = render(
+            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+        );
+        const textarea = getByDataQa(`textarea--element-${id}`) as HTMLTextAreaElement;
+
+        const newValue = 'New value';
+        changeValue(textarea, newValue);
+        const characterLimitArea = getByDataQa(`colored-circle`) as HTMLElement;
+        expect(characterLimitArea.style.strokeDasharray).toBe('66.68521281096459 999');
+    });
 });
