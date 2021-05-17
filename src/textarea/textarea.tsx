@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CharacterLimitChecker } from '@ampel-ui/textarea/characterLimitChecker';
 
 interface Props {
     id: string;
@@ -9,33 +10,34 @@ interface Props {
     className?: string;
     placeholder?: string;
     disabled?: boolean;
-    isCharacterLimitEnabled?: boolean;
+    enableCharacterLimit?: boolean;
 }
+
 interface State {
-    expanded: boolean;
     rows: number;
-    minRows: number;
-    maxRows: number;
     value: string;
     limit: number;
-    characterLimit: number;
     stroke: string;
     strokeDasharray: string;
     outputText: string;
     radius: number;
 }
 
+enum TextareaConfig {
+    minRows = 3,
+    maxRows = 10,
+    characterLimit = 256,
+}
+
 class Textarea extends React.Component<Props, State> {
+    private readonly DEFAULT_ROW_COUNT = 3;
+
     constructor(props: Props) {
         super(props);
         this.state = {
-            expanded: false,
-            rows: this.props.rows ? this.props.rows : 3,
-            minRows: 3,
-            maxRows: 10,
+            rows: this.props.rows ? this.props.rows : this.DEFAULT_ROW_COUNT,
             value: '',
             limit: 255,
-            characterLimit: 255,
             stroke: '',
             strokeDasharray: '',
             outputText: '',
@@ -43,13 +45,14 @@ class Textarea extends React.Component<Props, State> {
         };
         this.onChange = this.onChange.bind(this);
     }
+
     public render() {
         return (
             <div className="textarea-component">
                 <textarea
                     id={this.props.id}
                     className={`form-control text-design ${this.state.stroke} ${
-                        this.props.isCharacterLimitEnabled ? 'character-limited' : ''
+                        this.props.enableCharacterLimit ? 'character-limited' : ''
                     } ${this.props.className || ''}`}
                     rows={this.state.rows}
                     onBlur={this.props.onBlur}
@@ -59,48 +62,32 @@ class Textarea extends React.Component<Props, State> {
                     value={this.props.value}
                     disabled={this.props.disabled}
                 />
-                {this.props.isCharacterLimitEnabled && (
-                    <svg>
-                        <circle id="gray" cx="50%" cy="50%" r={this.state.radius} />
-                        <circle
-                            id="colored"
-                            cx="50%"
-                            cy="50%"
-                            r={this.state.radius}
-                            className={this.state.stroke}
-                            style={{ strokeDasharray: this.state.strokeDasharray }}
-                        />
-                        <text
-                            className={this.state.stroke}
-                            x="50%"
-                            y="50%"
-                            text-anchor="middle"
-                            stroke-width="1px"
-                            dy=".3em"
-                        >
-                            {this.state.limit}
-                        </text>
-                    </svg>
+                {this.props.enableCharacterLimit && (
+                    <CharacterLimitChecker
+                        radius={this.state.radius}
+                        stroke={this.state.stroke}
+                        strokeDasharray={this.state.strokeDasharray}
+                        limit={this.state.limit}
+                    />
                 )}
             </div>
         );
     }
+
     private onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         this.props.onChange(event.target.value);
-        const { minRows, maxRows } = this.state;
-
-        const currentRows = this.getCurrentRows(event, minRows, maxRows);
+        const currentRows = this.getCurrentRows(event, TextareaConfig.minRows, TextareaConfig.maxRows);
         this.setState({
             value: event.target.value,
-            rows: currentRows < maxRows ? currentRows : maxRows,
-            limit: this.state.characterLimit - event.target.value.length,
-            stroke: this.state.characterLimit - event.target.value.length <= 0 ? 'error-text' : 'normal-text',
+            rows: Math.min(currentRows, TextareaConfig.maxRows),
+            limit: this.getLimit(event),
+            stroke: this.isLimitExceeded(event) ? 'error-text' : 'normal-text',
             strokeDasharray: `${this.getPercentage(event)} 999`,
         });
     }
 
     private getCurrentRows(event: React.ChangeEvent<HTMLTextAreaElement>, minRows: number, maxRows: number) {
-        if (!this.props.isCharacterLimitEnabled) {
+        if (!this.props.enableCharacterLimit) {
             return this.state.rows;
         }
         const textareaLineHeight = 14;
@@ -123,12 +110,19 @@ class Textarea extends React.Component<Props, State> {
 
     private getPercentage(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const circleLength = 2 * Math.PI * this.state.radius;
-        let percentageText =
-            (circleLength * (this.state.characterLimit - event.target.value.length)) / this.state.characterLimit;
-        if (this.state.characterLimit - event.target.value.length <= 0) {
+        let percentageText = (circleLength * this.getLimit(event)) / TextareaConfig.characterLimit;
+        if (this.isLimitExceeded(event)) {
             percentageText = circleLength;
         }
         return percentageText;
+    }
+
+    private isLimitExceeded(event: React.ChangeEvent<HTMLTextAreaElement>) {
+        return this.getLimit(event) <= 0;
+    }
+
+    private getLimit(event: React.ChangeEvent<HTMLTextAreaElement>) {
+        return TextareaConfig.characterLimit - event.target.value.length;
     }
 }
 
