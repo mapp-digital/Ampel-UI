@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CharacterLimitChecker } from '@ampel-ui/textarea/characterLimitChecker';
+import { CharacterLimitChecker } from '@ampel-ui/textarea/character-limit-checker';
 
 interface Props {
     id: string;
@@ -20,28 +20,27 @@ interface State {
     stroke: string;
     strokeDasharray: string;
     outputText: string;
-    radius: number;
 }
 
 enum TextareaConfig {
     minRows = 3,
     maxRows = 10,
-    characterLimit = 256,
+    characterLimit = 255,
 }
 
 class Textarea extends React.Component<Props, State> {
     private readonly DEFAULT_ROW_COUNT = 3;
+    private readonly RADIUS = 11;
 
     constructor(props: Props) {
         super(props);
         this.state = {
             rows: this.props.rows ? this.props.rows : this.DEFAULT_ROW_COUNT,
             value: '',
-            limit: 255 - this.props.value.length,
+            limit: TextareaConfig.characterLimit - this.props.value.length,
             stroke: '',
             strokeDasharray: '',
             outputText: '',
-            radius: 11,
         };
         this.onChange = this.onChange.bind(this);
     }
@@ -64,7 +63,7 @@ class Textarea extends React.Component<Props, State> {
                 />
                 {this.props.enableCharacterLimit && (
                     <CharacterLimitChecker
-                        radius={this.state.radius}
+                        radius={this.RADIUS}
                         stroke={this.state.stroke}
                         strokeDasharray={this.state.strokeDasharray}
                         limit={this.state.limit}
@@ -80,7 +79,7 @@ class Textarea extends React.Component<Props, State> {
         this.setState({
             value: event.target.value,
             rows: Math.min(currentRows, TextareaConfig.maxRows),
-            limit: this.getLimit(event),
+            limit: this.getCharacterCount(event),
             stroke: this.isLimitExceeded(event) ? 'error-text' : 'normal-text',
             strokeDasharray: `${this.getPercentage(event)} 999`,
         });
@@ -109,8 +108,8 @@ class Textarea extends React.Component<Props, State> {
     }
 
     private getPercentage(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        const circleLength = 2 * Math.PI * this.state.radius;
-        let percentageText = (circleLength * this.getLimit(event)) / TextareaConfig.characterLimit;
+        const circleLength = 2 * Math.PI * this.RADIUS;
+        let percentageText = (circleLength * this.getCharacterCount(event)) / TextareaConfig.characterLimit;
         if (this.isLimitExceeded(event)) {
             percentageText = circleLength;
         }
@@ -118,10 +117,10 @@ class Textarea extends React.Component<Props, State> {
     }
 
     private isLimitExceeded(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        return this.getLimit(event) <= 0;
+        return this.getCharacterCount(event) <= 0;
     }
 
-    private getLimit(event: React.ChangeEvent<HTMLTextAreaElement>) {
+    private getCharacterCount(event: React.ChangeEvent<HTMLTextAreaElement>) {
         return TextareaConfig.characterLimit - event.target.value.length;
     }
 }

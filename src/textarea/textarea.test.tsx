@@ -105,7 +105,7 @@ describe('Textarea', () => {
         const { getByDataQa } = render(
             <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
         );
-        const characterLimitArea = getByDataQa(`character-limit-circle`) as HTMLTextAreaElement;
+        const characterLimitArea = getByDataQa(`character-limit-circle`) as HTMLElement;
 
         expect(characterLimitArea).toBeTruthy();
     });
