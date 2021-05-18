@@ -137,6 +137,6 @@ describe('Textarea', () => {
         const newValue = 'New value';
         changeValue(textarea, newValue);
         const characterLimitArea = getByDataQa(`colored-circle`) as HTMLElement;
-        expect(characterLimitArea.style.strokeDasharray).toBe('66.68521281096459 999');
+        expect(characterLimitArea.style.strokeDasharray).toBe('66.67568408324689 999');
     });
 });
