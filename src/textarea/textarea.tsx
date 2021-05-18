@@ -18,7 +18,6 @@ interface State {
     limit: number;
     stroke: string;
     strokeDasharray: string;
-    outputText: string;
 }
 
 enum TextareaConfig {
@@ -38,7 +37,6 @@ class Textarea extends React.Component<Props, State> {
             limit: this.getCharacterLimit() - this.props.value.length,
             stroke: '',
             strokeDasharray: '',
-            outputText: '',
         };
         this.onChange = this.onChange.bind(this);
     }
