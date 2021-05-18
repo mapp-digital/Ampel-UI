@@ -7,12 +7,10 @@ interface Props {
     limit: number;
 }
 
-interface State {}
-
-class CharacterLimitChecker extends React.Component<Props, State> {
+class CharacterLimitChecker extends React.Component<Props> {
     private CO_ORDINATE: string = '50%';
 
-    render() {
+    public render() {
         return (
             <svg id="character-limit-circle" data-qa={'character-limit-circle'} className={'character-limit-circle'}>
                 <circle id="gray" cx={this.CO_ORDINATE} cy={this.CO_ORDINATE} r={this.props.radius} />

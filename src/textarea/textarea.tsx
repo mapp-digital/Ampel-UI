@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { CharacterLimitChecker } from '@ampel-ui/textarea/character-limit-checker';
-
+import { CharacterLimitChecker } from './character-limit-checker';
 interface Props {
     id: string;
     value: any;
@@ -10,7 +9,7 @@ interface Props {
     className?: string;
     placeholder?: string;
     disabled?: boolean;
-    enableCharacterLimit?: boolean;
+    enableCharacterLimit?: number;
 }
 
 interface State {
@@ -25,7 +24,6 @@ interface State {
 enum TextareaConfig {
     minRows = 3,
     maxRows = 10,
-    characterLimit = 255,
 }
 
 class Textarea extends React.Component<Props, State> {
@@ -37,7 +35,7 @@ class Textarea extends React.Component<Props, State> {
         this.state = {
             rows: this.props.rows ? this.props.rows : this.DEFAULT_ROW_COUNT,
             value: '',
-            limit: TextareaConfig.characterLimit - this.props.value.length,
+            limit: this.getCharacterLimit() - this.props.value.length,
             stroke: '',
             strokeDasharray: '',
             outputText: '',
@@ -109,7 +107,7 @@ class Textarea extends React.Component<Props, State> {
 
     private getPercentage(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const circleLength = 2 * Math.PI * this.RADIUS;
-        let percentageText = (circleLength * this.getCharacterCount(event)) / TextareaConfig.characterLimit;
+        let percentageText = (circleLength * this.getCharacterCount(event)) / this.getCharacterLimit();
         if (this.isLimitExceeded(event)) {
             percentageText = circleLength;
         }
@@ -121,7 +119,10 @@ class Textarea extends React.Component<Props, State> {
     }
 
     private getCharacterCount(event: React.ChangeEvent<HTMLTextAreaElement>) {
-        return TextareaConfig.characterLimit - event.target.value.length;
+        return this.getCharacterLimit() - event.target.value.length;
+    }
+    private getCharacterLimit() {
+        return this.props.enableCharacterLimit ? this.props.enableCharacterLimit : 0;
     }
 }
 
