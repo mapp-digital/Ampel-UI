@@ -19,15 +19,11 @@ interface State {
     stroke: string;
     strokeDasharray: string;
 }
-
-enum TextareaConfig {
-    minRows = 3,
-    maxRows = 10,
-}
-
 class Textarea extends React.Component<Props, State> {
     private readonly DEFAULT_ROW_COUNT = 3;
     private readonly RADIUS = 11;
+    private readonly MIN_ROWS = 3;
+    private readonly MAX_ROWS = 10;
 
     constructor(props: Props) {
         super(props);
@@ -71,10 +67,10 @@ class Textarea extends React.Component<Props, State> {
 
     private onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         this.props.onChange(event.target.value);
-        const currentRows = this.getCurrentRows(event, TextareaConfig.minRows, TextareaConfig.maxRows);
+        const currentRows = this.getCurrentRows(event, this.MIN_ROWS, this.MAX_ROWS);
         this.setState({
             value: event.target.value,
-            rows: Math.min(currentRows, TextareaConfig.maxRows),
+            rows: Math.min(currentRows, this.MAX_ROWS),
             limit: this.getCharacterCount(event),
             stroke: this.isLimitExceeded(event) ? 'error-text' : 'normal-text',
             strokeDasharray: `${this.getPercentage(event)} 999`,
