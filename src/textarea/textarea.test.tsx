@@ -103,7 +103,7 @@ describe('Textarea', () => {
         const onChange = jest.fn();
 
         const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
         );
         const characterLimitArea = getByDataQa(`character-limit-circle`) as HTMLElement;
 
@@ -119,7 +119,7 @@ describe('Textarea', () => {
             'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd';
         const onChange = jest.fn();
         const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
         );
         const characterLimitArea = getByDataQa(`character-limit-text`) as HTMLElement;
         expect(parseInt(characterLimitArea.innerHTML.trim()) < 0).toBe(true);
@@ -130,7 +130,7 @@ describe('Textarea', () => {
         const onChange = jest.fn();
         onChange.mockReturnValue({ target: { rows: 4, value } });
         const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={true} value={value} onChange={onChange} />
+            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
         );
         const textarea = getByDataQa(`textarea--element-${id}`) as HTMLTextAreaElement;
 
