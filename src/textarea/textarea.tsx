@@ -64,6 +64,7 @@ class Textarea extends React.Component<Props, State> {
 
     private onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         this.props.onChange(event.target.value);
+        event.target.style.height = 'auto';
         event.target.style.height = event.currentTarget.scrollHeight + 20 + 'px';
         this.setState({
             value: event.target.value,
