@@ -46,7 +46,7 @@ describe('Textarea', () => {
         expect(onBlur).toHaveBeenCalledTimes(1);
     });
 
-    it('should render textarea with 3 rows as default', () => {
+    it('should render textarea with 2 rows as default', () => {
         const id = 'my-txtarea';
         const value = 'Textarea content';
         const onChange = jest.fn();
@@ -55,7 +55,7 @@ describe('Textarea', () => {
 
         const textarea = getByDataQa(`textarea--element-${id}`) as HTMLTextAreaElement;
 
-        expect(textarea.rows).toEqual(3);
+        expect(textarea.rows).toEqual(2);
     });
 
     it('should render textarea with passed number of rows', () => {
@@ -102,9 +102,7 @@ describe('Textarea', () => {
         const value = 'Textarea content';
         const onChange = jest.fn();
 
-        const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
-        );
+        const { getByDataQa } = render(<Textarea id={id} characterLimit={255} value={value} onChange={onChange} />);
         const characterLimitArea = getByDataQa(`character-limit-circle`) as HTMLElement;
 
         expect(characterLimitArea).toBeTruthy();
@@ -118,9 +116,7 @@ describe('Textarea', () => {
             'ddddddddddddddddddddddddddddddddddddddddd' +
             'ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd';
         const onChange = jest.fn();
-        const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
-        );
+        const { getByDataQa } = render(<Textarea id={id} characterLimit={255} value={value} onChange={onChange} />);
         const characterLimitArea = getByDataQa(`character-limit-text`) as HTMLElement;
         expect(parseInt(characterLimitArea.innerHTML.trim()) < 0).toBe(true);
     });
@@ -129,9 +125,7 @@ describe('Textarea', () => {
         const value = 'Textarea content';
         const onChange = jest.fn();
         onChange.mockReturnValue({ target: { rows: 4, value } });
-        const { getByDataQa } = render(
-            <Textarea id={id} enableCharacterLimit={255} value={value} onChange={onChange} />
-        );
+        const { getByDataQa } = render(<Textarea id={id} characterLimit={255} value={value} onChange={onChange} />);
         const textarea = getByDataQa(`textarea--element-${id}`) as HTMLTextAreaElement;
 
         const newValue = 'New value';

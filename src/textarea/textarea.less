@@ -43,25 +43,8 @@
         stroke: @gray-darker
     }
 
-    .character-limited::-webkit-scrollbar {
-        width: 0.3em;
-        cursor: pointer;
-    }
-
     .character-limited {
         resize: none;
-        scrollbar-color: @gray-darker @gray-darker;
-        scrollbar-width: thin;
-    }
-
-    .character-limited::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-    }
-
-    .character-limited::-webkit-scrollbar-thumb {
-        background-color: @gray-dark;
-        outline: 1px solid @gray-darker;
-        border-radius: 10px;
     }
 
     .character-limit-circle {
@@ -73,7 +56,6 @@
         margin-bottom: 5px;
         font-size: 10px;
         z-index: 2;
-        line-height: 14px;
     }
 
 }
