@@ -1,6 +1,6 @@
 .textarea-component {
     display: flex;
-    
+
     textarea {
         height: auto;
 
@@ -27,12 +27,8 @@
     }
 
     circle {
-        stroke-width: 1;
+        stroke-width: 2;
         fill: @white;
-    }
-
-    #gray {
-        stroke: @gray-stone;
     }
 
     .error-text {
@@ -40,7 +36,11 @@
     }
 
     .normal-text {
-        stroke: @gray-darker
+        stroke: @gray-dark;
+    }
+
+    .default-text {
+        stroke: @gray-stone;
     }
 
     .character-limited {
@@ -56,6 +56,12 @@
         margin-bottom: 5px;
         font-size: 10px;
         z-index: 2;
+    }
+
+    .character-limit-text {
+        font-size: 10px;
+        font-weight: normal;
+        fill: @gray-darker;
     }
 
 }

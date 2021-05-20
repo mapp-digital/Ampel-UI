@@ -76,10 +76,7 @@ class Textarea extends React.Component<Props, State> {
 
     private autoResizeTextArea(event: React.ChangeEvent<HTMLTextAreaElement>) {
         if (this.props.autoResizeLimit) {
-            if (
-                !event.target.style.height ||
-                Number(event.target.style.height.replace('px', '')) < this.props.autoResizeLimit
-            ) {
+            if (event.target.clientHeight < this.props.autoResizeLimit) {
                 event.target.style.height = 'auto';
                 event.target.style.height = event.currentTarget.scrollHeight + 20 + 'px';
             } else {
