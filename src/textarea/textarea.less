@@ -1,14 +1,67 @@
 .textarea-component {
     display: flex;
+
     textarea {
         height: auto;
+
         &:focus {
             outline: none;
             box-shadow: 0 0 1px fade(@info, 50%);
         }
+
         &[disabled] {
             background: @gray-light;
             cursor: not-allowed;
         }
     }
+
+    .text-limit {
+        border-radius: 100%;
+        height: 12px;
+        width: 14px;
+        color: @gray-darker;
+        text-align: center;
+        margin: 5px auto auto;
+        letter-spacing: 0;
+        font-size: 10px;
+    }
+
+    circle {
+        stroke-width: 2;
+        fill: @white;
+    }
+
+    .error-text {
+        stroke: @error;
+    }
+
+    .normal-text {
+        stroke: @gray-dark;
+    }
+
+    .default-text {
+        stroke: @gray-stone;
+    }
+
+    .character-limited {
+        resize: none;
+    }
+
+    .character-limit-circle {
+        height: 24px;
+        width: 24px;
+        text-align: center;
+        margin-left: -42px;
+        align-self: flex-end;
+        margin-bottom: 5px;
+        font-size: 10px;
+        z-index: 2;
+    }
+
+    .character-limit-text {
+        font-size: 10px;
+        font-weight: normal;
+        fill: @gray-darker;
+    }
+
 }
