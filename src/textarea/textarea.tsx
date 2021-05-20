@@ -10,6 +10,7 @@ interface Props {
     placeholder?: string;
     disabled?: boolean;
     characterLimit?: number;
+    autoResizeLimit?: number;
 }
 
 interface State {
@@ -64,8 +65,7 @@ class Textarea extends React.Component<Props, State> {
 
     private onChange(event: React.ChangeEvent<HTMLTextAreaElement>) {
         this.props.onChange(event.target.value);
-        event.target.style.height = 'auto';
-        event.target.style.height = event.currentTarget.scrollHeight + 20 + 'px';
+        this.autoResizeTextArea(event);
         this.setState({
             value: event.target.value,
             limit: this.getRemainingCharacter(event),
@@ -74,6 +74,19 @@ class Textarea extends React.Component<Props, State> {
         });
     }
 
+    private autoResizeTextArea(event: React.ChangeEvent<HTMLTextAreaElement>) {
+        if (this.props.autoResizeLimit) {
+            if (
+                !event.target.style.height ||
+                Number(event.target.style.height.replace('px', '')) < this.props.autoResizeLimit
+            ) {
+                event.target.style.height = 'auto';
+                event.target.style.height = event.currentTarget.scrollHeight + 20 + 'px';
+            } else {
+                event.currentTarget.scrollTop = event.currentTarget.scrollHeight;
+            }
+        }
+    }
     private getPercentage(event: React.ChangeEvent<HTMLTextAreaElement>) {
         const circleLength = 2 * Math.PI * this.RADIUS;
         let percentageText = (circleLength * this.getRemainingCharacter(event)) / this.getCharacterLimit();
