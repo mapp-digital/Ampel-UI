@@ -72,7 +72,7 @@ class Dialog extends React.Component<Props, {}> {
                                 <h3 className="dialog-title">{this.props.title}</h3>
                             </div>
                             <div className="dialog-content-body">
-                                {this.getHighlightedText(this.props.content, this.props.highlightText)}
+                                {this.getHighlightedText(this.props.content, this.props.highlightedTexts)}
                             </div>
                             <div className="dialog-content-footer">
                                 {this.props.btnCancelText && (
@@ -110,13 +110,13 @@ class Dialog extends React.Component<Props, {}> {
     private focus() {
         this.dialog.current!.focus();
     }
-    private getHighlightedText(text: string | React.ReactNode, highlightTexts?: Array<string>) {
-        if (typeof text === 'string' && highlightTexts) {
-            const parts = text.split(new RegExp(`(${highlightTexts.join('|')})`, 'g'));
+    private getHighlightedText(text: string | React.ReactNode, highlightedTexts?: Array<string>) {
+        if (typeof text === 'string' && highlightedTexts) {
+            const parts = text.split(new RegExp(`(${highlightedTexts.join('|')})`, 'g'));
             return (
                 <>
                     {parts.map((part, i) => (
-                        <span key={i} style={highlightTexts.includes(part) ? { fontWeight: 'bold' } : {}}>
+                        <span key={i} style={highlightedTexts.includes(part) ? { fontWeight: 'bold' } : {}}>
                             {part}
                         </span>
                     ))}
