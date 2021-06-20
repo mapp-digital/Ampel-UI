@@ -20,8 +20,8 @@ interface Props {
     btnConfirmText: string;
     onCancel: () => void;
     onConfirm: () => void;
-    highlightText?: string;
     appendedContent?: string;
+    highlightedTexts?: Array<string>;
 }
 
 class Dialog extends React.Component<Props, {}> {
@@ -110,24 +110,20 @@ class Dialog extends React.Component<Props, {}> {
     private focus() {
         this.dialog.current!.focus();
     }
-    private getHighlightedText(text: string | React.ReactNode, highlightText: any) {
-        if (text instanceof String && highlightText) {
-            const parts = text.split(new RegExp(`(${highlightText})`, 'gi'));
+    private getHighlightedText(text: string | React.ReactNode, highlightTexts?: Array<string>) {
+        if (typeof text === 'string' && highlightTexts) {
+            const parts = text.split(new RegExp(`(${highlightTexts.join('|')})`, 'g'));
             return (
-                <div>
-                    {' '}
+                <>
                     {parts.map((part, i) => (
-                        <span
-                            key={i}
-                            style={part.toLowerCase() === highlightText.toLowerCase() ? { fontWeight: 'bold' } : {}}
-                        >
+                        <span key={i} style={highlightTexts.includes(part) ? { fontWeight: 'bold' } : {}}>
                             {part}
                         </span>
-                    ))}{' '}
-                </div>
+                    ))}
+                </>
             );
         }
-        return <div>{text}</div>;
+        return text;
     }
 }
 

@@ -10,6 +10,7 @@ interface DialogModel {
     btnConfirmText: string;
     onCancel?: () => void;
     onConfirm: () => void;
+    highlightedTexts?: Array<string>;
 }
 
 interface DialogContextProps {
