@@ -1,7 +1,6 @@
-import * as React from 'react';
-
 import { Button } from '@ampel-ui/button';
 import { onOuterClick } from '@ampel-ui/subscriptions';
+import * as React from 'react';
 
 const KEY_ESCAPE = 27;
 
@@ -20,7 +19,6 @@ interface Props {
     btnConfirmText: string;
     onCancel: () => void;
     onConfirm: () => void;
-    highlightedTexts?: Array<string>;
 }
 
 class Dialog extends React.Component<Props, {}> {
@@ -70,9 +68,7 @@ class Dialog extends React.Component<Props, {}> {
                             <div className="dialog-content-header">
                                 <h3 className="dialog-title">{this.props.title}</h3>
                             </div>
-                            <div className="dialog-content-body">
-                                {this.getHighlightedText(this.props.content, this.props.highlightedTexts)}
-                            </div>
+                            <div className="dialog-content-body">{this.props.content}</div>
                             <div className="dialog-content-footer">
                                 {this.props.btnCancelText && (
                                     <Button
@@ -108,25 +104,6 @@ class Dialog extends React.Component<Props, {}> {
 
     private focus() {
         this.dialog.current!.focus();
-    }
-    private getHighlightedText(text: string | React.ReactNode, highlightedTexts?: Array<string>) {
-        if (typeof text === 'string' && highlightedTexts) {
-            const parts = text.split(new RegExp(`(${highlightedTexts.join('|')})`, 'g'));
-            return (
-                <>
-                    {parts.map((part, i) => (
-                        <span
-                            data-qa={`higlighted-${part}`}
-                            key={i}
-                            style={highlightedTexts.includes(part) ? { fontWeight: 'bold' } : {}}
-                        >
-                            {part}
-                        </span>
-                    ))}
-                </>
-            );
-        }
-        return text;
     }
 }
 

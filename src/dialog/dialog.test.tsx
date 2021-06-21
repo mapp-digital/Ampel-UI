@@ -1,6 +1,5 @@
-import * as React from 'react';
-
 import { cleanup, fireEvent, render } from '@config/testing';
+import * as React from 'react';
 
 import { Dialog, DialogType } from './dialog';
 
@@ -211,30 +210,5 @@ describe('Dialog', () => {
         );
         const dialog = getByDataQa('type-info');
         expect(dialog.focus).toBeTruthy();
-    });
-    it('should render with highlightedText', () => {
-        const id = 'my-dialog';
-        const title = 'My dialog';
-        const content = 'Message admin';
-        const type = DialogType.info;
-        const btnConfirmText = 'Confirm';
-        const onCancel = jest.fn();
-        const onConfirm = jest.fn();
-
-        const { getByDataQa } = render(
-            <Dialog
-                id={id}
-                title={title}
-                content={content}
-                btnConfirmText={btnConfirmText}
-                onCancel={onCancel}
-                onConfirm={onConfirm}
-                type={type}
-                highlightedTexts={['admin']}
-            />
-        );
-        const highlightedText = getByDataQa('higlighted-admin');
-        expect(highlightedText).toBeTruthy();
-        expect(highlightedText.style.fontWeight).toBe('bold');
     });
 });
