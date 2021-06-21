@@ -115,7 +115,11 @@ class Dialog extends React.Component<Props, {}> {
             return (
                 <>
                     {parts.map((part, i) => (
-                        <span key={i} style={highlightedTexts.includes(part) ? { fontWeight: 'bold' } : {}}>
+                        <span
+                            data-qa={`higlighted-${part}`}
+                            key={i}
+                            style={highlightedTexts.includes(part) ? { fontWeight: 'bold' } : {}}
+                        >
                             {part}
                         </span>
                     ))}
