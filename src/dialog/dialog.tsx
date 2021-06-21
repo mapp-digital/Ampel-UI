@@ -20,7 +20,6 @@ interface Props {
     btnConfirmText: string;
     onCancel: () => void;
     onConfirm: () => void;
-    appendedContent?: string;
     highlightedTexts?: Array<string>;
 }
 
