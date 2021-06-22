@@ -11,4 +11,11 @@ describe('Dialog', () => {
         expect(highlightedText).toBeTruthy();
         expect(highlightedText.className).toBe('highlight-text');
     });
+    it('should highlight text with special character', () => {
+        const content = 'Message admin|';
+        const { getByDataQa } = render(<TextHighLighter content={content} highlightedTexts={['admin|']} />);
+        const highlightedText = getByDataQa('highlighted-admin|');
+        expect(highlightedText).toBeTruthy();
+        expect(highlightedText.className).toBe('highlight-text');
+    });
 });
