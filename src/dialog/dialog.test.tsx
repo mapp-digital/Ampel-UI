@@ -1,5 +1,6 @@
-import { cleanup, fireEvent, render } from '@config/testing';
 import * as React from 'react';
+
+import { cleanup, fireEvent, render } from '@config/testing';
 
 import { Dialog, DialogType } from './dialog';
 

@@ -9,6 +9,6 @@ describe('Dialog', () => {
         const { getByDataQa } = render(<TextHighLighter content={content} highlightedTexts={['admin']} />);
         const highlightedText = getByDataQa('highlighted-admin');
         expect(highlightedText).toBeTruthy();
-        expect(highlightedText.style.fontWeight).toBe('bold');
+        expect(highlightedText.className).toBe('highlight-text');
     });
 });

@@ -1,6 +1,7 @@
+import * as React from 'react';
+
 import { Button } from '@ampel-ui/button';
 import { onOuterClick } from '@ampel-ui/subscriptions';
-import * as React from 'react';
 
 const KEY_ESCAPE = 27;
 

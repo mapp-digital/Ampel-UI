@@ -14,7 +14,7 @@ class TextHighLighter extends React.Component<Props, {}> {
                     <span
                         data-qa={`highlighted-${part}`}
                         key={i}
-                        style={this.props.highlightedTexts.includes(part) ? { fontWeight: 'bold' } : {}}
+                        className={this.props.highlightedTexts.includes(part) ? 'highlight-text' : ''}
                     >
                         {part}
                     </span>
