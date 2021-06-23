@@ -28,7 +28,7 @@ class TextHighLighter extends React.Component<Props, {}> {
         return this.getEscapedTexts().filter((text) => input.match(new RegExp(`(${text})`, 'g'))).length > 0;
     }
     /**
-     * @tutorial https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
+     * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#escaping
      */
     private getEscapedTexts() {
         return this.props.highlightedTexts.map((highlight) => highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
