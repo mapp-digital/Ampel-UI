@@ -8,8 +8,6 @@ interface Props {
 class TextHighLighter extends React.Component<Props, {}> {
     public render() {
         const parts = this.props.content.split(new RegExp(`(${this.getEscapedTexts().join('|')})`, 'g'));
-        /* tslint:disable */
-        console.log(parts);
         return (
             <div>
                 {parts.map((part, i) => (
