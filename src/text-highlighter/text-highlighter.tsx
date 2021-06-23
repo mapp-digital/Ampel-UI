@@ -7,7 +7,9 @@ interface Props {
 
 class TextHighLighter extends React.Component<Props, {}> {
     public render() {
-        const parts = this.props.content.split(new RegExp(`(${this.getEscapedTexts().join('|')})`, 'g'));
+        const parts = this.props.content.split(new RegExp(`(${this.props.highlightedTexts.join('|')})`, 'g'));
+        /* tslint:disable */
+        console.log(parts);
         return (
             <div>
                 {parts.map((part, i) => (
@@ -26,9 +28,7 @@ class TextHighLighter extends React.Component<Props, {}> {
         return this.getEscapedTexts().filter((text) => input.match(new RegExp(`(${text})`, 'g'))).length > 0;
     }
     private getEscapedTexts() {
-        return this.props.highlightedTexts.map((highlight) =>
-            highlight.replace(/[!@#$%^&*()+=\[\]\\';,./{}|":<>?~_-]/g, '\\$&')
-        );
+        return this.props.highlightedTexts.map((highlight) => highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     }
 }
 export { TextHighLighter };
