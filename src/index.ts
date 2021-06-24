@@ -26,3 +26,4 @@ export * from './topbar';
 export * from './tree';
 export * from './two-box-multiselect';
 export * from './violation';
+export * from './text-highlighter';
