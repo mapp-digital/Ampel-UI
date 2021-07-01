@@ -11,6 +11,7 @@ interface Props {
     text?: string;
     content?: string | ReactNode;
     placement?: string;
+    trigger?: Trigger;
 }
 
 interface ArrowProps {
@@ -70,7 +71,7 @@ const Tooltip: React.FunctionComponent<Props> = (props) => {
     ) : (
         <TooltipCom
             placement={(props.placement || 'top') as PopperJS.Placement}
-            trigger={'hover'}
+            trigger={props.trigger || 'hover'}
             tooltip={props.text ? props.text : props.content}
         >
             {props.children}
