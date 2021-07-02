@@ -99,6 +99,7 @@ interface Props<MODEL> {
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
     additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
+    isDirty?: boolean;
 }
 
 interface State<MODEL> {
@@ -123,7 +124,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
         this.state = {
             model: this.props.model,
-            isDirty: false,
+            isDirty: this.props.isDirty || false,
             isValid: true,
             violations: this.props.violations || {},
             initialModel: this.props.model,
