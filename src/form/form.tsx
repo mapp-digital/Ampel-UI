@@ -99,6 +99,7 @@ interface Props<MODEL> {
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
     additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
+    isInitiallyDirty?: boolean;
 }
 
 interface State<MODEL> {
@@ -123,7 +124,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
         this.state = {
             model: this.props.model,
-            isDirty: false,
+            isDirty: this.props.isInitiallyDirty || false,
             isValid: true,
             violations: this.props.violations || {},
             initialModel: this.props.model,
@@ -173,7 +174,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                             text={this.props.submitButtonText}
                             type="submit"
                             className="btn btn-primary"
-                            disabled={this.state.isSubmitting || !this.state.isDirty || !this.state.isValid}
+                            disabled={this.state.isSubmitting || !this.state.isValid || !this.state.isDirty}
                         />
                     </div>
                 </div>
