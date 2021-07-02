@@ -11,6 +11,8 @@ interface Props {
     text?: string;
     content?: string | ReactNode;
     placement?: string;
+    trigger?: Trigger;
+    tooltipShown?: boolean;
 }
 
 interface ArrowProps {
@@ -22,6 +24,7 @@ type TooltipTriggerAndArrowProps = ArrowProps & {
     placement: any;
     trigger: Trigger;
     children: any;
+    tooltipShown?: boolean;
 };
 
 const getTooltip = ({ tooltip, hideArrow }: ArrowProps) => ({
@@ -70,8 +73,9 @@ const Tooltip: React.FunctionComponent<Props> = (props) => {
     ) : (
         <TooltipCom
             placement={(props.placement || 'top') as PopperJS.Placement}
-            trigger={'hover'}
+            trigger={props.trigger || 'hover'}
             tooltip={props.text ? props.text : props.content}
+            tooltipShown={props.tooltipShown}
         >
             {props.children}
         </TooltipCom>
