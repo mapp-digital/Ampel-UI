@@ -109,7 +109,7 @@ interface Props<MODEL> {
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
     additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
-    isInitiallyDirty?: boolean;
+    isAlwaysDirty?: boolean;
     validateVisibleFields?: boolean;
 }
 
@@ -135,7 +135,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
         this.state = {
             model: this.props.model,
-            isDirty: this.props.isInitiallyDirty || false,
+            isDirty: this.props.isAlwaysDirty || false,
             isValid: true,
             violations: this.props.violations || {},
             initialModel: this.props.model,
@@ -356,7 +356,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private computeDirtyState(): void {
-        const isDirty = !isEqual(this.state.model, this.state.initialModel);
+        const isDirty = this.props.isAlwaysDirty || !isEqual(this.state.model, this.state.initialModel);
         this.setState({ isDirty });
     }
 
