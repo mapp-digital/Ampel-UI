@@ -37,6 +37,10 @@ const getDeclaredFields = (groups: Array<Group>) => {
     );
 };
 
+const getDeclaredVisibleFields = (groups: Array<Group>) => {
+    return getDeclaredFields(groups).filter((field) => !field.hidden);
+};
+
 const nop = () => {
     /* nop */
 };
@@ -99,7 +103,7 @@ interface Props<MODEL> {
     validationOptions?: ValidationOptions;
     resolveViolationMessage?: ViolationMessageResolver;
     additionalButtonRenderers?: Array<(buttonProps: FormButtonProps) => React.ReactNode>;
-    isInitiallyDirty?: boolean;
+    isAlwaysDirty?: boolean;
 }
 
 interface State<MODEL> {
@@ -124,7 +128,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
         this.state = {
             model: this.props.model,
-            isDirty: this.props.isInitiallyDirty || false,
+            isDirty: this.props.isAlwaysDirty || false,
             isValid: true,
             violations: this.props.violations || {},
             initialModel: this.props.model,
@@ -194,6 +198,8 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     public componentDidUpdate(prevProps: Props<MODEL>, prevState: State<MODEL>) {
         if (!isEqual(this.state.model, prevState.model)) {
+            this.createValidationSchema(this.props.children);
+            this.computeValidState();
             this.computeDirtyState();
             this.onUpdate();
         }
@@ -250,7 +256,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private getValidityState(group: Group) {
-        const fields = getDeclaredFields([group]);
+        const fields = getDeclaredVisibleFields([group]);
         const containsChanges = this.containsChanges(fields);
         return getGroupValidityState(this.state.violations, fields, containsChanges);
     }
@@ -331,13 +337,13 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private validate(fieldId: string, value: any): Promise<Array<ConstraintViolation>> {
-        const fieldValidators = this.schema[fieldId];
+        const fieldValidators = this.schema[fieldId] || [];
         const model = this.state.model;
         return validateField(fieldValidators, value, model);
     }
 
     private computeDirtyState(): void {
-        const isDirty = !isEqual(this.state.model, this.state.initialModel);
+        const isDirty = this.props.isAlwaysDirty || !isEqual(this.state.model, this.state.initialModel);
         this.setState({ isDirty });
     }
 
@@ -353,7 +359,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private isValid() {
-        return getDeclaredFields(this.props.children)
+        return getDeclaredVisibleFields(this.props.children)
             .map((field: Field<any, MODEL>) => field.id)
             .map(this.getFieldViolations)
             .filter((violations: Array<ConstraintViolation>) =>
@@ -399,7 +405,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private validateForm() {
         return Promise.all(
-            getDeclaredFields(this.props.children)
+            getDeclaredVisibleFields(this.props.children)
                 .map((field) => field.id)
                 .map((fieldId) => {
                     const fieldValue = this.getValue(fieldId);
@@ -485,7 +491,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private createValidationSchema(groups: Array<Group>) {
-        const fields = getDeclaredFields(groups);
+        const fields = getDeclaredVisibleFields(groups);
         const schema = this.createFieldMap(fields, createFieldValidators.bind(null, this.createViolationFactory()));
         this.schema = schema;
     }
