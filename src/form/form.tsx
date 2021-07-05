@@ -38,13 +38,7 @@ const getDeclaredFields = (groups: Array<Group>) => {
 };
 
 const getDeclaredVisibleFields = (groups: Array<Group>) => {
-    return flatMapDeep<Field<any, any>>(
-        groups.map((group: Group) => {
-            return group.sections
-                .filter(isSectionTypeSupported)
-                .map((section: Section) => section.fields.filter((field) => !field.hidden));
-        })
-    );
+    return getDeclaredFields(groups).filter((field) => !field.hidden);
 };
 
 const nop = () => {
