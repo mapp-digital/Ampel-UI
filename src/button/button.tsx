@@ -25,4 +25,4 @@ const Button: React.FunctionComponent<Props> = (props: Props) => {
     );
 };
 
-export { Button };
+export { Button, Props as ButtonProps };
