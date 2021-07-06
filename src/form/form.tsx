@@ -123,6 +123,8 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     private validationOptions: ValidationOptions;
     private debouncedSetViolations: any;
 
+    private mounted: boolean = false;
+
     constructor(props: any) {
         super(props);
 
@@ -192,8 +194,13 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     public componentDidMount() {
+        this.mounted = true;
         this.createValidationSchema(this.props.children);
         this.computeValidState();
+    }
+
+    public componentWillUnmount() {
+        this.mounted = false;
     }
 
     public componentDidUpdate(prevProps: Props<MODEL>, prevState: State<MODEL>) {
@@ -215,12 +222,18 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
         }
     }
 
+    private setState_(state: any, callback?: () => void) {
+        if (this.mounted) {
+            this.setState(state, callback);
+        }
+    }
+
     private getInitiallyExpandedGroupIds() {
         return this.props.expandedGroupIds || [this.props.children[0].id];
     }
 
     private resetForm() {
-        this.setState({
+        this.setState_({
             model: this.state.initialModel,
             violations: {},
         });
@@ -267,11 +280,11 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private onGroupClick(expandedGroupId: string) {
         if (this.isCurrentlyExpandedGroupId(expandedGroupId)) {
-            this.setState((prevState) => ({
-                expandedGroupsIds: prevState.expandedGroupsIds.filter((groupId) => groupId !== expandedGroupId),
+            this.setState_((prevState: any) => ({
+                expandedGroupsIds: prevState.expandedGroupsIds.filter((groupId: string) => groupId !== expandedGroupId),
             }));
         } else {
-            this.setState((prevState) => ({
+            this.setState_((prevState: any) => ({
                 expandedGroupsIds: [...prevState.expandedGroupsIds, expandedGroupId],
             }));
         }
@@ -344,7 +357,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private computeDirtyState(): void {
         const isDirty = this.props.isAlwaysDirty || !isEqual(this.state.model, this.state.initialModel);
-        this.setState({ isDirty });
+        this.setState_({ isDirty });
     }
 
     private computeValidState() {
@@ -396,7 +409,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
             .catch((result) => {
                 const violations = result.violations;
                 if (violations) {
-                    this.setState({ violations });
+                    this.setState_({ violations });
                 }
                 this.setSubmitting(false);
                 this.computeDirtyState();
@@ -427,11 +440,11 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private commitCurrentModel() {
-        this.setState((prevState) => ({ initialModel: prevState.model }));
+        this.setState_((prevState: any) => ({ initialModel: prevState.model }));
     }
 
     private setSubmitting(submitting: boolean): void {
-        this.setState({ isSubmitting: submitting });
+        this.setState_({ isSubmitting: submitting });
     }
 
     private createBlurHandlers() {
@@ -465,7 +478,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private setValue(fieldId: string, value: any) {
-        this.setState((prevState) => {
+        this.setState_((prevState: any) => {
             const newModel = Object.assign({}, prevState.model);
             newModel[fieldId] = value;
             return { model: newModel };
@@ -475,7 +488,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     private setViolations(fieldId: string, value: any) {
         return this.validate(fieldId, value).then((violations) => {
             return new Promise((resolve) => {
-                this.setState((prevState) => {
+                this.setState_((prevState: any) => {
                     const formViolations = Object.assign({}, prevState.violations);
                     formViolations[fieldId] = violations;
                     return { violations: formViolations };
@@ -485,7 +498,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
     }
 
     private setViolationsFromProps() {
-        this.setState({
+        this.setState_({
             violations: this.props.violations,
         });
     }
@@ -513,7 +526,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
 
     private setStateAsync(state: any): Promise<any> {
         return new Promise((resolve) => {
-            this.setState(state, () => {
+            this.setState_(state, () => {
                 resolve(state);
             });
         });
