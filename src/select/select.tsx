@@ -118,7 +118,7 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
             }));
         }
     }
-    
+
     private collapseOptionsList() {
         this.setState({
             isExpanded: false,
