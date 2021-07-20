@@ -75,7 +75,7 @@ class Select<T, O extends Option<T> = Option<T>> extends React.Component<Props<T
             >
                 {this.props.searchable ? this.renderSearchableTrigger() : this.renderStandardTrigger()}
                 {this.state.isExpanded && Boolean(options.length) && (
-                    <div className={`select-options-wrapper ${this.state.isExpanded ? 'selected-active':''} `} data-qa={`select-options-wrapper-${this.props.id}`}>
+                    <div className={'select-options-wrapper selected-active'} data-qa={`select-options-wrapper-${this.props.id}`}>
                         <SelectList
                             value={this.props.value}
                             onChange={this.handleOptionSelect}
