@@ -41,7 +41,7 @@ class Textarea extends React.Component<Props, State> {
             <div className="textarea-component">
                 <textarea
                     id={this.props.id}
-                    className={`form-control text-design ${this.props.characterLimit ? 'character-limited' : ''} ${this
+                    className={`form-control textarea-input ${this.props.characterLimit ? 'character-limited' : ''} ${this
                         .props.className || ''}`}
                     rows={this.state.rows}
                     onBlur={this.props.onBlur}
