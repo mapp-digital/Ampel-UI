@@ -236,4 +236,4 @@ class TableWithRadioButtons extends React.Component<Props, State> {
     };
 }
 
-export default TableWithRadioButtons;
+export { TableWithRadioButtons };
