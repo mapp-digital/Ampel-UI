@@ -17,13 +17,13 @@
     .search-input-icon {
         &-filter {
             @table-search-bar-icon();
-            font-size: 14px;
+            font-size: @base-font-size;
         }
 
         &-clear {
             @close-icon();
             padding-right: 0;
-            font-size: 12px;
+            font-size: @base-font-size;
             background: transparent;
             border: 0;
             color: @gray-darker;
@@ -38,7 +38,7 @@
         flex: 1;
         border: none;
         box-shadow: none;
-        font-size: 12px;
+        font-size: @base-font-size;
 
         &::placeholder {
             color: @gray-darkest;
