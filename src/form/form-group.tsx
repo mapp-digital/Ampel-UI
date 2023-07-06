@@ -12,6 +12,7 @@ interface Props {
     label: string;
     isExpanded: boolean;
     validityState: ValidityState;
+    hidden?: boolean;
     onClick: (groupId: string) => void;
 }
 
@@ -23,6 +24,10 @@ const getClass = (props: Props) => {
 const FormGroup: React.FunctionComponent<Props> = (props) => {
     // TODO: useCallback ASAP.
     const onClick = () => props.onClick(props.id);
+
+    if (props.hidden) {
+        return null;
+    }
     return (
         <div className={getClass(props)} data-qa={`form-group-${props.id}`}>
             <div className="form-group-wrap">
