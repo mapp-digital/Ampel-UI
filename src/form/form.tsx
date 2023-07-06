@@ -258,6 +258,7 @@ class Form<MODEL extends object> extends React.Component<Props<MODEL>, State<MOD
                     id={group.id}
                     key={group.id}
                     label={group.label}
+                    hidden={group.hidden}
                     onClick={this.onGroupClick}
                     isExpanded={this.isCurrentlyExpandedGroupId(group.id)}
                     validityState={this.getValidityState(group)}

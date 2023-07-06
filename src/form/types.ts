@@ -93,6 +93,7 @@ interface Group {
     id: string;
     label: string;
     sections: Array<Section>;
+    hidden?: boolean;
 }
 
 export {
