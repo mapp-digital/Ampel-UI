@@ -71,7 +71,7 @@
     "@types/react-table": "~6.7.15",
     "@types/yup": "~0.26.37",
     "immutability-helper": "~3.0.2",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "rc-slider": "8.6.7",
     "react-popper-tooltip": "^2.10.1",
     "react-table": "~6.8.6",
