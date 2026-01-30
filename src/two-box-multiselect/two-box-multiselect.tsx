@@ -15,6 +15,8 @@ interface Props<T> {
     filterPlaceholderLeft?: string;
     filterPlaceholderRight?: string;
     disabled?: boolean;
+    // tComparator must return: <0 | 0 | >0 on v1<v2 | v1=v2 | v1>v2
+    tComparator?: (v1: T, v2: T) => number;
     sortLabelBy?: (left: Option<T>, right: Option<T>) => number;
 }
 
@@ -223,12 +225,12 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private removeValues(valuesToBeRemoved: Array<T>) {
-        const newValues = this.props.values.filter((value) => !valuesToBeRemoved.includes(value));
+        const newValues = this.props.values.filter((value) => !this.contains(valuesToBeRemoved, value));
         this.props.onChange(newValues);
     }
 
     private isSelected(option: Option<T>) {
-        return this.props.values.includes(option.value);
+        return this.contains(this.props.values, option.value);
     }
 
     private isNotSelected(option: Option<T>) {
@@ -262,14 +264,20 @@ class TwoBoxMultiselect<T> extends React.Component<Props<T>, State<T>> {
     }
 
     private createUpdate<V>(key: string, value: V) {
-        const obj = {};
+        const obj: { [key: string]: V } = {};
         obj[key] = value;
-        return obj;
+        return obj as Pick<State<T>, never>;
+    }
+
+    private contains(coll: Array<T>, value: T): boolean {
+        return !!this.props.tComparator
+            ? coll.some((entry) => this.props.tComparator!(entry, value) === 0)
+            : coll.includes(value);
     }
 
     private isHighlighted(state: State<T>, side: string, value: T) {
         const highlightedCollection = this.getHighlightedCollection(side, state);
-        return highlightedCollection.includes(value);
+        return this.contains(highlightedCollection, value);
     }
 
     private addHighlight(state: State<T>, side: string, option: Option<T>) {
