@@ -112,7 +112,6 @@ class CheckboxTable extends React.Component<Props, {}> {
             ),
             Header: () => (
                 <div>
-                    {' '}
                     {this.maybeEmbedTooltip(
                         <Checkbox
                             id={`${this.props.id}-select-all-column-header`}
