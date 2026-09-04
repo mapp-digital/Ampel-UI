@@ -3,6 +3,7 @@ import * as React from 'react';
 import ReactTable from 'react-table';
 
 import { Checkbox } from '@ampel-ui/checkbox';
+import { Tooltip } from '@ampel-ui/tooltip';
 
 interface Column {
     id: string;
@@ -33,6 +34,7 @@ interface Props {
     onChange: (data: CheckboxTableData) => void;
     selectAllLabel: string;
     isDisabledCell?: (columnKey: string, rowKey: string) => boolean;
+    tooltips?: boolean;
 }
 
 const ROW_SELECTION_COLUMN_ID = 'rowSelectionColumn';
@@ -60,6 +62,10 @@ class CheckboxTable extends React.Component<Props, {}> {
                 />
             </div>
         );
+    }
+
+    private useTooltips(): boolean {
+        return !!this.props.tooltips;
     }
 
     private getData() {
@@ -106,16 +112,31 @@ class CheckboxTable extends React.Component<Props, {}> {
             ),
             Header: () => (
                 <div>
-                    <Checkbox
-                        id={`${this.props.id}-select-all-column-header`}
-                        value={this.getTableAggregate()}
-                        disabled={this.isDisabled(this.getAllColumnKeys(), this.getAllRowKeys())}
-                        onChange={this.setAll}
-                        label={this.props.selectAllLabel}
-                    />
+                    {this.maybeEmbedTooltip(
+                        <Checkbox
+                            id={`${this.props.id}-select-all-column-header`}
+                            value={this.getTableAggregate()}
+                            disabled={this.isDisabled(this.getAllColumnKeys(), this.getAllRowKeys())}
+                            onChange={this.setAll}
+                            label={this.props.selectAllLabel}
+                        />,
+                        this.props.selectAllLabel
+                    )}
                 </div>
             ),
         };
+    }
+
+    private maybeEmbedTooltip(element: any, label: string) {
+        if (this.useTooltips()) {
+            return (
+                <Tooltip placement="auto" text={label}>
+                    {element}
+                </Tooltip>
+            );
+        } else {
+            return element;
+        }
     }
 
     private getColumnHeaders() {
@@ -135,15 +156,16 @@ class CheckboxTable extends React.Component<Props, {}> {
                 ),
                 Header: () => (
                     <div>
-                        <div>
+                        {this.maybeEmbedTooltip(
                             <Checkbox
                                 id={`${this.props.id}-table--header-${column.id}`}
                                 value={this.getColumnAggregate(column.id)}
                                 disabled={this.isDisabled([column.id], this.getAllRowKeys())}
                                 onChange={this.setAllColumnValues.bind(this, column.id)}
                                 label={column.label}
-                            />
-                        </div>
+                            />,
+                            column.label
+                        )}
                     </div>
                 ),
             };
